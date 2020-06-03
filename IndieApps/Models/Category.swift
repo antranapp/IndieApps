@@ -4,12 +4,7 @@
 
 import Foundation
 
-struct Category: Identifiable {
+struct Category: Identifiable, Equatable {
     let id = UUID()
     let name: String
 }
-
-let categoryList = [
-    Category(name: "Movies"),
-    Category(name: "Utilities"),
-]
