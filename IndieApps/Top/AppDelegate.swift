@@ -1,8 +1,4 @@
 //
-//  AppDelegate.swift
-//  IndieApps
-//
-//  Created by An Tran on 03.06.20.
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
