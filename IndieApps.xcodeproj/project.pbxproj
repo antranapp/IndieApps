@@ -20,6 +20,7 @@
 		7F463ABE2488FDF700A52ECA /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 7F463ABD2488FDF700A52ECA /* ZIPFoundation */; };
 		7F463AC024890D6600A52ECA /* Archive.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7F463ABF24890D6600A52ECA /* Archive.zip */; };
 		7F463AC524891CD000A52ECA /* DispatchQueue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */; };
+		7F463AC82489273400A52ECA /* Files in Frameworks */ = {isa = PBXBuildFile; productRef = 7F463AC72489273400A52ECA /* Files */; };
 		7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F02487C79E00DBCAC8 /* AppDelegate.swift */; };
 		7F5662F32487C79E00DBCAC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F22487C79E00DBCAC8 /* SceneDelegate.swift */; };
 		7F5662F62487C79E00DBCAC8 /* IndieApps.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F42487C79E00DBCAC8 /* IndieApps.xcdatamodeld */; };
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F463AC82489273400A52ECA /* Files in Frameworks */,
 				7F5663252487C87A00DBCAC8 /* ComposableArchitecture in Frameworks */,
 				7F463ABE2488FDF700A52ECA /* ZIPFoundation in Frameworks */,
 			);
@@ -268,6 +270,7 @@
 			packageProductDependencies = (
 				7F5663242487C87A00DBCAC8 /* ComposableArchitecture */,
 				7F463ABD2488FDF700A52ECA /* ZIPFoundation */,
+				7F463AC72489273400A52ECA /* Files */,
 			);
 			productName = IndieApps;
 			productReference = 7F5662ED2487C79E00DBCAC8 /* IndieApps.app */;
@@ -344,6 +347,7 @@
 			packageReferences = (
 				7F5663232487C87A00DBCAC8 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				7F463ABC2488FDF700A52ECA /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				7F463AC62489273400A52ECA /* XCRemoteSwiftPackageReference "Files" */,
 			);
 			productRefGroup = 7F5662EE2487C79E00DBCAC8 /* Products */;
 			projectDirPath = "";
@@ -740,6 +744,14 @@
 				minimumVersion = 0.9.11;
 			};
 		};
+		7F463AC62489273400A52ECA /* XCRemoteSwiftPackageReference "Files" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JohnSundell/Files";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.1;
+			};
+		};
 		7F5663232487C87A00DBCAC8 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
@@ -755,6 +767,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7F463ABC2488FDF700A52ECA /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		7F463AC72489273400A52ECA /* Files */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F463AC62489273400A52ECA /* XCRemoteSwiftPackageReference "Files" */;
+			productName = Files;
 		};
 		7F5663242487C87A00DBCAC8 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;

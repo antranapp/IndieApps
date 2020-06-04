@@ -2,12 +2,13 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import Files
 import Combine
 import Foundation
 
 struct World {
     var onboardingService = OnboardingService()
-    var contentService = ContentService()
+    var contentService = ContentService(rootFolder: try! Folder(path: FileManager.default.contentPath!))
 }
 
 enum AppAction {
@@ -24,3 +25,10 @@ struct AppState {
 }
 
 typealias AppStore = Store<AppState, AppAction, World>
+
+extension FileManager {
+    
+    var contentPath: String? {
+        return self.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("content").path
+    }
+}
