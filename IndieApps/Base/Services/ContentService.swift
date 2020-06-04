@@ -5,11 +5,11 @@
 import Combine
 
 protocol ContentServiceProtocol {
-    func provideCategoryList() -> AnyPublisher<[Category], Never>
+    func fetchCategoryList() -> AnyPublisher<[Category], Never>
 }
 
 class ContentService: ContentServiceProtocol {
-    func provideCategoryList() -> AnyPublisher<[Category], Never> {
+    func fetchCategoryList() -> AnyPublisher<[Category], Never> {
         return Just([
             Category(name: "Movies"),
             Category(name: "Utilities"),

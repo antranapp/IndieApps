@@ -24,7 +24,7 @@ struct CategoryListContainerView: View {
     }
 }
 
-struct CategoryListView: View {
+private struct CategoryListView: View {
     
     let categoryList: [Category]
     
