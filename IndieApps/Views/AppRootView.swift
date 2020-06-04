@@ -16,16 +16,3 @@ struct AppRootView: View {
         }
     }
 }
-
-struct OnboardingContainerView: View {
-    @EnvironmentObject var store: AppStore
-    
-    var body: some View {
-        Text("Onboarding")
-            .onAppear(perform: startOnboarding)
-    }
-    
-    private func startOnboarding() {
-        store.send(.startOnboarding)
-    }
-}

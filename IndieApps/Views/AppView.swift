@@ -9,7 +9,7 @@ struct AppView: View {
     
     var body: some View {
         HStack {
-            Image("icon\(Int.random(in: 1...4))")
+            Image(uiImage: app.icon ?? UIImage())
                 .resizable()
                 .frame(width: 80, height: 80, alignment: .leading)
                 .cornerRadius(14)
@@ -27,12 +27,13 @@ struct AppView: View {
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         let app = App(
+            id: UUID().uuidString,
             name: "Twitter",
             shortDescription: "Twitter is cool",
             description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
             releaseNotes: [
-                ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                ReleaseNote(version: "1.0.0 (2)", note: "Fix a lot of bugs"),
+                ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
+                ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
             ]
         )
         return AppView(app: app)
