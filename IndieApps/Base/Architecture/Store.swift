@@ -59,9 +59,22 @@ func appReducer(
         
         case .endOnboarding:
             state.isDataAvailable = true
+
+        case .fetchAppList(let category):
+            return environment.contentService
+                .fetchAppList(in: category)
+                .map { AppAction.setAppList($0)}
+                .eraseToAnyPublisher()
+
+        case .setAppList(let appList):
+            state.appList = appList
         
         case .showError(let error):
-            print(error)
+            state.snackbarData.makeError(title: "Error!", detail: error.localizedDescription)
+            state.showSnackbar = true
+        
+        case .hideError:
+            state.showSnackbar = false
     }
     
     return Empty().eraseToAnyPublisher()

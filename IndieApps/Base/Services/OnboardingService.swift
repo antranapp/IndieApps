@@ -18,7 +18,7 @@ class OnboardingService: OnboardingServiceProtocol {
                 try self.unpackContent()
                 promise(.success(()))
             } catch {
-                promise(.failure(OnboardingServiceError.failedToUnpackInitialContent))
+                promise(.failure(error))
             }
         }
     }

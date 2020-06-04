@@ -10,7 +10,7 @@ struct CategoryView: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "clock")
+            //Image(systemName: "clock")
             Text(category.name)
         }
     }

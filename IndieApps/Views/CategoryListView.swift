@@ -6,15 +6,33 @@ import SwiftUI
 import Combine
 
 struct CategoryListContainerView: View {
+    
     @EnvironmentObject var store: AppStore
     
     var body: some View {
-        NavigationView {
+        let snackbarDataBinding = Binding<SnackbarModifier.SnackbarData>(
+            get: { () -> SnackbarModifier.SnackbarData in
+                return self.store.state.snackbarData
+            },
+            set:  { _ in }
+        )
+ 
+        let snackbarShowingBinding = Binding<Bool>(
+            get: { () -> Bool in
+                return self.store.state.showSnackbar
+            },
+            set:  { _ in
+                self.store.send(.hideError)
+            }
+        )
+        
+        return NavigationView {
             CategoryListView(
                 categoryList: store.state.categoryList
             )
             .navigationBarTitle("Categories")
             .navigationViewStyle(StackNavigationViewStyle())
+            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
         }
         .onAppear(perform: fetchCategoryList)
     }
@@ -31,7 +49,7 @@ private struct CategoryListView: View {
     var body: some View {
         List {
             ForEach(categoryList) { category in
-                NavigationLink(destination: AppListView(category: category)) {
+                NavigationLink(destination: AppListContainerView(category: category)) {
                     CategoryView(category: category)
                 }
                 .buttonStyle(PlainButtonStyle())
