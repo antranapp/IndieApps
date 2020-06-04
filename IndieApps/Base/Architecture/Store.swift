@@ -39,12 +39,29 @@ func appReducer(
     environment: World) -> AnyPublisher<AppAction, Never>? {
     switch action {
         case .fetchCategoryList:
-            return environment.service
-                .provideCategoryList()
+            return environment.contentService
+                .fetchCategoryList()
                 .map { AppAction.setCategoryList($0)}
                 .eraseToAnyPublisher()
+        
         case .setCategoryList(let categoryList):
             state.categoryList = categoryList
+        
+        case .startOnboarding:
+            return environment.onboardingService
+                .unpackInitialContentIfNeeded()
+                .receive(on: RunLoop.main)
+                .map { AppAction.endOnboarding }
+                .catch{ error in
+                    return Just(AppAction.showError(error))
+                }
+                .eraseToAnyPublisher()
+        
+        case .endOnboarding:
+            state.isDataAvailable = true
+        
+        case .showError(let error):
+            print(error)
     }
     
     return Empty().eraseToAnyPublisher()

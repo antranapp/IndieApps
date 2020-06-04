@@ -14,6 +14,12 @@
 		7F1ACF6924883BA40044E959 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF6824883BA40044E959 /* Application.swift */; };
 		7F1ACF6C24883CBF0044E959 /* ContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF6B24883CBF0044E959 /* ContentService.swift */; };
 		7F1ACF6F24883E000044E959 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF6E24883E000044E959 /* Store.swift */; };
+		7F463AB62488EC6E00A52ECA /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AB52488EC6E00A52ECA /* OnboardingService.swift */; };
+		7F463AB82488F0C100A52ECA /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AB72488F0C100A52ECA /* AppRootView.swift */; };
+		7F463ABB2488FBB100A52ECA /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463ABA2488FBB100A52ECA /* View+Extensions.swift */; };
+		7F463ABE2488FDF700A52ECA /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 7F463ABD2488FDF700A52ECA /* ZIPFoundation */; };
+		7F463AC024890D6600A52ECA /* Archive.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7F463ABF24890D6600A52ECA /* Archive.zip */; };
+		7F463AC524891CD000A52ECA /* DispatchQueue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */; };
 		7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F02487C79E00DBCAC8 /* AppDelegate.swift */; };
 		7F5662F32487C79E00DBCAC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F22487C79E00DBCAC8 /* SceneDelegate.swift */; };
 		7F5662F62487C79E00DBCAC8 /* IndieApps.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F42487C79E00DBCAC8 /* IndieApps.xcdatamodeld */; };
@@ -53,6 +59,11 @@
 		7F1ACF6824883BA40044E959 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		7F1ACF6B24883CBF0044E959 /* ContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentService.swift; sourceTree = "<group>"; };
 		7F1ACF6E24883E000044E959 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		7F463AB52488EC6E00A52ECA /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
+		7F463AB72488F0C100A52ECA /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		7F463ABA2488FBB100A52ECA /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		7F463ABF24890D6600A52ECA /* Archive.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Archive.zip; sourceTree = "<group>"; };
+		7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		7F5662ED2487C79E00DBCAC8 /* IndieApps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IndieApps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5662F02487C79E00DBCAC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F5662F22487C79E00DBCAC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F5663252487C87A00DBCAC8 /* ComposableArchitecture in Frameworks */,
+				7F463ABE2488FDF700A52ECA /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +127,7 @@
 				7F5663282487CDDB00DBCAC8 /* AppListView.swift */,
 				7F1ACF5F2487DE560044E959 /* AppView.swift */,
 				7F1ACF612487DE700044E959 /* AppDetailView.swift */,
+				7F463AB72488F0C100A52ECA /* AppRootView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -135,6 +148,7 @@
 				7F5662FE2487C7A100DBCAC8 /* LaunchScreen.storyboard */,
 				7F5663012487C7A100DBCAC8 /* Info.plist */,
 				7F5662F42487C79E00DBCAC8 /* IndieApps.xcdatamodeld */,
+				7F463ABF24890D6600A52ECA /* Archive.zip */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -144,6 +158,7 @@
 			children = (
 				7F1ACF6A24883CB50044E959 /* Services */,
 				7F1ACF6D24883D470044E959 /* Architecture */,
+				7F463AB92488FBA200A52ECA /* Utils */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -152,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				7F1ACF6B24883CBF0044E959 /* ContentService.swift */,
+				7F463AB52488EC6E00A52ECA /* OnboardingService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -163,6 +179,15 @@
 				7F1ACF6E24883E000044E959 /* Store.swift */,
 			);
 			path = Architecture;
+			sourceTree = "<group>";
+		};
+		7F463AB92488FBA200A52ECA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7F463ABA2488FBB100A52ECA /* View+Extensions.swift */,
+				7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		7F5662E42487C79E00DBCAC8 = {
@@ -242,6 +267,7 @@
 			name = IndieApps;
 			packageProductDependencies = (
 				7F5663242487C87A00DBCAC8 /* ComposableArchitecture */,
+				7F463ABD2488FDF700A52ECA /* ZIPFoundation */,
 			);
 			productName = IndieApps;
 			productReference = 7F5662ED2487C79E00DBCAC8 /* IndieApps.app */;
@@ -317,6 +343,7 @@
 			mainGroup = 7F5662E42487C79E00DBCAC8;
 			packageReferences = (
 				7F5663232487C87A00DBCAC8 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				7F463ABC2488FDF700A52ECA /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = 7F5662EE2487C79E00DBCAC8 /* Products */;
 			projectDirPath = "";
@@ -336,6 +363,7 @@
 			files = (
 				7F5663002487C7A100DBCAC8 /* LaunchScreen.storyboard in Resources */,
 				7F5662FD2487C7A100DBCAC8 /* Preview Assets.xcassets in Resources */,
+				7F463AC024890D6600A52ECA /* Archive.zip in Resources */,
 				7F5662FA2487C7A100DBCAC8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,11 +392,15 @@
 				7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */,
 				7F5663272487CBE700DBCAC8 /* Category.swift in Sources */,
 				7F5663292487CDDB00DBCAC8 /* AppListView.swift in Sources */,
+				7F463AB82488F0C100A52ECA /* AppRootView.swift in Sources */,
 				7F5662F62487C79E00DBCAC8 /* IndieApps.xcdatamodeld in Sources */,
 				7F1ACF642487EB7E0044E959 /* CategoryView.swift in Sources */,
+				7F463ABB2488FBB100A52ECA /* View+Extensions.swift in Sources */,
+				7F463AC524891CD000A52ECA /* DispatchQueue+Extensions.swift in Sources */,
 				7F1ACF622487DE700044E959 /* AppDetailView.swift in Sources */,
 				7F1ACF602487DE560044E959 /* AppView.swift in Sources */,
 				7F1ACF6F24883E000044E959 /* Store.swift in Sources */,
+				7F463AB62488EC6E00A52ECA /* OnboardingService.swift in Sources */,
 				7F5662F82487C79E00DBCAC8 /* CategoryListView.swift in Sources */,
 				7F1ACF6924883BA40044E959 /* Application.swift in Sources */,
 				7F1ACF5D2487DE230044E959 /* App.swift in Sources */,
@@ -700,6 +732,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7F463ABC2488FDF700A52ECA /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.11;
+			};
+		};
 		7F5663232487C87A00DBCAC8 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
@@ -711,6 +751,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7F463ABD2488FDF700A52ECA /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F463ABC2488FDF700A52ECA /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
 		7F5663242487C87A00DBCAC8 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7F5663232487C87A00DBCAC8 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

@@ -6,15 +6,20 @@ import Combine
 import Foundation
 
 struct World {
-    var service = ContentService()
+    var onboardingService = OnboardingService()
+    var contentService = ContentService()
 }
 
 enum AppAction {
+    case startOnboarding
+    case endOnboarding
     case fetchCategoryList
     case setCategoryList(_ categoryList: [Category])
+    case showError(_ error: Error)
 }
 
 struct AppState {
+    var isDataAvailable: Bool = false
     var categoryList: [Category] = []
 }
 
