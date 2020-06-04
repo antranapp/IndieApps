@@ -43,10 +43,25 @@ func appReducer(
                 .fetchCategoryList()
                 .map { AppAction.setCategoryList($0)}
                 .eraseToAnyPublisher()
+        
         case .setCategoryList(let categoryList):
             state.categoryList = categoryList
+        
         case .startOnboarding:
-            return nil
+            return environment.onboardingService
+                .unpackInitialContentIfNeeded()
+                .receive(on: RunLoop.main)
+                .map { AppAction.endOnboarding }
+                .catch{ error in
+                    return Just(AppAction.showError(error))
+                }
+                .eraseToAnyPublisher()
+        
+        case .endOnboarding:
+            state.isDataAvailable = true
+        
+        case .showError(let error):
+            print(error)
     }
     
     return Empty().eraseToAnyPublisher()

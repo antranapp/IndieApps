@@ -12,8 +12,10 @@ struct World {
 
 enum AppAction {
     case startOnboarding
+    case endOnboarding
     case fetchCategoryList
     case setCategoryList(_ categoryList: [Category])
+    case showError(_ error: Error)
 }
 
 struct AppState {

@@ -12,16 +12,20 @@ struct AppRootView: View {
         if store.state.isDataAvailable {
             return CategoryListContainerView().environmentObject(store).toAnyView
         } else {
-            return OnboardingView().environmentObject(store).toAnyView
+            return OnboardingContainerView().environmentObject(store).toAnyView
         }
     }
 }
 
-
-struct OnboardingView: View {
+struct OnboardingContainerView: View {
     @EnvironmentObject var store: AppStore
     
     var body: some View {
         Text("Onboarding")
+            .onAppear(perform: startOnboarding)
+    }
+    
+    private func startOnboarding() {
+        store.send(.startOnboarding)
     }
 }
