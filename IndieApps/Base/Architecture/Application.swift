@@ -16,15 +16,19 @@ class World {
 }
 
 indirect enum AppAction {
+    case noop
     case startOnboarding
     case endOnboarding
     case updateContent
+    case resetContent
     case fetchCategoryList
     case setCategoryList(_ categoryList: [Category])
     case fetchAppList(_ category: Category)
     case setAppList(_ appList: [App])
     case showError(_ error: Error)
-    case hideError
+    case showMessage(title: String, message: String, type: SnackbarModifier.SnackbarType)
+    case hideSnackbar
+    case goToOnboarding
 }
 
 struct AppState {
@@ -33,6 +37,12 @@ struct AppState {
     var isDataAvailable: Bool = false
     var categoryList: [Category] = []
     var appList: [App] = []
+    
+    mutating func reset() {
+        isDataAvailable = false
+        categoryList = []
+        appList = []
+    }
 }
 
 typealias AppStore = Store<AppState, AppAction, World>

@@ -11,8 +11,6 @@ public protocol GitServiceProtocol {
     var localRepositoryFolder: Folder { get }
     var localRepository: GTRepository? { get set }
     
-    var didUpdate: PassthroughSubject<Void, Never> { get }
-    
     func open() -> Bool
     
     /// Clone the content repository to disk.
@@ -35,9 +33,6 @@ class GitService: GitServiceProtocol {
     // Public
     
     var localRepository: GTRepository?
-    
-    var didUpdate = PassthroughSubject<Void, Never>()
-    
     var localRepositoryFolder: Folder
     
     // Private
@@ -87,17 +82,10 @@ class GitService: GitServiceProtocol {
                     self.localRepository = try GTRepository.clone(from: self.remoteRepositoryURL, toWorkingDirectory: self.localRepositoryFolder.url, options: [GTRepositoryCloneOptionsTransportFlags: true], transferProgressBlock: { progress, isFinished in
                         let progress = Float(progress.pointee.received_objects)/Float(progress.pointee.total_objects)
                         progressHandler(progress, isFinished.pointee.boolValue)
-                    })
-                    
-                    self.didUpdate.send(())
-                    
-                    DispatchQueue.main.async {
-                        promise(.success(()))
-                    }
+                    })                    
+                    promise(.success(()))
                 } catch {
-                    DispatchQueue.main.async {
-                        promise(.failure(error))
-                    }
+                    promise(.failure(error))
                 }
             }
         }
@@ -116,8 +104,7 @@ class GitService: GitServiceProtocol {
                 do {
                     let branch = try localRepository.currentBranch()
                     let remoteRepository = try GTRemote(name: "origin", in: localRepository)
-                    try localRepository.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)      
-                    self.didUpdate.send(())
+                    try localRepository.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -126,14 +113,13 @@ class GitService: GitServiceProtocol {
         }
     }
     
-    /// Remove the local repository folder.
+    /// Remove the local repository folder and clone the data again.
     /// - Returns: Future<Void, Error>
     public func reset() -> Future<Bool, Error> {
         return Future { promise in
             self.queue.async {
                 do {
                     try self.localRepositoryFolder.delete()
-                    self.didUpdate.send(())
                     promise(.success(true))
                 } catch {
                     promise(.failure(error))

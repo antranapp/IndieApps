@@ -76,12 +76,30 @@ func appReducer(
         case .setAppList(let appList):
             state.appList = appList
         
+
+        case .showMessage(let title, let message, let type):
+            state.snackbarData = SnackbarModifier.SnackbarData(title: title, detail: message, type: type)
+            state.showSnackbar = true
+
         case .showError(let error):
             state.snackbarData.makeError(title: "Error!", detail: error.localizedDescription)
             state.showSnackbar = true
 
-        case .hideError:
+        case .hideSnackbar:
             state.showSnackbar = false
+        
+        case .resetContent:
+            return environment.gitService?
+                .reset()
+                .receive(on: RunLoop.main)
+                .map { $0 ? AppAction.goToOnboarding : AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
+                .replaceError(with: AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+                .eraseToAnyPublisher()
+        
+        case .goToOnboarding:
+            state.isDataAvailable = false
+        
+        case .noop: break // NO-OP
     }
     
     return Empty().eraseToAnyPublisher()

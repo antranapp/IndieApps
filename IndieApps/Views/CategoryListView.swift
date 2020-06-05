@@ -22,7 +22,7 @@ struct CategoryListContainerView: View {
                 return self.store.state.showSnackbar
             },
             set:  { _ in
-                self.store.send(.hideError)
+                self.store.send(.hideSnackbar)
             }
         )
         
@@ -32,6 +32,11 @@ struct CategoryListContainerView: View {
             )
             .navigationBarTitle("Categories")
             .navigationViewStyle(StackNavigationViewStyle())
+                .navigationBarItems(leading:
+                    NavigationLink(destination: SettingsView(), label: {
+                        Image(systemName: "gear")
+                    })
+                )
             .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
         }
         .onAppear(perform: fetchCategoryList)

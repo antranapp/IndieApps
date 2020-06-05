@@ -22,7 +22,7 @@ struct OnboardingContainerView: View {
                 return self.store.state.showSnackbar
             },
             set:  { _ in
-                self.store.send(.hideError)
+                self.store.send(.hideSnackbar)
             }
         )
         
