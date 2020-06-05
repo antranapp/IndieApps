@@ -10,8 +10,12 @@ struct CategoryView: View {
     
     var body: some View {
         HStack {
-            //Image(systemName: "clock")
             Text(category.name)
+            Spacer()
+            if (category.numberOfApps > 0) {
+                Text(category.numberOfApps.asString)
+                    .foregroundColor(Color.black.opacity(0.3))
+            }
         }
     }
 }

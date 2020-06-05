@@ -54,7 +54,7 @@ class ContentService: ContentServiceProtocol {
     }
     
     private func mapFolderToCategory(_ folder: Folder) -> Category {
-        return Category(name: folder.name)
+        return Category(name: folder.name, numberOfApps: folder.subfolders.count())
     }
     
     private func mapFolderToApp(_ folder: Folder) throws -> App {

@@ -38,6 +38,7 @@
 		7F5663272487CBE700DBCAC8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5663262487CBE700DBCAC8 /* Category.swift */; };
 		7F5663292487CDDB00DBCAC8 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5663282487CDDB00DBCAC8 /* AppListView.swift */; };
 		7FCBD43F24899EB6006A040F /* Archive.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7FCBD43E24899EB6006A040F /* Archive.zip */; };
+		7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,7 @@
 		7F5663262487CBE700DBCAC8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7F5663282487CDDB00DBCAC8 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
 		7FCBD43E24899EB6006A040F /* Archive.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Archive.zip; sourceTree = "<group>"; };
+		7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +205,7 @@
 			children = (
 				7F463ABA2488FBB100A52ECA /* View+Extensions.swift */,
 				7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */,
+				7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 				7F5662F82487C79E00DBCAC8 /* CategoryListView.swift in Sources */,
 				7F1ACF6924883BA40044E959 /* Application.swift in Sources */,
 				7F1ACF5D2487DE230044E959 /* App.swift in Sources */,
+				7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */,
 				7F5662F32487C79E00DBCAC8 /* SceneDelegate.swift in Sources */,
 				7F1ACF6C24883CBF0044E959 /* ContentService.swift in Sources */,
 			);

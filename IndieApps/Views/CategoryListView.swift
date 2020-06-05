@@ -62,8 +62,8 @@ private struct CategoryListView: View {
 struct CategoryListView_Previews: PreviewProvider {
     static var previews: some View {
         let list = [
-            Category(name: "Movies"),
-            Category(name: "Photography")
+            Category(name: "Movies", numberOfApps: 1),
+            Category(name: "Photography", numberOfApps: 2)
         ]
         return CategoryListView(categoryList: list)
     }
