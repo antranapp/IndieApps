@@ -47,9 +47,7 @@ struct AppListView: View {
 
 #if DEBUG
 struct AppListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let category = Category(name: "Movies")
-        
+    static var previews: some View {        
         let apps = [
             App(
                 id: UUID().uuidString,

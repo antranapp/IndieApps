@@ -9,19 +9,24 @@ import UIKit
 
 protocol ContentServiceProtocol {
     func fetchCategoryList() -> AnyPublisher<[Category], Never>
+    func fetchAppList(in category: Category) -> AnyPublisher<[App], Never>
 }
 
 class ContentService: ContentServiceProtocol {
     
-    var appFolder: Folder
-    var dataFolder: Folder
+    // MARK: - Properties
+    
+    private var appFolder: Folder
+    private var dataFolder: Folder?
+    
+    // MARK: - Constructor
     
     init(rootFolder: Folder) {
         self.appFolder = try! rootFolder.subfolder(named: "apps")
-        self.dataFolder = try! rootFolder.subfolder(named: "data")
+        self.dataFolder = try? rootFolder.subfolder(named: "data")
     }
         
-    // MARK: APIs
+    // MARK: - APIs
     
     func fetchCategoryList() -> AnyPublisher<[Category], Never> {
         let categories = appFolder.subfolders.compactMap {
@@ -41,6 +46,8 @@ class ContentService: ContentServiceProtocol {
             return Just([]).eraseToAnyPublisher()
         }
     }
+    
+    // MARK: - Private helpers
     
     private func mapCategoryToFolder(_ category: Category) throws -> Folder {
         return try appFolder.subfolder(named: category.name)

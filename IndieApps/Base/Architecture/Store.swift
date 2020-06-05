@@ -38,6 +38,26 @@ func appReducer(
     action: AppAction,
     environment: World) -> AnyPublisher<AppAction, Never>? {
     switch action {
+        case .startOnboarding:
+            return environment.onboardingService
+                .unpackInitialContentIfNeeded()
+                .receive(on: RunLoop.main)
+                .map { AppAction.updateContent }
+                .catch { error in
+                    return Just(AppAction.showError(error))
+                }
+                .eraseToAnyPublisher()
+        
+        case .endOnboarding:
+            state.isDataAvailable = true
+        
+        case .updateContent:
+            return environment.gitService?
+                .update()
+                .map { AppAction.endOnboarding }
+                .replaceError(with: AppAction.endOnboarding)
+                .eraseToAnyPublisher()
+        
         case .fetchCategoryList:
             return environment.contentService
                 .fetchCategoryList()
@@ -47,19 +67,6 @@ func appReducer(
         case .setCategoryList(let categoryList):
             state.categoryList = categoryList
         
-        case .startOnboarding:
-            return environment.onboardingService
-                .unpackInitialContentIfNeeded()
-                .receive(on: RunLoop.main)
-                .map { AppAction.endOnboarding }
-                .catch{ error in
-                    return Just(AppAction.showError(error))
-                }
-                .eraseToAnyPublisher()
-        
-        case .endOnboarding:
-            state.isDataAvailable = true
-
         case .fetchAppList(let category):
             return environment.contentService
                 .fetchAppList(in: category)
@@ -72,7 +79,7 @@ func appReducer(
         case .showError(let error):
             state.snackbarData.makeError(title: "Error!", detail: error.localizedDescription)
             state.showSnackbar = true
-        
+
         case .hideError:
             state.showSnackbar = false
     }
