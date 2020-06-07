@@ -9,7 +9,7 @@ struct AppView: View {
     
     var body: some View {
         HStack {
-            Image(uiImage: app.icon ?? UIImage())
+            Image(uiImage: app.iconOrDefaultImage)
                 .resizable()
                 .frame(width: 80, height: 80, alignment: .leading)
                 .cornerRadius(14)
@@ -27,6 +27,7 @@ struct AppView: View {
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         let app = App(
+            version: 1,
             id: UUID().uuidString,
             name: "Twitter",
             shortDescription: "Twitter is cool",

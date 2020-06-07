@@ -50,6 +50,7 @@ struct AppListView_Previews: PreviewProvider {
     static var previews: some View {        
         let apps = [
             App(
+                version: 1,
                 id: UUID().uuidString,
                 name: "Twitter",
                 shortDescription: "Twitter is cool",
