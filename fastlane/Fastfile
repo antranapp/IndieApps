@@ -1,0 +1,48 @@
+default_platform(:ios)
+
+platform :ios do
+
+    desc "Download and setup if needed all certificates for Dev target"
+    lane :certificates_dev do
+        match(type: "development", app_identifier: "app.antran.IndieApps")
+    end
+
+    desc "Download and setup if needed all certificates for AppStore Production target"
+    lane :certificates_prod do
+        match(type: "adhoc", app_identifier: "app.antran.IndieApps")
+        match(type: "appstore", app_identifier: "app.antran.IndieApps")
+    end
+
+    desc "Push a new beta build to TestFlight"
+    lane :beta do
+        clean_build_artifacts # Delete the local dSYM files
+        clear_derived_data #Delete existing derived data
+
+        increment_build_number(xcodeproj: "IndieApps.xcodeproj")
+        build_app(scheme: "IndieApps", export_xcargs: "-allowProvisioningUpdates")
+        upload_to_testflight
+    end
+
+    desc "Register new device"
+    lane :register_new_device do  |options|
+        device_name = prompt(text: "Enter the device name: ")
+        device_udid = prompt(text: "Enter the device UDID: ")
+        device_hash = {}
+        device_hash[device_name] = device_udid
+        register_devices(
+            devices: device_hash,
+            team_id: "36ML5F3NSU"
+        )
+        refresh_profiles
+    end
+
+    # A helper lane for refreshing provisioning profiles.
+    lane :refresh_profiles do
+        match(
+            type: "development",
+            force: true)
+        match(
+            type: "adhoc",
+            force: true)
+    end
+end
