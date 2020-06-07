@@ -26,7 +26,7 @@ struct OnboardingContainerView: View {
             }
         )
         
-        return Text("Onboarding")
+        return OnboardingView()
             .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
             .onAppear(perform: startOnboarding)
     }
@@ -36,3 +36,19 @@ struct OnboardingContainerView: View {
     }
 }
 
+
+
+struct OnboardingView: View {
+    
+    @State private var direction: Bool = true
+
+    var body: some View {
+        Image("icon")
+            .frame(width: 60, height: 60)
+            .scaleEffect(direction ? 1 : 2)
+            .animation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true))
+            .onAppear {
+                self.direction.toggle()
+            }
+    }
+}
