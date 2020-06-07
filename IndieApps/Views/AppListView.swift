@@ -54,49 +54,12 @@ struct AppListView_Previews: PreviewProvider {
                 name: "Twitter",
                 shortDescription: "Twitter is cool",
                 description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
+                links: [
+                    .homepage("https://antran.app")
+                ],
                 releaseNotes: [
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
-                ]
-            ),
-            App(
-                id: UUID().uuidString,
-                name: "Twitter",
-                shortDescription: "Twitter is cool",
-                description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                releaseNotes: [
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
-                ]
-            ),
-            App(
-                id: UUID().uuidString,
-                name: "Twitter",
-                shortDescription: "Twitter is cool",
-                description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                releaseNotes: [
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
-                ]
-            ),
-            App(
-                id: UUID().uuidString,
-                name: "Twitter",
-                shortDescription: "Twitter is cool",
-                description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                releaseNotes: [
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
-                ]
-            ),
-            App(
-                id: UUID().uuidString,
-                name: "Twitter",
-                shortDescription: "Twitter is cool",
-                description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                releaseNotes: [
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                    ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
+                    ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),
+                    ReleaseNote(version: "1.0.0 (2)", note: "Fix a lot of bugs"),
                 ]
             ),
         ]

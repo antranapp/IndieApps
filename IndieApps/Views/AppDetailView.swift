@@ -28,7 +28,7 @@ struct AppDetailView: View {
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .multilineTextAlignment(.leading)
-                                .padding(.bottom, 5)
+                                .padding(.bottom, 8)
                             Text(app.shortDescription)
                                 .font(.body)
                                 .foregroundColor(Color.black.opacity(0.2))
@@ -39,6 +39,29 @@ struct AppDetailView: View {
                     }
                     .padding(.bottom, 8)
                     
+                    VStack(alignment: .center) {
+                        HStack {
+                            ForEach(app.links) { link in
+                                Button(action: {
+                                    guard let url = URL(string: link.value) else { return }
+                                    UIApplication.shared.open(url)
+                                }) {
+                                    Text(link.type.uppercased())
+                                        .lineLimit(1)
+                                        .font(.caption)
+                                        .foregroundColor(.white)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 14)
+                                    
+                                }
+                                .background(Color.blue)
+                                .cornerRadius(30)
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
+                        }
+                    }
+                    .padding(.bottom, 8)
+
                     Group {
                         Text("Description")
                             .font(.title)
@@ -83,9 +106,14 @@ struct AppDetailView_Previews: PreviewProvider {
             name: "Twitter",
             shortDescription: "Twitter is cool",
             description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
+            links: [
+                .homepage("https://antran.app"),
+                .testflight("https://antran.app"),
+                .appstore("https://antran.app")
+            ],
             releaseNotes: [
-                ReleaseNote(id: UUID().uuidString, version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                ReleaseNote(id: UUID().uuidString, version: "1.0.0 (2)", note: "Fix a lot of bugs"),
+                ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),
+                ReleaseNote(version: "1.0.0 (2)", note: "Fix a lot of bugs"),
             ]
         )
         return AppDetailView(app: app)
