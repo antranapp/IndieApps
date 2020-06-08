@@ -64,6 +64,12 @@ enum AppAction {
 let appReducer = Reducer<AppState, AppAction, World> { state, action, environment in
     switch action {
         case .startOnboarding:
+            return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
+                .map { AppAction.updateContent }
+                .catch { error in
+                    return Just(AppAction.showError(error))
+                }
+                .eraseToEffect()
 //            return environment.onboardingService
 //                .unpackInitialContentIfNeeded()
 //                .receive(on: RunLoop.main)
@@ -72,19 +78,26 @@ let appReducer = Reducer<AppState, AppAction, World> { state, action, environmen
 //                    return Just(AppAction.showError(error))
 //            }
 //            .eraseToAnyPublisher()
-            return .none
         
         case .endOnboarding:
             state.isDataAvailable = true
             return .none
         
         case .updateContent:
+            if let gitService = environment.gitService {
+                return Effect(gitService.update())
+                    .map { AppAction.endOnboarding }
+                    .replaceError(with: AppAction.endOnboarding)
+                    .eraseToEffect()
+            }
+            
+            return Effect(value: AppAction.endOnboarding)
+
 //            return environment.gitService?
 //                .update()
 //                .map { AppAction.endOnboarding }
 //                .replaceError(with: AppAction.endOnboarding)
 //                .eraseToAnyPublisher()
-            return .none
         
         case .fetchCategoryList:
 //            return environment.contentService
