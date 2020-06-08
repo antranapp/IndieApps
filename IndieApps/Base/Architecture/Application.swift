@@ -40,10 +40,10 @@ enum AppAction {
     case updateContent
     case resetContent
     case fetchCategoryList
-    case setCategoryList(_ categoryList: [Category])
-    case fetchAppList(_ category: Category)
-    case setAppList(_ appList: [App])
-    case showError(_ error: Error)
+    case setCategoryList([Category])
+    case fetchAppList(Category)
+    case setAppList([App])
+    case showError(Error)
     case showMessage(title: String, message: String, type: SnackbarModifier.SnackbarType)
     case hideSnackbar
     case goToOnboarding

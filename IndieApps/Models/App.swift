@@ -35,9 +35,9 @@ struct ReleaseNote: Identifiable, Decodable, Equatable {
 }
 
 enum Link: Identifiable, Equatable {
-    case homepage(_ www: String)
-    case testflight(_ www: String)
-    case appstore(_ www: String)
+    case homepage(String)
+    case testflight(String)
+    case appstore(String)
 
     var type: String {
         switch self {
@@ -92,12 +92,12 @@ extension Link: Decodable {
 }
 
 enum Preview: Identifiable, Equatable {
-    case web(_ links: [String])
-    case macOS(_ links: [String])
-    case iOS(_ links: [String])
-    case iPadOS(_ links: [String])
-    case watchOS(_ links: [String])
-    case tvOS(_ links: [String])
+    case web([String])
+    case macOS([String])
+    case iOS([String])
+    case iPadOS([String])
+    case watchOS([String])
+    case tvOS([String])
     
     var id: String {
         type
