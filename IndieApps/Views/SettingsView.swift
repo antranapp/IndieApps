@@ -6,7 +6,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    let store: AppStore
+    let store: MainStore
     
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false

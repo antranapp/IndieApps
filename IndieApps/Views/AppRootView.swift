@@ -7,7 +7,7 @@ import SwiftUI
 
 struct AppRootView: View {
     
-    let store: AppStore
+    let store: MainStore
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
