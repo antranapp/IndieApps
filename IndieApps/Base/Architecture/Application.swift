@@ -9,10 +9,8 @@ import Foundation
 
 typealias AppStore = Store<AppState, AppAction>
 
-struct World {
+struct AppEnvironment {
     var onboardingService: OnboardingServiceProtocol = OnboardingService()
-    
-    // Making the following variables lazy to ensure that we have a `content` folder after `Onboarding`.
     var gitService: GitServiceProtocol? = GitService(localRepositoryFolderPath: FileManager.default.contentPath!, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
     var contentService: ContentServiceProtocol = ContentService(rootFolderPath: FileManager.default.contentPath!)
 }
@@ -53,7 +51,7 @@ enum AppAction {
 
 // MARK: Reducer
 
-let appReducer = Reducer<AppState, AppAction, World> { state, action, environment in
+let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
         case .startOnboarding:
             return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
