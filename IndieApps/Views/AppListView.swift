@@ -2,22 +2,25 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct AppListContainerView: View {
     
-    @EnvironmentObject var store: AppStore
+    let store: AppStore
 
     var category: Category
     
     var body: some View {
-        AppListView(appList: store.state.appList)
-            .navigationBarTitle(category.name)
-            .onAppear(perform: fetchAppList)
+        WithViewStore(self.store) { viewStore in
+            AppListView(appList: viewStore.appList)
+                .navigationBarTitle(self.category.name)
+                .onAppear(perform: self.fetchAppList)
+        }
     }
     
     private func fetchAppList() {
-        store.send(.fetchAppList(category))
+//        store.send(.fetchAppList(category))
     }
 }
 

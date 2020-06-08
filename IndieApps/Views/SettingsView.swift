@@ -6,7 +6,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @EnvironmentObject var store: AppStore
+    let store: AppStore
     
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false
@@ -33,7 +33,7 @@ struct SettingsView: View {
                         message: Text("Update the content?"),
                         buttons: [
                             .default(Text("Yes"), action: {
-                                self.store.send(.updateContent)
+//                                self.store.send(.updateContent)
                             }),
                             .cancel()
                         ]
@@ -48,7 +48,7 @@ struct SettingsView: View {
                         message: Text("Do you really want to reset the content?"),
                         buttons: [
                             .destructive(Text("Yes"), action: {
-                                self.store.send(.resetContent)
+//                                self.store.send(.resetContent)
                             }),
                             .cancel()
                         ]

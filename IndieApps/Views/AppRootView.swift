@@ -2,17 +2,26 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct AppRootView: View {
     
-    @EnvironmentObject var store: AppStore
+    let store: AppStore
 
     var body: some View {
-        if store.state.isDataAvailable {
-            return CategoryListContainerView().environmentObject(store).toAnyView
+        WithViewStore(self.store) { viewStore in
+            self.makeView(isDataAvailable: viewStore.isDataAvailable)
+        }
+    }
+    
+    // MARK: Private helpers
+    
+    private func makeView(isDataAvailable: Bool) -> some View {
+        if isDataAvailable {
+            return CategoryListContainerView(store: store).toAnyView
         } else {
-            return OnboardingContainerView().environmentObject(store).toAnyView
+            return OnboardingContainerView(store: store).toAnyView
         }
     }
 }

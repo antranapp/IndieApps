@@ -2,21 +2,48 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import ComposableArchitecture
 import Files
 import Combine
 import Foundation
 
+typealias AppStore = Store<AppState, AppAction>
+
 class World {
     var onboardingService: OnboardingServiceProtocol = OnboardingService()
     
-    // Making the following variables lazy to ensure that we have a `content` folder after Onboarding.
+    // Making the following variables lazy to ensure that we have a `content` folder after `Onboarding`.
     lazy var gitService: GitServiceProtocol? = GitService(localRepositoryFolder: rootContentFolder, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
     lazy var contentService: ContentServiceProtocol = ContentService(rootFolder: rootContentFolder)
     lazy var rootContentFolder: Folder = try! Folder(path: FileManager.default.contentPath!)
 }
 
-indirect enum AppAction {
-    case noop
+// MARK: State
+
+struct AppState: Equatable {
+    
+    var showSnackbar: Bool = false
+    var snackbarData = SnackbarModifier.SnackbarData(title: "", detail: "", type: .info)
+    var isDataAvailable: Bool = false
+    var categoryList: [Category] = []
+    var appList: [App] = []
+    
+    mutating func reset() {
+        isDataAvailable = false
+        categoryList = []
+        appList = []
+    }
+    
+//    static func == (lhs: AppState, rhs: AppState) -> Bool {
+//        return lhs.showSnackbar = rhs.showSnackbar &&
+//
+//    }
+
+}
+
+// MARK: Action
+
+enum AppAction {
     case startOnboarding
     case endOnboarding
     case updateContent
@@ -31,21 +58,87 @@ indirect enum AppAction {
     case goToOnboarding
 }
 
-struct AppState {
-    var showSnackbar: Bool = false
-    var snackbarData = SnackbarModifier.SnackbarData(title: "", detail: "", type: .info)
-    var isDataAvailable: Bool = false
-    var categoryList: [Category] = []
-    var appList: [App] = []
-    
-    mutating func reset() {
-        isDataAvailable = false
-        categoryList = []
-        appList = []
+
+// MARK: Reducer
+
+let appReducer = Reducer<AppState, AppAction, World> { state, action, environment in
+    switch action {
+        case .startOnboarding:
+//            return environment.onboardingService
+//                .unpackInitialContentIfNeeded()
+//                .receive(on: RunLoop.main)
+//                .map { AppAction.updateContent }
+//                .catch { error in
+//                    return Just(AppAction.showError(error))
+//            }
+//            .eraseToAnyPublisher()
+            return .none
+        
+        case .endOnboarding:
+            state.isDataAvailable = true
+            return .none
+        
+        case .updateContent:
+//            return environment.gitService?
+//                .update()
+//                .map { AppAction.endOnboarding }
+//                .replaceError(with: AppAction.endOnboarding)
+//                .eraseToAnyPublisher()
+            return .none
+        
+        case .fetchCategoryList:
+//            return environment.contentService
+//                .fetchCategoryList()
+//                .map { AppAction.setCategoryList($0)}
+//                .eraseToAnyPublisher()
+            return .none
+        
+        case .setCategoryList(let categoryList):
+            state.categoryList = categoryList
+            return .none
+        
+        case .fetchAppList(let category):
+//            return environment.contentService
+//                .fetchAppList(in: category)
+//                .map { AppAction.setAppList($0)}
+//                .eraseToAnyPublisher()
+            return .none
+        
+        case .setAppList(let appList):
+            state.appList = appList
+            return .none
+        
+        case .showMessage(let title, let message, let type):
+            state.snackbarData = SnackbarModifier.SnackbarData(title: title, detail: message, type: type)
+            state.showSnackbar = true
+            return .none
+        
+        case .showError(let error):
+            state.snackbarData.makeError(title: "Error!", detail: error.localizedDescription)
+            state.showSnackbar = true
+            return .none
+        
+        case .hideSnackbar:
+            state.showSnackbar = false
+            return .none
+        
+        case .resetContent:
+//            return environment.gitService?
+//                .reset()
+//                .receive(on: RunLoop.main)
+//                .map { $0 ? AppAction.goToOnboarding : AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
+//                .replaceError(with: AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+//                .eraseToAnyPublisher()
+            return .none
+        
+        case .goToOnboarding:
+            state.isDataAvailable = false
+            return .none
     }
 }
+.debug()
 
-typealias AppStore = Store<AppState, AppAction, World>
+// MARK: Helpers Extensions
 
 extension FileManager {
     var contentPath: String? {

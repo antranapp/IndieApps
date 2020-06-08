@@ -6,7 +6,7 @@ import SwiftUI
 
 struct SnackbarModifier: ViewModifier {
     
-    struct SnackbarData {
+    struct SnackbarData: Equatable {
         var title: String
         var detail: String
         var type: SnackbarType
@@ -36,7 +36,7 @@ struct SnackbarModifier: ViewModifier {
         }
     }
     
-    enum SnackbarType {
+    enum SnackbarType: Equatable {
         case info
         case warning
         case success

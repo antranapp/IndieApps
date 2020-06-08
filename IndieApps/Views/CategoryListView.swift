@@ -2,59 +2,65 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import ComposableArchitecture
 import SwiftUI
 import Combine
 
 struct CategoryListContainerView: View {
     
-    @EnvironmentObject var store: AppStore
+    let store: AppStore
     
     var body: some View {
-        let snackbarDataBinding = Binding<SnackbarModifier.SnackbarData>(
-            get: { () -> SnackbarModifier.SnackbarData in
-                return self.store.state.snackbarData
-            },
-            set:  { _ in }
-        )
- 
-        let snackbarShowingBinding = Binding<Bool>(
-            get: { () -> Bool in
-                return self.store.state.showSnackbar
-            },
-            set:  { _ in
-                self.store.send(.hideSnackbar)
-            }
-        )
+//        let snackbarDataBinding = Binding<SnackbarModifier.SnackbarData>(
+//            get: { () -> SnackbarModifier.SnackbarData in
+//                return self.store.state.snackbarData
+//            },
+//            set:  { _ in }
+//        )
+//
+//        let snackbarShowingBinding = Binding<Bool>(
+//            get: { () -> Bool in
+//                return self.store.state.showSnackbar
+//            },
+//            set:  { _ in
+//                self.store.send(.hideSnackbar)
+//            }
+//        )
         
         return NavigationView {
-            CategoryListView(
-                categoryList: store.state.categoryList
-            )
-            .navigationBarTitle("Categories")
-            .navigationViewStyle(StackNavigationViewStyle())
+            WithViewStore(self.store) { viewStore in
+                CategoryListView(
+                    store: self.store,
+                    categoryList: viewStore.categoryList
+                )
+                .navigationBarTitle("Categories")
+                .navigationViewStyle(StackNavigationViewStyle())
                 .navigationBarItems(leading:
-                    NavigationLink(destination: SettingsView(), label: {
+                    NavigationLink(destination: SettingsView(store: self.store), label: {
                         Image(systemName: "gear")
                     })
                 )
-            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
+                //            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
+            }
         }
         .onAppear(perform: fetchCategoryList)
     }
     
     private func fetchCategoryList() {
-        store.send(.fetchCategoryList)
+//        store.send(.fetchCategoryList)
     }
 }
 
 private struct CategoryListView: View {
     
+    let store: AppStore
     let categoryList: [Category]
     
     var body: some View {
+        
         List {
             ForEach(categoryList) { category in
-                NavigationLink(destination: AppListContainerView(category: category)) {
+                NavigationLink(destination: AppListContainerView(store: self.store, category: category)) {
                     CategoryView(category: category)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -70,7 +76,9 @@ struct CategoryListView_Previews: PreviewProvider {
             Category(name: "Movies", numberOfApps: 1),
             Category(name: "Photography", numberOfApps: 2)
         ]
-        return CategoryListView(categoryList: list)
+        
+        let store = Store(initialState: .init(), reducer: appReducer, environment: World())
+        return CategoryListContainerView(store: store)
     }
 }
 #endif

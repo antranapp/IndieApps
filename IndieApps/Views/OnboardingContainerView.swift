@@ -6,33 +6,33 @@ import SwiftUI
 
 struct OnboardingContainerView: View {
     
-    @EnvironmentObject var store: AppStore
+    let store: AppStore
     
     var body: some View {
         
-        let snackbarDataBinding = Binding<SnackbarModifier.SnackbarData>(
-            get: { () -> SnackbarModifier.SnackbarData in
-                return self.store.state.snackbarData
-            },
-            set:  { _ in }
-        )
-        
-        let snackbarShowingBinding = Binding<Bool>(
-            get: { () -> Bool in
-                return self.store.state.showSnackbar
-            },
-            set:  { _ in
-                self.store.send(.hideSnackbar)
-            }
-        )
+//        let snackbarDataBinding = Binding<SnackbarModifier.SnackbarData>(
+//            get: { () -> SnackbarModifier.SnackbarData in
+//                return self.store.state.snackbarData
+//            },
+//            set:  { _ in }
+//        )
+//
+//        let snackbarShowingBinding = Binding<Bool>(
+//            get: { () -> Bool in
+//                return self.store.state.showSnackbar
+//            },
+//            set:  { _ in
+//                self.store.send(.hideSnackbar)
+//            }
+//        )
         
         return OnboardingView()
-            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
+//            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
             .onAppear(perform: startOnboarding)
     }
     
     private func startOnboarding() {
-        store.send(.startOnboarding)
+//        store.send(.startOnboarding)
     }
 }
 
