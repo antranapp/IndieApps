@@ -38,7 +38,7 @@ struct AppListContainerView: View {
 #if DEBUG
 struct AppListView_Previews: PreviewProvider {
     static var previews: some View {
-        let world = World(
+        let world = AppEnvironment(
             onboardingService: MockOnboardingService(),
             gitService: nil,
             contentService: MockContentSevice())

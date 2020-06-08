@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView = AppRootView(store: AppStore(
             initialState: .init(),
             reducer: appReducer,
-            environment: World()
+            environment: AppEnvironment()
         ))
         .environment(\.managedObjectContext, context)
 

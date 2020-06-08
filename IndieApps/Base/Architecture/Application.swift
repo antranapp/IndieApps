@@ -9,10 +9,8 @@ import Foundation
 
 typealias AppStore = Store<AppState, AppAction>
 
-struct World {
+struct AppEnvironment {
     var onboardingService: OnboardingServiceProtocol = OnboardingService()
-    
-    // Making the following variables lazy to ensure that we have a `content` folder after `Onboarding`.
     var gitService: GitServiceProtocol? = GitService(localRepositoryFolderPath: FileManager.default.contentPath!, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
     var contentService: ContentServiceProtocol = ContentService(rootFolderPath: FileManager.default.contentPath!)
 }
@@ -42,10 +40,10 @@ enum AppAction {
     case updateContent
     case resetContent
     case fetchCategoryList
-    case setCategoryList(_ categoryList: [Category])
-    case fetchAppList(_ category: Category)
-    case setAppList(_ appList: [App])
-    case showError(_ error: Error)
+    case setCategoryList([Category])
+    case fetchAppList(Category)
+    case setAppList([App])
+    case showError(Error)
     case showMessage(title: String, message: String, type: SnackbarModifier.SnackbarType)
     case hideSnackbar
     case goToOnboarding
@@ -53,7 +51,7 @@ enum AppAction {
 
 // MARK: Reducer
 
-let appReducer = Reducer<AppState, AppAction, World> { state, action, environment in
+let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
         case .startOnboarding:
             return Effect(environment.onboardingService.unpackInitialContentIfNeeded())

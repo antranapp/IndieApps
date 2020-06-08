@@ -11,23 +11,7 @@ struct CategoryListContainerView: View {
     let store: AppStore
     
     var body: some View {
-//        let snackbarDataBinding = Binding<SnackbarModifier.SnackbarData>(
-//            get: { () -> SnackbarModifier.SnackbarData in
-//                return self.store.state.snackbarData
-//            },
-//            set:  { _ in }
-//        )
-//
-//        let snackbarShowingBinding = Binding<Bool>(
-//            get: { () -> Bool in
-//                return self.store.state.showSnackbar
-//            },
-//            set:  { _ in
-//                self.store.send(.hideSnackbar)
-//            }
-//        )
-        
-        return NavigationView {
+        NavigationView {
             WithViewStore(self.store) { viewStore in
                 List {
                     ForEach(viewStore.categoryList) { category in
@@ -44,7 +28,6 @@ struct CategoryListContainerView: View {
                         Image(systemName: "gear")
                     })
                 )
-                //            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
                 .onAppear {
                     viewStore.send(.fetchCategoryList)
                 }
@@ -57,7 +40,7 @@ struct CategoryListContainerView: View {
 #if DEBUG
 struct CategoryListView_Previews: PreviewProvider {
     static var previews: some View {
-        let world = World(
+        let world = AppEnvironment(
             onboardingService: MockOnboardingService(),
             gitService: nil,
             contentService: MockContentSevice())
