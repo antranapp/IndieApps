@@ -11,37 +11,25 @@ struct AppListContainerView: View {
 
     var category: Category
     
+    @State var selectedApp: App?
+    
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            AppListView(appList: viewStore.appList)
-                .navigationBarTitle(self.category.name)
-                .onAppear(perform: self.fetchAppList)
-        }
-    }
-    
-    private func fetchAppList() {
-//        store.send(.fetchAppList(category))
-    }
-}
-
-
-struct AppListView: View {
-
-    @State var selectedApp: App? = nil
-    
-    let appList: [App]
-    
-    var body: some View {
-        List {
-            ForEach(appList) { app in
-                AppView(app: app)
-                    .padding(.vertical, 8)
-                    .sheet(item: self.$selectedApp) { app in
-                        AppDetailView(app: app)
+            List {
+                ForEach(viewStore.appList) { app in
+                    AppView(app: app)
+                        .padding(.vertical, 8)
+                        .sheet(item: self.$selectedApp) { app in
+                            AppDetailView(app: app)
                     }
                     .onTapGesture {
                         self.selectedApp = app
                     }
+                }
+            }
+            .navigationBarTitle(self.category.name)
+            .onAppear {
+                viewStore.send(.fetchAppList(self.category))
             }
         }
     }
@@ -68,8 +56,13 @@ struct AppListView_Previews: PreviewProvider {
             ),
         ]
         
+        let category = Category(
+            name: "Productivity",
+            numberOfApps: 1
+        )
+        let store = Store(initialState: .init(), reducer: appReducer, environment: World())
         
-        return AppListView(appList: apps)
+        return AppListContainerView(store: store, category: category)
     }
 }
 #endif

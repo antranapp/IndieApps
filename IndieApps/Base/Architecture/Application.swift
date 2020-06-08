@@ -65,19 +65,12 @@ let appReducer = Reducer<AppState, AppAction, World> { state, action, environmen
     switch action {
         case .startOnboarding:
             return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
+                .receive(on: RunLoop.main)
                 .map { AppAction.updateContent }
                 .catch { error in
                     return Just(AppAction.showError(error))
                 }
                 .eraseToEffect()
-//            return environment.onboardingService
-//                .unpackInitialContentIfNeeded()
-//                .receive(on: RunLoop.main)
-//                .map { AppAction.updateContent }
-//                .catch { error in
-//                    return Just(AppAction.showError(error))
-//            }
-//            .eraseToAnyPublisher()
         
         case .endOnboarding:
             state.isDataAvailable = true
@@ -86,6 +79,7 @@ let appReducer = Reducer<AppState, AppAction, World> { state, action, environmen
         case .updateContent:
             if let gitService = environment.gitService {
                 return Effect(gitService.update())
+                    .receive(on: RunLoop.main)
                     .map { AppAction.endOnboarding }
                     .replaceError(with: AppAction.endOnboarding)
                     .eraseToEffect()
@@ -93,29 +87,21 @@ let appReducer = Reducer<AppState, AppAction, World> { state, action, environmen
             
             return Effect(value: AppAction.endOnboarding)
 
-//            return environment.gitService?
-//                .update()
-//                .map { AppAction.endOnboarding }
-//                .replaceError(with: AppAction.endOnboarding)
-//                .eraseToAnyPublisher()
-        
         case .fetchCategoryList:
-//            return environment.contentService
-//                .fetchCategoryList()
-//                .map { AppAction.setCategoryList($0)}
-//                .eraseToAnyPublisher()
-            return .none
+            return Effect(environment.contentService.fetchCategoryList())
+                .receive(on: RunLoop.main)
+                .map { AppAction.setCategoryList($0) }
+                .eraseToEffect()
         
         case .setCategoryList(let categoryList):
             state.categoryList = categoryList
             return .none
         
         case .fetchAppList(let category):
-//            return environment.contentService
-//                .fetchAppList(in: category)
-//                .map { AppAction.setAppList($0)}
-//                .eraseToAnyPublisher()
-            return .none
+            return Effect(environment.contentService.fetchAppList(in: category))
+                .receive(on: RunLoop.main)
+                .map { AppAction.setAppList($0) }
+                .eraseToEffect()
         
         case .setAppList(let appList):
             state.appList = appList
@@ -136,13 +122,15 @@ let appReducer = Reducer<AppState, AppAction, World> { state, action, environmen
             return .none
         
         case .resetContent:
-//            return environment.gitService?
-//                .reset()
-//                .receive(on: RunLoop.main)
-//                .map { $0 ? AppAction.goToOnboarding : AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
-//                .replaceError(with: AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
-//                .eraseToAnyPublisher()
-            return .none
+            if let gitService = environment.gitService {
+                return Effect(gitService.reset())
+                    .receive(on: RunLoop.main)
+                    .map { $0 ? AppAction.goToOnboarding : AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
+                    .replaceError(with: AppAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+                    .eraseToEffect()
+            }
+            
+            return Effect(value: AppAction.goToOnboarding)
         
         case .goToOnboarding:
             state.isDataAvailable = false

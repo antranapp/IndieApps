@@ -29,10 +29,14 @@ struct CategoryListContainerView: View {
         
         return NavigationView {
             WithViewStore(self.store) { viewStore in
-                CategoryListView(
-                    store: self.store,
-                    categoryList: viewStore.categoryList
-                )
+                List {
+                    ForEach(viewStore.categoryList) { category in
+                        NavigationLink(destination: AppListContainerView(store: self.store, category: category)) {
+                            CategoryView(category: category)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
                 .navigationBarTitle("Categories")
                 .navigationViewStyle(StackNavigationViewStyle())
                 .navigationBarItems(leading:
@@ -41,33 +45,14 @@ struct CategoryListContainerView: View {
                     })
                 )
                 //            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
+                .onAppear {
+                    viewStore.send(.fetchCategoryList)
+                }
             }
         }
-        .onAppear(perform: fetchCategoryList)
-    }
-    
-    private func fetchCategoryList() {
-//        store.send(.fetchCategoryList)
     }
 }
 
-private struct CategoryListView: View {
-    
-    let store: AppStore
-    let categoryList: [Category]
-    
-    var body: some View {
-        
-        List {
-            ForEach(categoryList) { category in
-                NavigationLink(destination: AppListContainerView(store: self.store, category: category)) {
-                    CategoryView(category: category)
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-        }
-    }
-}
 
 #if DEBUG
 struct CategoryListView_Previews: PreviewProvider {
