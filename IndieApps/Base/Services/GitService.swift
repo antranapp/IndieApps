@@ -11,8 +11,6 @@ public protocol GitServiceProtocol {
     var localRepositoryFolder: Folder { get }
     var localRepository: GTRepository? { get set }
     
-    func open() -> Bool
-    
     /// Clone the content repository to disk.
     /// - Returns: Promise<Void>
     func clone(progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error>
@@ -51,28 +49,9 @@ class GitService: GitServiceProtocol {
         self.remoteRepositoryURL = remoteRepositoryURL
         
         queue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
-        print("GitServie \(localRepositoryFolder.url)")
-        
-        if !open() {
-            return nil
-        }
     }
     
     // MARK: APIs
-    
-    /// Prepare the repository on local disk for displaying content.
-    /// - Returns: Bool
-    public func open() -> Bool {
-                
-        // Check if local repository is available
-        do {
-            localRepository = try GTRepository(url: localRepositoryFolder.url)
-        } catch {
-            return false
-        }
-        
-        return true
-    }
     
     /// Clone the content repository to disk.
     /// - Returns: Future<Void, Error>
@@ -96,16 +75,13 @@ class GitService: GitServiceProtocol {
     /// - Returns: Future<Void, Error>
     public func update() -> Future<Void, Error> {
         return Future { promise in
-            guard let localRepository = self.localRepository else {
-                promise(.failure(GitServiceError.noLocalRepository))
-                return
-            }
             
             self.queue.async {
                 do {
-                    let branch = try localRepository.currentBranch()
-                    let remoteRepository = try GTRemote(name: "origin", in: localRepository)
-                    try localRepository.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)
+                    try self.openIfNeeded()
+                    let branch = try self.localRepository!.currentBranch()
+                    let remoteRepository = try GTRemote(name: "origin", in: self.localRepository!)
+                    try self.localRepository!.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -127,6 +103,19 @@ class GitService: GitServiceProtocol {
                 }
             }
         }
+    }
+    
+    // MARK: Private helpers
+    
+    private func openIfNeeded() throws {
+        
+        guard localRepository == nil else {
+            return
+        }
+        
+        // Check if local repository is available
+        print("GitServie \(localRepositoryFolder.url)")
+        localRepository = try GTRepository(url: localRepositoryFolder.url)
     }
 }
 
