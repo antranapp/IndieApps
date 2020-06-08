@@ -7,7 +7,7 @@ import SwiftUI
 
 struct OnboardingContainerView: View {
     
-    let store: AppStore
+    let store: MainStore
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -18,7 +18,7 @@ struct OnboardingContainerView: View {
 
 struct OnboardingView: View {
 
-    let viewStore: ViewStore<AppState, AppAction>
+    let viewStore: ViewStore<MainState, MainAction>
 
     @State private var direction: Bool = true
 

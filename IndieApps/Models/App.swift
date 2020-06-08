@@ -5,7 +5,7 @@
 import UIKit
 import Foundation
 
-struct App: Identifiable, Decodable, Equatable {
+struct App: Identifiable, Decodable, Equatable, Hashable {
     var version: Int
     var id: String
     var icon: UIImage?
@@ -25,7 +25,7 @@ struct App: Identifiable, Decodable, Equatable {
     }
 }
 
-struct ReleaseNote: Identifiable, Decodable, Equatable {
+struct ReleaseNote: Identifiable, Decodable, Equatable, Hashable {
     var version: String
     var note: String
     
@@ -34,7 +34,7 @@ struct ReleaseNote: Identifiable, Decodable, Equatable {
     }
 }
 
-enum Link: Identifiable, Equatable {
+enum Link: Identifiable, Equatable, Hashable {
     case homepage(String)
     case testflight(String)
     case appstore(String)
@@ -91,7 +91,7 @@ extension Link: Decodable {
     }
 }
 
-enum Preview: Identifiable, Equatable {
+enum Preview: Identifiable, Equatable, Hashable {
     case web([String])
     case macOS([String])
     case iOS([String])

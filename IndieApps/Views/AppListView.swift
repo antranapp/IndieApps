@@ -7,16 +7,14 @@ import SwiftUI
 
 struct AppListContainerView: View {
     
-    let store: AppStore
+    let store: CategoryStore
 
-    var category: Category
-    
     @State var selectedApp: App?
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
             List {
-                ForEach(viewStore.appList) { app in
+                ForEach(viewStore.apps) { app in
                     AppView(app: app)
                         .padding(.vertical, 8)
                         .sheet(item: self.$selectedApp) { app in
@@ -27,9 +25,9 @@ struct AppListContainerView: View {
                     }
                 }
             }
-            .navigationBarTitle(self.category.name)
+            .navigationBarTitle(viewStore.category.name)
             .onAppear {
-                viewStore.send(.fetchAppList(self.category))
+                viewStore.send(.fetchApps)
             }
         }
     }
@@ -38,16 +36,12 @@ struct AppListContainerView: View {
 #if DEBUG
 struct AppListView_Previews: PreviewProvider {
     static var previews: some View {
-        let world = AppEnvironment(
-            onboardingService: MockOnboardingService(),
-            gitService: nil,
-            contentService: MockContentSevice())
+        let categoryEnvironment = CategoryEnvironment(contentService: MockContentSevice())
         let category = MockContentSevice.categoryList[0]
 
-        let store = Store(initialState: .init(), reducer: appReducer, environment: world)
-
+        let store = Store(initialState: CategoryState(category: category), reducer: categoryReducer, environment: categoryEnvironment)
         
-        return AppListContainerView(store: store, category: category)
+        return AppListContainerView(store: store)
     }
 }
 #endif

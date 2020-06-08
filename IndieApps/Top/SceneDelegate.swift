@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-        let contentView = AppRootView(store: AppStore(
+        let contentView = AppRootView(store: MainStore(
             initialState: .init(),
             reducer: appReducer,
             environment: AppEnvironment()

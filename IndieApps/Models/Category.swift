@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct Category: Identifiable, Equatable {
+struct Category: Identifiable, Equatable, Hashable {
     let name: String
     let numberOfApps: Int
     

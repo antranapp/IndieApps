@@ -8,14 +8,23 @@ import Combine
 
 struct CategoryListContainerView: View {
     
-    let store: AppStore
-    
+    let store: MainStore
+        
     var body: some View {
         NavigationView {
             WithViewStore(self.store) { viewStore in
                 List {
                     ForEach(viewStore.categoryList) { category in
-                        NavigationLink(destination: AppListContainerView(store: self.store, category: category)) {
+                        NavigationLink(
+                            destination: IfLetStore(
+                                self.store.scope(state: { $0.selection }, action: MainAction.category),
+                                then: { AppListContainerView(store: $0, selectedApp: nil) },
+                                else: ActivityIndicator()),
+                            tag: category,
+                            selection: viewStore.binding(
+                                get: { $0.selection?.category },
+                                send: { MainAction.setNavigation(selection: $0) }
+                            )) {
                             CategoryView(category: category)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -29,7 +38,7 @@ struct CategoryListContainerView: View {
                     })
                 )
                 .onAppear {
-                    viewStore.send(.fetchCategoryList)
+                    viewStore.send(.fetchCategories)
                 }
             }
         }
