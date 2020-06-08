@@ -33,20 +33,21 @@ class GitService: GitServiceProtocol {
     // Public
     
     var localRepository: GTRepository?
-    var localRepositoryFolder: Folder
+    lazy var localRepositoryFolder: Folder = {
+       try! Folder(path: localRepositoryFolderPath)
+    }()
     
     // Private
     
+    private let localRepositoryFolderPath: String
     private let remoteRepositoryURL: URL
-    
     private let fileManager = FileManager.default
-    
     private let queue: DispatchQueue
     
     // MARK: Initialization
     
-    public init?(localRepositoryFolder: Folder, remoteRepositoryURL: URL) {
-        self.localRepositoryFolder = localRepositoryFolder
+    public init?(localRepositoryFolderPath: String, remoteRepositoryURL: URL) {
+        self.localRepositoryFolderPath = localRepositoryFolderPath
         self.remoteRepositoryURL = remoteRepositoryURL
         
         queue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
