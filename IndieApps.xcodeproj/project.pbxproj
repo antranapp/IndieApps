@@ -78,7 +78,6 @@
 		7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		7F463ACD24893BBA00A52ECA /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
 		7F463ACF248941B600A52ECA /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		7F463AD524896C5100A52ECA /* SwiftGit2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftGit2.framework; path = Carthage/Build/iOS/SwiftGit2.framework; sourceTree = SOURCE_ROOT; };
 		7F463AD92489730000A52ECA /* GitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitService.swift; sourceTree = "<group>"; };
 		7F463ADE24898B5300A52ECA /* ObjectiveGit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectiveGit.framework; path = Carthage/Build/iOS/ObjectiveGit.framework; sourceTree = "<group>"; };
 		7F5662ED2487C79E00DBCAC8 /* IndieApps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IndieApps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -239,7 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				7F463ADE24898B5300A52ECA /* ObjectiveGit.framework */,
-				7F463AD524896C5100A52ECA /* SwiftGit2.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
