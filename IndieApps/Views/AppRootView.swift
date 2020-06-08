@@ -19,9 +19,9 @@ struct AppRootView: View {
     
     private func makeView(isDataAvailable: Bool) -> some View {
         if isDataAvailable {
-            return CategoryListContainerView(store: store).toAnyView
+            return CategoryListContainerView(store: store).eraseToAnyView()
         } else {
-            return OnboardingContainerView(store: store).toAnyView
+            return OnboardingContainerView(store: store).eraseToAnyView()
         }
     }
 }

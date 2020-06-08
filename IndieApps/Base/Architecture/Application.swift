@@ -9,13 +9,12 @@ import Foundation
 
 typealias AppStore = Store<AppState, AppAction>
 
-class World {
+struct World {
     var onboardingService: OnboardingServiceProtocol = OnboardingService()
     
     // Making the following variables lazy to ensure that we have a `content` folder after `Onboarding`.
-    lazy var gitService: GitServiceProtocol? = GitService(localRepositoryFolder: rootContentFolder, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
-    lazy var contentService: ContentServiceProtocol = ContentService(rootFolder: rootContentFolder)
-    lazy var rootContentFolder: Folder = try! Folder(path: FileManager.default.contentPath!)
+    var gitService: GitServiceProtocol? = GitService(localRepositoryFolderPath: FileManager.default.contentPath!, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
+    var contentService: ContentServiceProtocol = ContentService(rootFolderPath: FileManager.default.contentPath!)
 }
 
 // MARK: State
@@ -33,12 +32,6 @@ struct AppState: Equatable {
         categoryList = []
         appList = []
     }
-    
-//    static func == (lhs: AppState, rhs: AppState) -> Bool {
-//        return lhs.showSnackbar = rhs.showSnackbar &&
-//
-//    }
-
 }
 
 // MARK: Action
@@ -57,7 +50,6 @@ enum AppAction {
     case hideSnackbar
     case goToOnboarding
 }
-
 
 // MARK: Reducer
 
@@ -137,7 +129,6 @@ let appReducer = Reducer<AppState, AppAction, World> { state, action, environmen
             return .none
     }
 }
-.debug()
 
 // MARK: Helpers Extensions
 

@@ -16,14 +16,17 @@ class ContentService: ContentServiceProtocol {
     
     // MARK: - Properties
     
-    private var appFolder: Folder
-    private var dataFolder: Folder?
+    lazy private var appFolder: Folder = try! rootFolder.subfolder(named: "apps")
+    lazy private var dataFolder: Folder? = try? rootFolder.subfolder(named: "data")
+    lazy private var rootFolder = {
+       try! Folder(path: rootFolderPath)
+    }()
+    private var rootFolderPath: String
     
     // MARK: - Constructor
     
-    init(rootFolder: Folder) {
-        self.appFolder = try! rootFolder.subfolder(named: "apps")
-        self.dataFolder = try? rootFolder.subfolder(named: "data")
+    init(rootFolderPath: String) {
+        self.rootFolderPath = rootFolderPath
     }
         
     // MARK: - APIs

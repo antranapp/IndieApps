@@ -35,32 +35,17 @@ struct AppListContainerView: View {
     }
 }
 
-
 #if DEBUG
 struct AppListView_Previews: PreviewProvider {
-    static var previews: some View {        
-        let apps = [
-            App(
-                version: 1,
-                id: UUID().uuidString,
-                name: "Twitter",
-                shortDescription: "Twitter is cool",
-                description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                links: [
-                    .homepage("https://antran.app")
-                ],
-                releaseNotes: [
-                    ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),
-                    ReleaseNote(version: "1.0.0 (2)", note: "Fix a lot of bugs"),
-                ]
-            ),
-        ]
-        
-        let category = Category(
-            name: "Productivity",
-            numberOfApps: 1
-        )
-        let store = Store(initialState: .init(), reducer: appReducer, environment: World())
+    static var previews: some View {
+        let world = World(
+            onboardingService: MockOnboardingService(),
+            gitService: nil,
+            contentService: MockContentSevice())
+        let category = MockContentSevice.categoryList[0]
+
+        let store = Store(initialState: .init(), reducer: appReducer, environment: world)
+
         
         return AppListContainerView(store: store, category: category)
     }

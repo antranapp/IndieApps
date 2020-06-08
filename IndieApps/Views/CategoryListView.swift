@@ -57,12 +57,11 @@ struct CategoryListContainerView: View {
 #if DEBUG
 struct CategoryListView_Previews: PreviewProvider {
     static var previews: some View {
-        let list = [
-            Category(name: "Movies", numberOfApps: 1),
-            Category(name: "Photography", numberOfApps: 2)
-        ]
-        
-        let store = Store(initialState: .init(), reducer: appReducer, environment: World())
+        let world = World(
+            onboardingService: MockOnboardingService(),
+            gitService: nil,
+            contentService: MockContentSevice())
+        let store = Store(initialState: .init(), reducer: appReducer, environment: world)
         return CategoryListContainerView(store: store)
     }
 }

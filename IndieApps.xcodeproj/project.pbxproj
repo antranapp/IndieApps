@@ -21,7 +21,7 @@
 		7F463AC82489273400A52ECA /* Files in Frameworks */ = {isa = PBXBuildFile; productRef = 7F463AC72489273400A52ECA /* Files */; };
 		7F463ACB248932BC00A52ECA /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 7F463ACA248932BC00A52ECA /* Yams */; };
 		7F463ACE24893BBA00A52ECA /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463ACD24893BBA00A52ECA /* Snackbar.swift */; };
-		7F463AD0248941B600A52ECA /* OnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463ACF248941B600A52ECA /* OnboardingContainerView.swift */; };
+		7F463AD0248941B600A52ECA /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463ACF248941B600A52ECA /* OnboardingView.swift */; };
 		7F463ADA2489730000A52ECA /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AD92489730000A52ECA /* GitService.swift */; };
 		7F463ADF24898B5400A52ECA /* ObjectiveGit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F463ADE24898B5300A52ECA /* ObjectiveGit.framework */; };
 		7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5662F02487C79E00DBCAC8 /* AppDelegate.swift */; };
@@ -38,6 +38,8 @@
 		7F5663292487CDDB00DBCAC8 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5663282487CDDB00DBCAC8 /* AppListView.swift */; };
 		7F58C71F248D6E2D001781BB /* KingfisherSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7F58C71E248D6E2D001781BB /* KingfisherSwiftUI */; };
 		7F58C725248D8300001781BB /* Archive.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7F58C724248D8300001781BB /* Archive.zip */; };
+		7FD0935B248E2D32007A2957 /* MockOnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */; };
+		7FD0935D248E2F02007A2957 /* MockContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD0935C248E2F02007A2957 /* MockContentService.swift */; };
 		7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */; };
 		7FF8F5B7248A25480008FAE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B6248A25480008FAE6 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +74,7 @@
 		7F463ABA2488FBB100A52ECA /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		7F463AC424891CD000A52ECA /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		7F463ACD24893BBA00A52ECA /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
-		7F463ACF248941B600A52ECA /* OnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerView.swift; sourceTree = "<group>"; };
+		7F463ACF248941B600A52ECA /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		7F463AD524896C5100A52ECA /* SwiftGit2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftGit2.framework; path = Carthage/Build/iOS/SwiftGit2.framework; sourceTree = SOURCE_ROOT; };
 		7F463AD92489730000A52ECA /* GitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitService.swift; sourceTree = "<group>"; };
 		7F463ADE24898B5300A52ECA /* ObjectiveGit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectiveGit.framework; path = Carthage/Build/iOS/ObjectiveGit.framework; sourceTree = "<group>"; };
@@ -94,6 +96,8 @@
 		7F5663262487CBE700DBCAC8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7F5663282487CDDB00DBCAC8 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
 		7F58C724248D8300001781BB /* Archive.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Archive.zip; sourceTree = "<group>"; };
+		7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOnboardingService.swift; sourceTree = "<group>"; };
+		7FD0935C248E2F02007A2957 /* MockContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContentService.swift; sourceTree = "<group>"; };
 		7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		7FF8F5B6248A25480008FAE6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,7 +151,7 @@
 				7F1ACF5F2487DE560044E959 /* AppView.swift */,
 				7F1ACF612487DE700044E959 /* AppDetailView.swift */,
 				7F463AB72488F0C100A52ECA /* AppRootView.swift */,
-				7F463ACF248941B600A52ECA /* OnboardingContainerView.swift */,
+				7F463ACF248941B600A52ECA /* OnboardingView.swift */,
 				7FF8F5B6248A25480008FAE6 /* SettingsView.swift */,
 			);
 			path = Views;
@@ -269,6 +273,8 @@
 			isa = PBXGroup;
 			children = (
 				7F5662FC2487C7A100DBCAC8 /* Preview Assets.xcassets */,
+				7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */,
+				7FD0935C248E2F02007A2957 /* MockContentService.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -461,9 +467,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FD0935B248E2D32007A2957 /* MockOnboardingService.swift in Sources */,
 				7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */,
 				7F5663272487CBE700DBCAC8 /* Category.swift in Sources */,
-				7F463AD0248941B600A52ECA /* OnboardingContainerView.swift in Sources */,
+				7FD0935D248E2F02007A2957 /* MockContentService.swift in Sources */,
+				7F463AD0248941B600A52ECA /* OnboardingView.swift in Sources */,
 				7F5663292487CDDB00DBCAC8 /* AppListView.swift in Sources */,
 				7F463AB82488F0C100A52ECA /* AppRootView.swift in Sources */,
 				7F5662F62487C79E00DBCAC8 /* IndieApps.xcdatamodeld in Sources */,
