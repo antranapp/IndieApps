@@ -2,6 +2,7 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct OnboardingContainerView: View {
@@ -26,13 +27,11 @@ struct OnboardingContainerView: View {
 //            }
 //        )
         
-        return OnboardingView()
-//            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
-            .onAppear(perform: startOnboarding)
-    }
-    
-    private func startOnboarding() {
-//        store.send(.startOnboarding)
+        return
+            WithViewStore(self.store) { viewStore in
+                OnboardingView(viewStore: viewStore)
+                    //            .snackbar(data: snackbarDataBinding, show: snackbarShowingBinding)
+            }
     }
 }
 
@@ -41,14 +40,20 @@ struct OnboardingContainerView: View {
 struct OnboardingView: View {
     
     @State private var direction: Bool = true
+    
+    let viewStore: ViewStore<AppState, AppAction>
 
     var body: some View {
         Image("icon")
             .frame(width: 60, height: 60)
             .scaleEffect(direction ? 1 : 2)
             .animation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true))
-            .onAppear {
-                self.direction.toggle()
-            }
+            .onAppear(perform: startOnboarding)
     }
+    
+    private func startOnboarding() {
+        viewStore.send(.startOnboarding)
+        direction.toggle()
+    }
+
 }
