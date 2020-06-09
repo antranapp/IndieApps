@@ -53,7 +53,7 @@ struct CategoryListView_Previews: PreviewProvider {
             onboardingService: MockOnboardingService(),
             gitService: MockGitService(),
             contentService: MockContentSevice())
-        let store = Store(initialState: .init(), reducer: appReducer, environment: world)
+        let store = Store(initialState: .init(), reducer: mainReducer, environment: world)
         return CategoryListContainerView(store: store)
     }
 }

@@ -40,15 +40,13 @@ class GitService: GitServiceProtocol {
     private let localRepositoryFolderPath: String
     private let remoteRepositoryURL: URL
     private let fileManager = FileManager.default
-    private let queue: DispatchQueue
+    private let queue: DispatchQueue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
     
     // MARK: Initialization
     
     init(localRepositoryFolderPath: String, remoteRepositoryURL: URL) {
         self.localRepositoryFolderPath = localRepositoryFolderPath
         self.remoteRepositoryURL = remoteRepositoryURL
-        
-        queue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
     }
     
     // MARK: APIs
@@ -65,6 +63,7 @@ class GitService: GitServiceProtocol {
                     })                    
                     promise(.success(()))
                 } catch {
+                    print(error)
                     promise(.failure(error))
                 }
             }
@@ -75,7 +74,6 @@ class GitService: GitServiceProtocol {
     /// - Returns: Future<Void, Error>
     func update() -> Future<Void, Error> {
         return Future { promise in
-            
             self.queue.async {
                 do {
                     try self.openIfNeeded()
@@ -84,6 +82,7 @@ class GitService: GitServiceProtocol {
                     try self.localRepository!.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)
                     promise(.success(()))
                 } catch {
+                    print(error)
                     promise(.failure(error))
                 }
             }
@@ -99,6 +98,7 @@ class GitService: GitServiceProtocol {
                     try self.localRepositoryFolder.delete()
                     promise(.success(true))
                 } catch {
+                    print(error)
                     promise(.failure(error))
                 }
             }

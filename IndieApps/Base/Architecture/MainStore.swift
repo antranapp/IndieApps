@@ -49,7 +49,7 @@ enum MainAction {
 
 // MARK: Reducer
 
-let appReducer = categoryReducer
+let mainReducer = categoryReducer
     .optional
     .pullback(
         state: \MainState.selection,

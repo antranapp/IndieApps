@@ -39,7 +39,7 @@ struct OnboardingView: View {
 #if DEBUG
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        let store = Store(initialState: .init(), reducer: appReducer, environment: AppEnvironment())
+        let store = Store(initialState: .init(), reducer: mainReducer, environment: AppEnvironment())
         return OnboardingContainerView(store: store)
     }
 }
