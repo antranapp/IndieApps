@@ -5,6 +5,8 @@
 import ComposableArchitecture
 import Foundation
 
+typealias CategoryStore = Store<CategoryState, CategoryAction>
+
 struct CategoryState: Equatable, Hashable {
     var category: Category
     var apps: [App] = []
@@ -18,8 +20,6 @@ enum CategoryAction {
 struct CategoryEnvironment {
     var contentService: ContentServiceProtocol
 }
-
-typealias CategoryStore = Store<CategoryState, CategoryAction>
 
 let categoryReducer = Reducer<CategoryState, CategoryAction, CategoryEnvironment> { state, action, environment in
     switch action {

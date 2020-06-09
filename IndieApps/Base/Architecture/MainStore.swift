@@ -11,7 +11,7 @@ typealias MainStore = Store<MainState, MainAction>
 
 struct AppEnvironment {
     var onboardingService: OnboardingServiceProtocol = OnboardingService()
-    var gitService: GitServiceProtocol? = GitService(localRepositoryFolderPath: FileManager.default.contentPath!, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
+    var gitService: GitServiceProtocol = GitService(localRepositoryFolderPath: FileManager.default.contentPath!, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
     var contentService: ContentServiceProtocol = ContentService(rootFolderPath: FileManager.default.contentPath!)
 }
 
@@ -73,15 +73,11 @@ let appReducer = categoryReducer
                     return .none
                 
                 case .updateContent:
-                    if let gitService = environment.gitService {
-                        return Effect(gitService.update())
-                            .receive(on: RunLoop.main)
-                            .map { MainAction.endOnboarding }
-                            .replaceError(with: MainAction.endOnboarding)
-                            .eraseToEffect()
-                    }
-                    
-                    return Effect(value: MainAction.endOnboarding)
+                    return Effect(environment.gitService.update())
+                        .receive(on: RunLoop.main)
+                        .map { MainAction.endOnboarding }
+                        .replaceError(with: MainAction.endOnboarding)
+                        .eraseToEffect()
                 
                 case .fetchCategories:
                     return Effect(environment.contentService.fetchCategoryList())
@@ -108,15 +104,11 @@ let appReducer = categoryReducer
                     return .none
                 
                 case .resetContent:
-                    if let gitService = environment.gitService {
-                        return Effect(gitService.reset())
-                            .receive(on: RunLoop.main)
-                            .map { $0 ? MainAction.goToOnboarding : MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
-                            .replaceError(with: MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
-                            .eraseToEffect()
-                    }
-                    
-                    return Effect(value: MainAction.goToOnboarding)
+                    return Effect(environment.gitService.reset())
+                        .receive(on: RunLoop.main)
+                        .map { $0 ? MainAction.goToOnboarding : MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
+                        .replaceError(with: MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+                        .eraseToEffect()
                 
                 case .goToOnboarding:
                     state.isDataAvailable = false

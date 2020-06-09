@@ -44,7 +44,7 @@ class GitService: GitServiceProtocol {
     
     // MARK: Initialization
     
-    public init?(localRepositoryFolderPath: String, remoteRepositoryURL: URL) {
+    init(localRepositoryFolderPath: String, remoteRepositoryURL: URL) {
         self.localRepositoryFolderPath = localRepositoryFolderPath
         self.remoteRepositoryURL = remoteRepositoryURL
         
@@ -55,7 +55,7 @@ class GitService: GitServiceProtocol {
     
     /// Clone the content repository to disk.
     /// - Returns: Future<Void, Error>
-    public func clone(progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error> {
+    func clone(progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error> {
         return Future { promise in
             self.queue.async {
                 do {
@@ -73,7 +73,7 @@ class GitService: GitServiceProtocol {
     
     /// Pull update of the remote repository to disk.
     /// - Returns: Future<Void, Error>
-    public func update() -> Future<Void, Error> {
+    func update() -> Future<Void, Error> {
         return Future { promise in
             
             self.queue.async {
@@ -92,7 +92,7 @@ class GitService: GitServiceProtocol {
     
     /// Remove the local repository folder and clone the data again.
     /// - Returns: Future<Void, Error>
-    public func reset() -> Future<Bool, Error> {
+    func reset() -> Future<Bool, Error> {
         return Future { promise in
             self.queue.async {
                 do {
