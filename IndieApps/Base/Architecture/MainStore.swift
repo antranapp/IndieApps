@@ -105,9 +105,11 @@ let mainReducer = categoryReducer
                 case .startOnboarding:
                     return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
                         .receive(on: environment.mainQueue)
-                        .map { MainAction.updateContent }
-                        .catch { error in
-                            return Just(MainAction.showError(error))
+                        .map {
+                            MainAction.updateContent
+                        }
+                        .catch {
+                            Just(MainAction.showError($0))
                         }
                         .eraseToEffect()
 
@@ -118,14 +120,18 @@ let mainReducer = categoryReducer
                 case .updateContent:
                     return Effect(environment.gitService.update())
                         .receive(on: environment.mainQueue)
-                        .map { MainAction.endOnboarding }
+                        .map {
+                            MainAction.endOnboarding
+                        }
                         .replaceError(with: MainAction.endOnboarding)
                         .eraseToEffect()
                 
                 case .fetchCategories:
                     return Effect(environment.contentService.fetchCategoryList())
                         .receive(on: environment.mainQueue)
-                        .map { MainAction.setCategories($0) }
+                        .map {
+                            MainAction.setCategories($0)
+                        }
                         .eraseToEffect()
                 
                 case .setCategories(let categoryList):
@@ -138,7 +144,7 @@ let mainReducer = categoryReducer
                     return .none
                 
                 case .showError(let error):
-                    state.snackbarData.makeError(title: "Error!", detail: error.localizedDescription)
+                    state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
                     state.showSnackbar = true
                     return .none
                 
