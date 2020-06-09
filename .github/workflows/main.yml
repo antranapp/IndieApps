@@ -13,7 +13,7 @@ jobs:
 
     strategy:
         matrix:
-          destination: ['platform=iOS Simulator,name=iPhone 11,OS=latest']
+          destination: ['platform=iOS Simulator,name=iPhone 11,OS=13.4']
 
     steps:
       - name: Checkout
@@ -42,6 +42,6 @@ jobs:
 
       - name: Build and test
         run: |
-          xcodebuild clean test -project IndieApps.xcodeproj -scheme IndieApps -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -enableCodeCoverage YES -derivedDataPath ./.build/DerivedData
+          xcodebuild clean test -project IndieApps.xcodeproj -scheme IndieApps -destination "platform=iOS Simulator,name=iPhone 11,OS=latest" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -enableCodeCoverage YES -derivedDataPath ./.build/DerivedData
         env:
           destination: ${{ matrix.destination }}
