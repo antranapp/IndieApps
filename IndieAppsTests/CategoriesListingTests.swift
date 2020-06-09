@@ -7,55 +7,55 @@ import ComposableArchitecture
 import Combine
 import XCTest
 
-class AppsListingTests: XCTestCase {
+class CategoriesListingTests: XCTestCase {
     
     let scheduler = DispatchQueue.testScheduler
     
-    func testFetchAppsSucceed() {
+    func testFetchCategoriesSucceed() {
         let store = TestStore(
-            initialState: CategoryState(
-                category: MockContentSevice.categoryList[0]
-            ),
-            reducer: categoryReducer,
-            environment: CategoryEnvironment(
+            initialState: MainState(),
+            reducer: mainReducer,
+            environment: MainEnvironment(
                 mainQueue: self.scheduler.eraseToAnyScheduler(),
+                onboardingService: MockOnboardingService(),
+                gitService: MockGitService(),
                 contentService: MockContentSevice()
             )
         )
         
         store.assert(
-            .send(.fetchApps) {
-                $0.apps = nil
+            .send(.fetchCategories) {
+                $0.categories = nil
             },
             .do {
                 self.scheduler.advance()
             },
-            .receive(.setApps(MockContentSevice.appList)) {
-                $0.apps = MockContentSevice.appList
+            .receive(.setCategories(MockContentSevice.categoryList)) {
+                $0.categories = MockContentSevice.categoryList
             }
         )
     }
     
-    func testFetchAppsFailed() {
+    func testFetchCategoriesFailed() {
         let expectedError = NSError(domain: "SomeError", code: -1, userInfo: nil)
         let store = TestStore(
-            initialState: CategoryState(
-                category: MockContentSevice.categoryList[0]
-            ),
-            reducer: categoryReducer,
-            environment: CategoryEnvironment(
+            initialState: MainState(),
+            reducer: mainReducer,
+            environment: MainEnvironment(
                 mainQueue: self.scheduler.eraseToAnyScheduler(),
+                onboardingService: MockOnboardingService(),
+                gitService: MockGitService(),
                 contentService: MockContentSevice(
-                    appsResult: {
-                        Future<[App], Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
+                    categoriesResult: {
+                        Future<[IndieApps.Category], Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
                     }
                 )
             )
         )
         
         store.assert(
-            .send(.fetchApps) {
-                $0.apps = nil
+            .send(.fetchCategories) {
+                $0.categories = nil
             },
             .do {
                 self.scheduler.advance()
@@ -63,6 +63,6 @@ class AppsListingTests: XCTestCase {
             .receive(.showError(expectedError)) {
                 $0.snackbarData = SnackbarModifier.SnackbarData.makeError(error: expectedError)
             }
-        )
+        )        
     }
 }

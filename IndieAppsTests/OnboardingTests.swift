@@ -63,7 +63,6 @@ class OnboardingTests: XCTestCase {
                 self.scheduler.advance()
             },
             .receive(.showError(expectedError)) {
-                $0.showSnackbar = true
                 $0.snackbarData = SnackbarModifier.SnackbarData.makeError(error: expectedError)
             }
         )

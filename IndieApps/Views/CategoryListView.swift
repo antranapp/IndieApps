@@ -14,7 +14,7 @@ struct CategoryListContainerView: View {
         NavigationView {
             WithViewStore(self.store) { viewStore in
                 List {
-                    viewStore.categoryList.map {
+                    viewStore.categories.map {
                         ForEach($0) { category in
                             NavigationLink(
                                 destination: IfLetStore(

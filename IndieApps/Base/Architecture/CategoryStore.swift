@@ -11,8 +11,7 @@ typealias CategoryStore = Store<CategoryState, CategoryAction>
 struct CategoryState: Equatable {
     var category: Category
     var apps: [App]? = nil
-    var showSnackbar: Bool = false
-    var snackbarData = SnackbarModifier.SnackbarData(title: "", detail: "", type: .info)
+    var snackbarData: SnackbarModifier.SnackbarData?
 }
 
 enum CategoryAction  {
@@ -45,11 +44,12 @@ let categoryReducer = Reducer<CategoryState, CategoryAction, CategoryEnvironment
     switch action {
         case .fetchApps:
             state.apps = nil
+            state.snackbarData = nil
             return Effect(environment.contentService.fetchAppList(in: state.category))
                 .receive(on: environment.mainQueue)
                 .map { CategoryAction.setApps($0) }
-                .catch { error -> AnyPublisher<CategoryAction, Never> in
-                    return Just(CategoryAction.showError(error)).eraseToAnyPublisher()
+                .catch {
+                    Just(CategoryAction.showError($0))
                 }
                 .eraseToEffect()
         
@@ -59,7 +59,6 @@ let categoryReducer = Reducer<CategoryState, CategoryAction, CategoryEnvironment
         
         case .showError(let error):
             state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
-            state.showSnackbar = true
             return .none
     }
 }

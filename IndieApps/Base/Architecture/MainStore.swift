@@ -21,13 +21,10 @@ struct MainEnvironment {
 
 // MARK: State
 
-struct MainState: Equatable {
-    
-    var showSnackbar: Bool = false
-    var snackbarData = SnackbarModifier.SnackbarData(title: "", detail: "", type: .info)
+struct MainState: Equatable {    
+    var snackbarData: SnackbarModifier.SnackbarData?
     var isDataAvailable: Bool = false
-    var categoryList: [Category]?
-    
+    var categories: [Category]?
     var selection: CategoryState?
 }
 
@@ -127,8 +124,8 @@ let mainReducer = categoryReducer
                         .eraseToEffect()
                 
                 case .fetchCategories:
-                    state.categoryList = nil
-                    
+                    state.categories = nil
+                    state.snackbarData = nil
                     return Effect(environment.contentService.fetchCategoryList())
                         .receive(on: environment.mainQueue)
                         .map {
@@ -139,22 +136,20 @@ let mainReducer = categoryReducer
                         }
                         .eraseToEffect()
                 
-                case .setCategories(let categoryList):
-                    state.categoryList = categoryList
+                case .setCategories(let categories):
+                    state.categories = categories
                     return .none
                 
                 case .showMessage(let title, let message, let type):
                     state.snackbarData = SnackbarModifier.SnackbarData(title: title, detail: message, type: type)
-                    state.showSnackbar = true
                     return .none
                 
                 case .showError(let error):
                     state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
-                    state.showSnackbar = true
                     return .none
                 
                 case .hideSnackbar:
-                    state.showSnackbar = false
+                    state.snackbarData = nil
                     return .none
                 
                 case .resetContent:
