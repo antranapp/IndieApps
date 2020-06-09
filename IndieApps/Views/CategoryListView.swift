@@ -49,7 +49,8 @@ struct CategoryListContainerView: View {
 #if DEBUG
 struct CategoryListView_Previews: PreviewProvider {
     static var previews: some View {
-        let world = AppEnvironment(
+        let world = MainEnvironment(
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
             onboardingService: MockOnboardingService(),
             gitService: MockGitService(),
             contentService: MockContentSevice())

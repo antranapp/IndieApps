@@ -12,12 +12,13 @@ struct CategoryState: Equatable, Hashable {
     var apps: [App] = []
 }
 
-enum CategoryAction {
+enum CategoryAction: Equatable {
     case fetchApps
     case setApps([App])
 }
 
 struct CategoryEnvironment {
+    var mainQueue: AnySchedulerOf<DispatchQueue>
     var contentService: ContentServiceProtocol
 }
 

@@ -36,7 +36,10 @@ struct AppListContainerView: View {
 #if DEBUG
 struct AppListView_Previews: PreviewProvider {
     static var previews: some View {
-        let categoryEnvironment = CategoryEnvironment(contentService: MockContentSevice())
+        let categoryEnvironment = CategoryEnvironment(
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+            contentService: MockContentSevice()
+        )
         let category = MockContentSevice.categoryList[0]
 
         let store = Store(initialState: CategoryState(category: category), reducer: categoryReducer, environment: categoryEnvironment)
