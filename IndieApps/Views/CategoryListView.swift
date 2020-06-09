@@ -14,20 +14,22 @@ struct CategoryListContainerView: View {
         NavigationView {
             WithViewStore(self.store) { viewStore in
                 List {
-                    ForEach(viewStore.categoryList) { category in
-                        NavigationLink(
-                            destination: IfLetStore(
-                                self.store.scope(state: { $0.selection }, action: MainAction.category),
-                                then: { AppListContainerView(store: $0, selectedApp: nil) },
-                                else: ActivityIndicator()),
-                            tag: category,
-                            selection: viewStore.binding(
-                                get: { $0.selection?.category },
-                                send: { MainAction.setNavigation(selection: $0) }
-                            )) {
-                            CategoryView(category: category)
+                    viewStore.categoryList.map {
+                        ForEach($0) { category in
+                            NavigationLink(
+                                destination: IfLetStore(
+                                    self.store.scope(state: { $0.selection }, action: MainAction.category),
+                                    then: { AppListContainerView(store: $0, selectedApp: nil) },
+                                    else: ActivityIndicator()),
+                                tag: category,
+                                selection: viewStore.binding(
+                                    get: { $0.selection?.category },
+                                    send: { MainAction.setNavigation(selection: $0) }
+                                )) {
+                                CategoryView(category: category)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .navigationBarTitle("Categories")

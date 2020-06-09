@@ -26,7 +26,7 @@ struct MainState: Equatable {
     var showSnackbar: Bool = false
     var snackbarData = SnackbarModifier.SnackbarData(title: "", detail: "", type: .info)
     var isDataAvailable: Bool = false
-    var categoryList: [Category] = []
+    var categoryList: [Category]?
     
     var selection: CategoryState?
 }
@@ -127,10 +127,15 @@ let mainReducer = categoryReducer
                         .eraseToEffect()
                 
                 case .fetchCategories:
+                    state.categoryList = nil
+                    
                     return Effect(environment.contentService.fetchCategoryList())
                         .receive(on: environment.mainQueue)
                         .map {
                             MainAction.setCategories($0)
+                        }
+                        .catch { error -> AnyPublisher<MainAction, Never> in
+                            return Just(MainAction.showError(error)).eraseToAnyPublisher()
                         }
                         .eraseToEffect()
                 

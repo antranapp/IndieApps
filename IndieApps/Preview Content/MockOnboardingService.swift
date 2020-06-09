@@ -7,11 +7,9 @@ import Combine
 
 struct MockOnboardingService: OnboardingServiceProtocol {
     
-    typealias UnpackContentResult = () -> AnyPublisher<Void, Error>
+    var unpackContentResult: AnyPublisherResultMaker<Void>
     
-    var unpackContentResult: UnpackContentResult
-    
-    init(unpackContentResult: UnpackContentResult? = nil)  {
+    init(unpackContentResult: AnyPublisherResultMaker<Void>? = nil)  {
         self.unpackContentResult = unpackContentResult ?? { Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
     }
     

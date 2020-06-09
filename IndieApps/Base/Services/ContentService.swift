@@ -8,8 +8,8 @@ import Combine
 import UIKit
 
 protocol ContentServiceProtocol {
-    func fetchCategoryList() -> AnyPublisher<[Category], Never>
-    func fetchAppList(in category: Category) -> AnyPublisher<[App], Never>
+    func fetchCategoryList() -> AnyPublisher<[Category], Error>
+    func fetchAppList(in category: Category) -> AnyPublisher<[App], Error>
 }
 
 class ContentService: ContentServiceProtocol {
@@ -31,23 +31,28 @@ class ContentService: ContentServiceProtocol {
         
     // MARK: - APIs
     
-    func fetchCategoryList() -> AnyPublisher<[Category], Never> {
-        let categories = appFolder.subfolders.compactMap {
-            mapFolderToCategory($0)
-        }
-        return Just(categories).eraseToAnyPublisher()
+    func fetchCategoryList() -> AnyPublisher<[Category], Error> {
+        Future { promise in
+            let categories = self.appFolder.subfolders.compactMap {
+                self.mapFolderToCategory($0)
+            }
+            promise(.success(categories))
+        }.eraseToAnyPublisher()
     }
     
-    func fetchAppList(in category: Category) -> AnyPublisher<[App], Never> {
-        do {
-            let categoryFolder = try mapCategoryToFolder(category)
-            let apps = try categoryFolder.subfolders.compactMap {
-                try mapFolderToApp($0)
+    func fetchAppList(in category: Category) -> AnyPublisher<[App], Error> {
+        Future { promise in
+            do {
+                let categoryFolder = try self.mapCategoryToFolder(category)
+                let apps = try categoryFolder.subfolders.compactMap {
+                    try self.mapFolderToApp($0)
+                }
+                promise(.success(apps))
+            } catch {
+                promise(.failure(error))
             }
-            return Just(apps).eraseToAnyPublisher()
-        } catch {
-            return Just([]).eraseToAnyPublisher()
         }
+        .eraseToAnyPublisher()
     }
     
     // MARK: - Private helpers

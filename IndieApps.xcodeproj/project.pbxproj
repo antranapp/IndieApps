@@ -15,6 +15,8 @@
 		7F1ACF6C24883CBF0044E959 /* ContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF6B24883CBF0044E959 /* ContentService.swift */; };
 		7F2D29BF248F759D00620484 /* MockGitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2D29BE248F759D00620484 /* MockGitService.swift */; };
 		7F2D29C324901AED00620484 /* Archive.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7F2D29C224901AED00620484 /* Archive.zip */; };
+		7F2D29C52490242200620484 /* AppsListingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2D29C42490242200620484 /* AppsListingTests.swift */; };
+		7F2D29C72490246B00620484 /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2D29C62490246B00620484 /* TestSupport.swift */; };
 		7F463AB62488EC6E00A52ECA /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AB52488EC6E00A52ECA /* OnboardingService.swift */; };
 		7F463AB82488F0C100A52ECA /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463AB72488F0C100A52ECA /* AppRootView.swift */; };
 		7F463ABB2488FBB100A52ECA /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F463ABA2488FBB100A52ECA /* View+Extensions.swift */; };
@@ -74,6 +76,8 @@
 		7F1ACF6E24883E000044E959 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		7F2D29BE248F759D00620484 /* MockGitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGitService.swift; sourceTree = "<group>"; };
 		7F2D29C224901AED00620484 /* Archive.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Archive.zip; sourceTree = "<group>"; };
+		7F2D29C42490242200620484 /* AppsListingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsListingTests.swift; sourceTree = "<group>"; };
+		7F2D29C62490246B00620484 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 		7F463AB52488EC6E00A52ECA /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
 		7F463AB72488F0C100A52ECA /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
 		7F463ABA2488FBB100A52ECA /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
@@ -208,8 +212,8 @@
 			isa = PBXGroup;
 			children = (
 				7F1ACF6824883BA40044E959 /* MainStore.swift */,
-				7F1ACF6E24883E000044E959 /* Store.swift */,
 				7F9E1335248EDDD600763282 /* CategoryStore.swift */,
+				7F1ACF6E24883E000044E959 /* Store.swift */,
 			);
 			path = Architecture;
 			sourceTree = "<group>";
@@ -283,6 +287,7 @@
 				7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */,
 				7FD0935C248E2F02007A2957 /* MockContentService.swift */,
 				7F2D29BE248F759D00620484 /* MockGitService.swift */,
+				7F2D29C62490246B00620484 /* TestSupport.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -290,6 +295,7 @@
 		7F5663092487C7A200DBCAC8 /* IndieAppsTests */ = {
 			isa = PBXGroup;
 			children = (
+				7F2D29C42490242200620484 /* AppsListingTests.swift */,
 				7F56630A2487C7A200DBCAC8 /* OnboardingTests.swift */,
 				7F56630C2487C7A200DBCAC8 /* Info.plist */,
 			);
@@ -491,6 +497,7 @@
 				7F650348248ED491004A1733 /* UIViewRepresented.swift in Sources */,
 				7F463ADA2489730000A52ECA /* GitService.swift in Sources */,
 				7F1ACF602487DE560044E959 /* AppView.swift in Sources */,
+				7F2D29C72490246B00620484 /* TestSupport.swift in Sources */,
 				7F463ACE24893BBA00A52ECA /* Snackbar.swift in Sources */,
 				7F463AB62488EC6E00A52ECA /* OnboardingService.swift in Sources */,
 				7F2D29BF248F759D00620484 /* MockGitService.swift in Sources */,
@@ -509,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F56630B2487C7A200DBCAC8 /* OnboardingTests.swift in Sources */,
+				7F2D29C52490242200620484 /* AppsListingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

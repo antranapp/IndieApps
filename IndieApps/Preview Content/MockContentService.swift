@@ -33,15 +33,24 @@ struct MockContentSevice: ContentServiceProtocol {
         Category(name: "Movies", numberOfApps: 1),
         Category(name: "Photography", numberOfApps: 2)
     ]
+    
+    private var categoriesResult: AnyPublisherResultMaker<[Category]>
+    private var appsResult: AnyPublisherResultMaker<[App]>
+    
+    init(
+        categoriesResult: AnyPublisherResultMaker<[Category]>? = nil,
+        appsResult: AnyPublisherResultMaker<[App]>? = nil
+    ) {
+        self.categoriesResult = categoriesResult ?? { Just(MockContentSevice.categoryList).setFailureType(to: Error.self).eraseToAnyPublisher() }
+        self.appsResult = appsResult ?? { Just(MockContentSevice.appList).setFailureType(to: Error.self).eraseToAnyPublisher() }
+    }
 
-    func fetchCategoryList() -> AnyPublisher<[Category], Never> {
-        return Just(MockContentSevice.categoryList)
-            .eraseToAnyPublisher()
+    func fetchCategoryList() -> AnyPublisher<[Category], Error> {
+        return categoriesResult()
     }
     
-    func fetchAppList(in category: Category) -> AnyPublisher<[App], Never> {
-        return Just(MockContentSevice.appList)
-            .eraseToAnyPublisher()
+    func fetchAppList(in category: Category) -> AnyPublisher<[App], Error> {
+        return appsResult()
     }
 }
 #endif
