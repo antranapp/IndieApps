@@ -6,10 +6,15 @@
 import Combine
 
 struct MockOnboardingService: OnboardingServiceProtocol {
+    
+    var unpackContentResult: AnyPublisherResultMaker<Void>
+    
+    init(unpackContentResult: AnyPublisherResultMaker<Void>? = nil)  {
+        self.unpackContentResult = unpackContentResult ?? { Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
+    }
+    
     func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error> {
-        return Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        return unpackContentResult()
     }
 }
 #endif

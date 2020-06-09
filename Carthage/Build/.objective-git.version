@@ -1,0 +1,9 @@
+{
+  "commitish" : "c50d760e65f120c66677ae376946ee4de6930a90",
+  "iOS" : [
+    {
+      "name" : "ObjectiveGit",
+      "hash" : "7f0713561474086bc3ef9a995f87333d3f53c7546fcb20a43ce0abfa3ffb618c"
+    }
+  ]
+}

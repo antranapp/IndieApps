@@ -14,14 +14,16 @@ struct AppListContainerView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             List {
-                ForEach(viewStore.apps) { app in
-                    AppView(app: app)
-                        .padding(.vertical, 8)
-                        .sheet(item: self.$selectedApp) { app in
-                            AppDetailView(app: app)
-                    }
-                    .onTapGesture {
-                        self.selectedApp = app
+                viewStore.apps.map {
+                    ForEach($0) { app in
+                        AppView(app: app)
+                            .padding(.vertical, 8)
+                            .sheet(item: self.$selectedApp) { app in
+                                AppDetailView(app: app)
+                        }
+                        .onTapGesture {
+                            self.selectedApp = app
+                        }
                     }
                 }
             }
@@ -36,7 +38,10 @@ struct AppListContainerView: View {
 #if DEBUG
 struct AppListView_Previews: PreviewProvider {
     static var previews: some View {
-        let categoryEnvironment = CategoryEnvironment(contentService: MockContentSevice())
+        let categoryEnvironment = CategoryEnvironment(
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+            contentService: MockContentSevice()
+        )
         let category = MockContentSevice.categoryList[0]
 
         let store = Store(initialState: CategoryState(category: category), reducer: categoryReducer, environment: categoryEnvironment)

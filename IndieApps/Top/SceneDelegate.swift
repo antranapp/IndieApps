@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView = AppRootView(store: MainStore(
             initialState: .init(),
             reducer: mainReducer,
-            environment: AppEnvironment()
+            environment: MainEnvironment(mainQueue: DispatchQueue.main.eraseToAnyScheduler())
         ))
         .environment(\.managedObjectContext, context)
 

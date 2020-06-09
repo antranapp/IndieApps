@@ -11,28 +11,40 @@ struct SnackbarModifier: ViewModifier {
         var detail: String
         var type: SnackbarType
         
-        mutating func makeInfo(title: String, detail: String) {
-            self.title = title
-            self.detail = detail
-            self.type = .info
+        static func makeInfo(title: String, detail: String) -> Self {
+            return SnackbarData(
+                title: title,
+                detail: detail,
+                type: .info
+            )
         }
         
-        mutating func makeWarning(title: String, detail: String) {
-            self.title = title
-            self.detail = detail
-            self.type = .warning
+        static func makeWarning(title: String, detail: String) -> Self {
+            return SnackbarData(
+                title: title,
+                detail: detail,
+                type: .info
+            )
         }
         
-        mutating func makeSuccess(title: String, detail: String) {
-            self.title = title
-            self.detail = detail
-            self.type = .success
+        static func makeSuccess(title: String, detail: String) -> Self {
+            return SnackbarData(
+                title: title,
+                detail: detail,
+                type: .info
+            )
         }
         
-        mutating func makeError(title: String, detail: String) {
-            self.title = title
-            self.detail = detail
-            self.type = .error
+        static func makeError(title: String, detail: String) -> Self {
+            return SnackbarData(
+                title: title,
+                detail: detail,
+                type: .info
+            )
+        }
+
+        static func makeError(error: Error) -> Self {
+            return makeError(title: "Error!", detail: error.localizedDescription)
         }
     }
     

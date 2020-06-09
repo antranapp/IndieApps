@@ -9,22 +9,22 @@ import Foundation
 
 typealias MainStore = Store<MainState, MainAction>
 
-struct AppEnvironment {
+struct MainEnvironment {
+    var mainQueue: AnySchedulerOf<DispatchQueue>
     var onboardingService: OnboardingServiceProtocol = OnboardingService()
-    var gitService: GitServiceProtocol = GitService(localRepositoryFolderPath: FileManager.default.contentPath!, remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!)
+    var gitService: GitServiceProtocol = GitService(
+        localRepositoryFolderPath: FileManager.default.contentPath!,
+        remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
+    )
     var contentService: ContentServiceProtocol = ContentService(rootFolderPath: FileManager.default.contentPath!)
 }
 
 // MARK: State
 
-struct MainState: Equatable {
-    
-    var showSnackbar: Bool = false
-    var snackbarData = SnackbarModifier.SnackbarData(title: "", detail: "", type: .info)
+struct MainState: Equatable {    
+    var snackbarData: SnackbarModifier.SnackbarData?
     var isDataAvailable: Bool = false
-    var categoryList: [Category] = []
-    var isNavigationActive: Bool = false
-    
+    var categories: [Category]?
     var selection: CategoryState?
 }
 
@@ -47,6 +47,41 @@ enum MainAction {
     case setNavigation(selection: Category?)
 }
 
+extension MainAction: Equatable {
+    static func == (lhs: MainAction, rhs: MainAction) -> Bool {
+        switch (lhs, rhs) {
+            case (.startOnboarding, .startOnboarding):
+                return true
+            case (.endOnboarding, .endOnboarding):
+                return true
+            case (.updateContent, .updateContent):
+                return true
+            case (.resetContent, .resetContent):
+                return true
+            case (.fetchCategories, .fetchCategories):
+                return true
+            case (.setCategories(let lCategories), .setCategories(let rCategories)):
+                return lCategories == rCategories
+            case (.showError(let lError), .showError(let rError)):
+                return lError._code == rError._code
+            case (.showMessage(let lTitle, let lMessage, let lType), .showMessage(let rTitle, let rMessage, let rType)):
+                return lTitle == rTitle &&
+                       lMessage == rMessage &&
+                       lType == rType
+            case (.hideSnackbar, .hideSnackbar):
+                return true
+            case (.goToOnboarding, .goToOnboarding):
+                return true
+            case (.category(let lCategoryAction), .category(let rCategoryAction)):
+                return lCategoryAction == rCategoryAction
+            case (.setNavigation(let lCategory), .setNavigation(let rCategory)):
+                return lCategory == rCategory
+            default:
+                return false
+        }
+    }
+}
+
 // MARK: Reducer
 
 let mainReducer = categoryReducer
@@ -54,58 +89,72 @@ let mainReducer = categoryReducer
     .pullback(
         state: \MainState.selection,
         action: /MainAction.category,
-        environment: { CategoryEnvironment(contentService: $0.contentService) }
+        environment: {
+            CategoryEnvironment(
+                mainQueue: $0.mainQueue,
+                contentService: $0.contentService
+            )            
+        }
     )
     .combined(
-        with: Reducer<MainState, MainAction, AppEnvironment> { state, action, environment in
+        with: Reducer<MainState, MainAction, MainEnvironment> { state, action, environment in
             switch action {
                 case .startOnboarding:
                     return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
-                        .receive(on: RunLoop.main)
-                        .map { MainAction.updateContent }
-                        .catch { error in
-                            return Just(MainAction.showError(error))
-                    }
-                    .eraseToEffect()
-                
+                        .receive(on: environment.mainQueue)
+                        .map {
+                            MainAction.updateContent
+                        }
+                        .catch {
+                            Just(MainAction.showError($0))
+                        }
+                        .eraseToEffect()
+
                 case .endOnboarding:
                     state.isDataAvailable = true
                     return .none
                 
                 case .updateContent:
                     return Effect(environment.gitService.update())
-                        .receive(on: RunLoop.main)
-                        .map { MainAction.endOnboarding }
+                        .receive(on: environment.mainQueue)
+                        .map {
+                            MainAction.endOnboarding
+                        }
                         .replaceError(with: MainAction.endOnboarding)
                         .eraseToEffect()
                 
                 case .fetchCategories:
+                    state.categories = nil
+                    state.snackbarData = nil
                     return Effect(environment.contentService.fetchCategoryList())
-                        .receive(on: RunLoop.main)
-                        .map { MainAction.setCategories($0) }
+                        .receive(on: environment.mainQueue)
+                        .map {
+                            MainAction.setCategories($0)
+                        }
+                        .catch { error -> AnyPublisher<MainAction, Never> in
+                            return Just(MainAction.showError(error)).eraseToAnyPublisher()
+                        }
                         .eraseToEffect()
                 
-                case .setCategories(let categoryList):
-                    state.categoryList = categoryList
+                case .setCategories(let categories):
+                    state.categories = categories
                     return .none
                 
                 case .showMessage(let title, let message, let type):
                     state.snackbarData = SnackbarModifier.SnackbarData(title: title, detail: message, type: type)
-                    state.showSnackbar = true
                     return .none
                 
                 case .showError(let error):
-                    state.snackbarData.makeError(title: "Error!", detail: error.localizedDescription)
-                    state.showSnackbar = true
+                    state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
                     return .none
                 
                 case .hideSnackbar:
-                    state.showSnackbar = false
+                    state.snackbarData = nil
                     return .none
                 
                 case .resetContent:
                     return Effect(environment.gitService.reset())
-                        .receive(on: RunLoop.main)
+                        .receive(on: environment.mainQueue)
                         .map { $0 ? MainAction.goToOnboarding : MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
                         .replaceError(with: MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
                         .eraseToEffect()

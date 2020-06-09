@@ -1,0 +1,47 @@
+name: PullRequest
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    name: Unit Tests
+
+    runs-on: macOS-latest
+
+    strategy:
+        matrix:
+          destination: ['platform=iOS Simulator,name=iPhone 11,OS=13.4']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Carthage
+        uses: actions/cache@v1
+        id: carthage
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - name: Testing....display available Xcodes on the Server
+        run: ls /Applications | grep Xcode
+
+      - name: Force xcode 11 
+        run: sudo xcode-select -switch /Applications/Xcode_11.4.app
+
+      - name: List Simulators
+        run: xcrun instruments -s
+        
+      - name: Carthage
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          carthage update --no-use-binaries --platform iOS --cache-builds
+
+      - name: Build and test
+        run: |
+          xcodebuild clean test -project IndieApps.xcodeproj -scheme IndieApps -destination "platform=iOS Simulator,name=iPhone 11,OS=latest" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -enableCodeCoverage YES -derivedDataPath ./.build/DerivedData
+        env:
+          destination: ${{ matrix.destination }}

@@ -1,4 +1,4 @@
-# A platform to discuss/showcase about your side projects
+# A platform to discuss/showcase your side projects
 
 ## What is this?
 
@@ -21,6 +21,17 @@ The app is driven by a git backend hosted [here](https://github.com/antranapp/In
 - [Objective-Git](https://github.com/libgit2/objective-git) for management of git repositories
 - Some other utilities packages: [Files](https://github.com/JohnSundell/Files), [Yams](https://github.com/jpsim/Yams), [Kingfisher](https://github.com/onevcat/Kingfisher), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation)
 
+## Contribution
+
+Contribution, PRs, feedbacks are warmly welcome. 
+
+## Installation
+
+- Clone the project.
+- Run `carthage update --platform iOS` to install required dependencies.
+
 ## License
 
 MIT.
+
+Twitter: [@AppsIndie](https://twitter.com/AppsIndie)
