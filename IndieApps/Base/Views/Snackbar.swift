@@ -23,7 +23,7 @@ struct SnackbarModifier: ViewModifier {
             return SnackbarData(
                 title: title,
                 detail: detail,
-                type: .info
+                type: .warning
             )
         }
         
@@ -31,7 +31,7 @@ struct SnackbarModifier: ViewModifier {
             return SnackbarData(
                 title: title,
                 detail: detail,
-                type: .info
+                type: .success
             )
         }
         
@@ -39,7 +39,7 @@ struct SnackbarModifier: ViewModifier {
             return SnackbarData(
                 title: title,
                 detail: detail,
-                type: .info
+                type: .error
             )
         }
 

@@ -36,6 +36,7 @@ class OnboardingTests: XCTestCase {
             },
             .receive(.endOnboarding) {
                 $0.isDataAvailable = true
+                $0.snackbarData = SnackbarModifier.SnackbarData.makeSuccess(detail: "Content is ready!")
             }
         )
     }
