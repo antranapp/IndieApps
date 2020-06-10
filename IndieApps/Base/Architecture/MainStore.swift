@@ -9,7 +9,7 @@ import Foundation
 
 typealias MainStore = Store<MainState, MainAction>
 
-struct Content {
+struct ContentLocation {
     let localURL: URL
     let remoteURL: URL
 }
@@ -21,15 +21,15 @@ struct MainEnvironment {
     
     var onboardingService: OnboardingServiceProtocol = OnboardingService(
         archiveURL: configuration.archiveURL,
-        content: configuration.content
+        contentLocation: configuration.contentLocation
     )
     
     var gitService: GitServiceProtocol = GitService(
-        content: configuration.content
+        contentLocation: configuration.contentLocation
     )
     
     var contentService: ContentServiceProtocol = ContentService(
-        content: configuration.content
+        contentLocation: configuration.contentLocation
     )
 }
 
@@ -46,7 +46,7 @@ struct MainState: Equatable {
 
 enum MainAction {
     case startOnboarding
-    case endOnboarding
+    case endOnboarding(Error?)
     case updateContent
     case resetContent
     case fetchCategories
@@ -124,18 +124,26 @@ let mainReducer = categoryReducer
                         }
                         .eraseToEffect()
 
-                case .endOnboarding:
-                    state.isDataAvailable = true
-                    state.snackbarData = SnackbarModifier.SnackbarData.makeSuccess(detail: "Content is ready!")
+                case .endOnboarding(let error):
+                    if let error = error {
+                        state.isDataAvailable = false
+                        state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
+                    } else {
+                        state.snackbarData = SnackbarModifier.SnackbarData.makeSuccess(detail: "Content is ready!")
+                    }
                     return .none
                 
                 case .updateContent:
+                    state.isDataAvailable = true
+                    
                     return Effect(environment.gitService.update())
                         .receive(on: environment.mainQueue)
                         .map {
-                            MainAction.endOnboarding
+                            MainAction.endOnboarding(nil)
                         }
-                        .replaceError(with: MainAction.endOnboarding)
+                        .catch {
+                            Just(MainAction.showError($0))
+                        }
                         .eraseToEffect()
                 
                 case .fetchCategories:

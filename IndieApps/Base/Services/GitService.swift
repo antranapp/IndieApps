@@ -33,17 +33,17 @@ class GitService: GitServiceProtocol {
     
     // Private
     
-    private let content: Content
+    private let contentLocation: ContentLocation
     private let fileManager = FileManager.default
     private let queue: DispatchQueue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
     private lazy var localRepositoryFolder = {
-        try! Folder(path: content.localURL.path)
+        try! Folder(path: contentLocation.localURL.path)
     }()
     
     // MARK: Initialization
     
-    init(content: Content) {
-        self.content = content
+    init(contentLocation: ContentLocation) {
+        self.contentLocation = contentLocation
     }
     
     // MARK: APIs
@@ -55,8 +55,8 @@ class GitService: GitServiceProtocol {
             self.queue.async {
                 do {
                     self.localRepository = try GTRepository.clone(
-                        from: self.content.remoteURL,
-                        toWorkingDirectory: self.content.localURL,
+                        from: self.contentLocation.remoteURL,
+                        toWorkingDirectory: self.contentLocation.localURL,
                         options: [GTRepositoryCloneOptionsTransportFlags: true],
                         transferProgressBlock: { progress, isFinished in
                         let progress = Float(progress.pointee.received_objects)/Float(progress.pointee.total_objects)
@@ -109,14 +109,13 @@ class GitService: GitServiceProtocol {
     // MARK: Private helpers
     
     private func openIfNeeded() throws {
-        
         guard localRepository == nil else {
             return
         }
         
         // Check if local repository is available
-        print("GitServie \(content.localURL)")
-        localRepository = try GTRepository(url: content.localURL)
+        print("GitServie \(contentLocation.localURL)")
+        localRepository = try GTRepository(url: contentLocation.localURL)
     }
 }
 

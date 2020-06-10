@@ -12,14 +12,14 @@ protocol OnboardingServiceProtocol {
 
 class OnboardingService: OnboardingServiceProtocol {
     
-    private let content: Content
+    private let contentLocation: ContentLocation
     private let archiveURL: URL
     
     // MARK: Initialization
     
-    init(archiveURL: URL, content: Content) {
+    init(archiveURL: URL, contentLocation: ContentLocation) {
         self.archiveURL = archiveURL
-        self.content = content
+        self.contentLocation = contentLocation
     }
 
     // MARK: APIs
@@ -40,14 +40,23 @@ class OnboardingService: OnboardingServiceProtocol {
     private func unpackContent() throws {
         let fileManager = FileManager.default
 
-        let checkFileURL = content.localURL.appendingPathComponent("version").appendingPathExtension("txt")
+        let checkFileURL = contentLocation.localURL.appendingPathComponent("version").appendingPathExtension("txt")
         
         guard !fileManager.fileExists(atPath: checkFileURL.path) else {
             return
         }
         
-        try fileManager.createDirectory(at: content.localURL, withIntermediateDirectories: true, attributes: nil)
-        try fileManager.unzipItem(at: archiveURL, to: content.localURL)
+        try fileManager.createDirectory(
+            at: contentLocation.localURL,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
+        
+        try fileManager.unzipItem(
+            at: archiveURL,
+            to: contentLocation.localURL
+        )
+        
         try "\(Date())".write(to: checkFileURL, atomically: true, encoding: .utf8)
     }
 }

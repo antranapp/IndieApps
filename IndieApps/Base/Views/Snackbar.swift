@@ -71,50 +71,49 @@ struct SnackbarModifier: ViewModifier {
     @Binding var data: SnackbarData?
     
     func body(content: Content) -> some View {
-        content
-//        GeometryReader { geometry in
-//            ZStack {
-//                content
-//                self.data.map { data in
-//                    VStack {
-//                        Spacer()
-//                        HStack {
-//                            VStack(alignment: .leading, spacing: 2) {
-//                                data.title.map {
-//                                    Text($0)
-//                                        .bold()
-//                                }
-//                                Text(data.detail)
-//                                    .font(Font.system(size: 15, weight: Font.Weight.light, design: Font.Design.default))
-//                            }
-//                            Spacer()
-//                        }
-//                        .foregroundColor(Color.white)
-//                        .padding(12)
-//                        .background(data.type.tintColor)
-//                        .cornerRadius(8)
-//                    }
-//                    .padding()
-//                    .frame(width: geometry.size.width - 16)
-//                    .shadow(radius: 3)
-//                    .offset(x: 0, y: -20)
-//                    .transition(AnyTransition.move(edge: .bottom).combined(with: .opacity))
-//                    .animation(Animation.spring())
-//                    .onTapGesture {
-//                        withAnimation {
-//                            self.data = nil
-//                        }
-//                    }
-//                    .onAppear {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                            withAnimation {
-//                                self.data = nil
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        GeometryReader { geometry in
+            ZStack {
+                content
+                self.data.map { data in
+                    VStack {
+                        Spacer()
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                data.title.map {
+                                    Text($0)
+                                        .bold()
+                                }
+                                Text(data.detail)
+                                    .font(Font.system(size: 15, weight: Font.Weight.light, design: Font.Design.default))
+                            }
+                            Spacer()
+                        }
+                        .foregroundColor(Color.white)
+                        .padding(12)
+                        .background(data.type.tintColor)
+                        .cornerRadius(8)
+                    }
+                    .padding()
+                    .frame(width: geometry.size.width - 16)
+                    .shadow(radius: 3)
+                    .offset(x: 0, y: -20)
+                    .transition(AnyTransition.move(edge: .bottom).combined(with: .opacity))
+                    .animation(Animation.spring())
+                    .onTapGesture {
+                        withAnimation {
+                            self.data = nil
+                        }
+                    }
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                self.data = nil
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

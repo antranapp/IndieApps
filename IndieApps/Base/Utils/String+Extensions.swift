@@ -25,7 +25,7 @@ extension String {
     }
     
     var asValidPath: String {
-        var invalidCharacters = CharacterSet(charactersIn: ":/")
+        var invalidCharacters = CharacterSet(charactersIn: ":/.")
         invalidCharacters.formUnion(.newlines)
         invalidCharacters.formUnion(.illegalCharacters)
         invalidCharacters.formUnion(.controlCharacters)
