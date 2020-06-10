@@ -42,22 +42,28 @@ struct SettingsView: View {
                         )
                 }
             )
-                .background(
-                    EmptyView()
-                        .actionSheet(isPresented: self.$showResetConfirmation) {
-                            ActionSheet(
-                                title: Text("Confirmation"),
-                                message: Text("Do you really want to reset the content?"),
-                                buttons: [
-                                    .destructive(Text("Yes"), action: {
-                                        viewStore.send(.resetContent)
-                                    }),
-                                    .cancel()
-                                ]
-                            )
-                    }
+            .background(
+                EmptyView()
+                    .actionSheet(isPresented: self.$showResetConfirmation) {
+                        ActionSheet(
+                            title: Text("Confirmation"),
+                            message: Text("Do you really want to reset the content?"),
+                            buttons: [
+                                .destructive(Text("Yes"), action: {
+                                    viewStore.send(.resetContent)
+                                }),
+                                .cancel()
+                            ]
+                        )
+                }
             )
-                .navigationBarTitle("Settings")
+            .navigationBarTitle("Settings")
+            .snackbar(
+                data: viewStore.binding(
+                    get: { $0.snackbarData },
+                    send: { _ in MainAction.hideSnackbar }
+                )
+            )
         }
     }
 }

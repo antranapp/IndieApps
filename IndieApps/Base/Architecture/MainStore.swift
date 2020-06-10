@@ -112,6 +112,7 @@ let mainReducer = categoryReducer
 
                 case .endOnboarding:
                     state.isDataAvailable = true
+                    state.snackbarData = SnackbarModifier.SnackbarData(detail: "Content is ready!", type: .success)
                     return .none
                 
                 case .updateContent:

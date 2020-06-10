@@ -7,11 +7,11 @@ import SwiftUI
 struct SnackbarModifier: ViewModifier {
     
     struct SnackbarData: Equatable {
-        var title: String
+        var title: String?
         var detail: String
         var type: SnackbarType
         
-        static func makeInfo(title: String, detail: String) -> Self {
+        static func makeInfo(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
                 detail: detail,
@@ -19,7 +19,7 @@ struct SnackbarModifier: ViewModifier {
             )
         }
         
-        static func makeWarning(title: String, detail: String) -> Self {
+        static func makeWarning(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
                 detail: detail,
@@ -27,7 +27,7 @@ struct SnackbarModifier: ViewModifier {
             )
         }
         
-        static func makeSuccess(title: String, detail: String) -> Self {
+        static func makeSuccess(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
                 detail: detail,
@@ -35,7 +35,7 @@ struct SnackbarModifier: ViewModifier {
             )
         }
         
-        static func makeError(title: String, detail: String) -> Self {
+        static func makeError(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
                 detail: detail,
@@ -68,52 +68,58 @@ struct SnackbarModifier: ViewModifier {
         }
     }
     
-    @Binding var data: SnackbarData
-    @Binding var show: Bool
+    @Binding var data: SnackbarData?
     
     func body(content: Content) -> some View {
-        ZStack {
-            content
-            if show {
-                VStack {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(data.title)
-                                .bold()
-                            Text(data.detail)
-                                .font(Font.system(size: 15, weight: Font.Weight.light, design: Font.Design.default))
-                        }
+        GeometryReader { geometry in
+            ZStack {
+                content
+                self.data.map { data in
+                    VStack {
                         Spacer()
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                data.title.map {
+                                    Text($0)
+                                        .bold()
+                                }
+                                Text(data.detail)
+                                    .font(Font.system(size: 15, weight: Font.Weight.light, design: Font.Design.default))
+                            }
+                            Spacer()
+                        }
+                        .foregroundColor(Color.white)
+                        .padding(12)
+                        .background(data.type.tintColor)
+                        .cornerRadius(8)
                     }
-                    .foregroundColor(Color.white)
-                    .padding(12)
-                    .background(data.type.tintColor)
-                    .cornerRadius(8)
-                    Spacer()
-                }
-                .padding()
-                .shadow(radius: 3)
-                .animation(.easeInOut)
-                .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
-                .onTapGesture {
-                    withAnimation {
-                        self.show = false
-                    }
-                }.onAppear(perform: {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    .padding()
+                    .frame(width: geometry.size.width - 16)
+                    .shadow(radius: 3)
+                    .offset(x: 0, y: -20)
+                    .transition(AnyTransition.move(edge: .bottom).combined(with: .opacity))
+                    .animation(Animation.spring())
+                    .onTapGesture {
                         withAnimation {
-                            self.show = false
+                            self.data = nil
                         }
                     }
-                })
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                self.data = nil
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
 extension View {
-    func snackbar(data: Binding<SnackbarModifier.SnackbarData>, show: Binding<Bool>) -> some View {
-        self.modifier(SnackbarModifier(data: data, show: show))
+    func snackbar(data: Binding<SnackbarModifier.SnackbarData?>) -> some View {
+        self.modifier(SnackbarModifier(data: data))
     }
 }
 
