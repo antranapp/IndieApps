@@ -2,6 +2,7 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
+import CasePaths
 import UIKit
 import Foundation
 
@@ -102,6 +103,25 @@ enum Preview: Identifiable, Equatable, Hashable {
     var id: String {
         type
     }
+    
+    var links: [String] {
+        switch self {
+            case .web(let links):
+                return links
+            case .macOS(let links):
+                return links
+            case .iOS(let links):
+                return links
+            case .iPadOS(let links):
+                return links
+            case .watchOS(let links):
+                return links
+            case .tvOS(let links):
+                return links
+        }
+    }
+    
+    
     
     var type: String {
         switch self {

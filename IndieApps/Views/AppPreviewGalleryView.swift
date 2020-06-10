@@ -12,12 +12,12 @@ struct AppPreviewGalleryView: View {
     var preview: Preview
     
     @State private var index = 0
-    
+        
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
-                PagingView(index: self.$index.animation(), maxIndex: 2) {
-                    self.makePreview(self.preview, geometry: geometry)
+                PagingView(index: self.$index.animation(), maxIndex: self.preview.links.count - 1) {
+                    self.makeImagePreview(links: self.preview.links, geometry: geometry)
                 }
             }
             .navigationBarTitle("", displayMode: .inline)
@@ -29,24 +29,7 @@ struct AppPreviewGalleryView: View {
     
     // MARK: Private helpers
     
-    private func makePreview(_ preview: Preview, geometry: GeometryProxy) -> some View {
-        switch preview {
-            case .web(let links):
-                return makeImagePreview(title: "web", links: links, geometry: geometry)
-            case .macOS(let links):
-                return makeImagePreview(title: "macOS", links: links, geometry: geometry)
-            case .iOS(let links):
-                return makeImagePreview(title: "iOS", links: links, geometry: geometry)
-            case .iPadOS(let links):
-                return makeImagePreview(title: "iPadOS", links: links, geometry: geometry)
-            case .watchOS(let links):
-                return makeImagePreview(title: "watchOS", links: links, geometry: geometry)
-            case .tvOS(let links):
-                return makeImagePreview(title: "tvOS", links: links, geometry: geometry)
-        }
-    }
-    
-    private func makeImagePreview(title: String, links: [String], geometry: GeometryProxy) -> some View {
+    private func makeImagePreview(links: [String], geometry: GeometryProxy) -> some View {
         return ForEach(links, id: \.self) {
             URL(string: $0).map {
                 KFImage($0)
