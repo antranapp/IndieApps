@@ -8,7 +8,6 @@ import Combine
 
 public protocol GitServiceProtocol {
     
-    var localRepositoryFolder: Folder { get }
     var localRepository: GTRepository? { get set }
     
     /// Clone the content repository to disk.
@@ -31,22 +30,20 @@ class GitService: GitServiceProtocol {
     // Public
     
     var localRepository: GTRepository?
-    lazy var localRepositoryFolder: Folder = {
-       try! Folder(path: localRepositoryFolderPath)
-    }()
     
     // Private
     
-    private let localRepositoryFolderPath: String
-    private let remoteRepositoryURL: URL
+    private let content: Content
     private let fileManager = FileManager.default
     private let queue: DispatchQueue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
+    private lazy var localRepositoryFolder = {
+        try! Folder(path: content.localURL.path)
+    }()
     
     // MARK: Initialization
     
-    init(localRepositoryFolderPath: String, remoteRepositoryURL: URL) {
-        self.localRepositoryFolderPath = localRepositoryFolderPath
-        self.remoteRepositoryURL = remoteRepositoryURL
+    init(content: Content) {
+        self.content = content
     }
     
     // MARK: APIs
@@ -57,7 +54,11 @@ class GitService: GitServiceProtocol {
         return Future { promise in
             self.queue.async {
                 do {
-                    self.localRepository = try GTRepository.clone(from: self.remoteRepositoryURL, toWorkingDirectory: self.localRepositoryFolder.url, options: [GTRepositoryCloneOptionsTransportFlags: true], transferProgressBlock: { progress, isFinished in
+                    self.localRepository = try GTRepository.clone(
+                        from: self.content.remoteURL,
+                        toWorkingDirectory: self.content.localURL,
+                        options: [GTRepositoryCloneOptionsTransportFlags: true],
+                        transferProgressBlock: { progress, isFinished in
                         let progress = Float(progress.pointee.received_objects)/Float(progress.pointee.total_objects)
                         progressHandler(progress, isFinished.pointee.boolValue)
                     })                    
@@ -114,8 +115,8 @@ class GitService: GitServiceProtocol {
         }
         
         // Check if local repository is available
-        print("GitServie \(localRepositoryFolder.url)")
-        localRepository = try GTRepository(url: localRepositoryFolder.url)
+        print("GitServie \(content.localURL)")
+        localRepository = try GTRepository(url: content.localURL)
     }
 }
 

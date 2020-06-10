@@ -9,14 +9,28 @@ import Foundation
 
 typealias MainStore = Store<MainState, MainAction>
 
+struct Content {
+    let localURL: URL
+    let remoteURL: URL
+}
+
+let configuration = AppConfiguration()
+
 struct MainEnvironment {
     var mainQueue: AnySchedulerOf<DispatchQueue>
-    var onboardingService: OnboardingServiceProtocol = OnboardingService()
-    var gitService: GitServiceProtocol = GitService(
-        localRepositoryFolderPath: FileManager.default.contentPath!,
-        remoteRepositoryURL: URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
+    
+    var onboardingService: OnboardingServiceProtocol = OnboardingService(
+        archiveURL: configuration.archiveURL,
+        content: configuration.content
     )
-    var contentService: ContentServiceProtocol = ContentService(rootFolderPath: FileManager.default.contentPath!)
+    
+    var gitService: GitServiceProtocol = GitService(
+        content: configuration.content
+    )
+    
+    var contentService: ContentServiceProtocol = ContentService(
+        content: configuration.content
+    )
 }
 
 // MARK: State
@@ -178,11 +192,3 @@ let mainReducer = categoryReducer
         }
     )
     
-
-// MARK: Helpers Extensions
-
-extension FileManager {
-    var contentPath: String? {
-        return self.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("content").path
-    }
-}

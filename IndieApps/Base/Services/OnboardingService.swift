@@ -12,6 +12,18 @@ protocol OnboardingServiceProtocol {
 
 class OnboardingService: OnboardingServiceProtocol {
     
+    private let content: Content
+    private let archiveURL: URL
+    
+    // MARK: Initialization
+    
+    init(archiveURL: URL, content: Content) {
+        self.archiveURL = archiveURL
+        self.content = content
+    }
+
+    // MARK: APIs
+    
     func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error> {
         DispatchQueue.global().publisher { promise in
             do {
@@ -27,20 +39,15 @@ class OnboardingService: OnboardingServiceProtocol {
     
     private func unpackContent() throws {
         let fileManager = FileManager.default
-        guard let sourceURL = Bundle.main.url(forResource: "Archive", withExtension: "zip"),
-              var destinationURL = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            throw OnboardingServiceError.ioException
-        }
-        destinationURL.appendPathComponent("content")
 
-        let checkFileURL = destinationURL.appendingPathComponent("version").appendingPathExtension("txt")
+        let checkFileURL = content.localURL.appendingPathComponent("version").appendingPathExtension("txt")
         
         guard !fileManager.fileExists(atPath: checkFileURL.path) else {
             return
         }
         
-        try fileManager.createDirectory(at: destinationURL, withIntermediateDirectories: true, attributes: nil)
-        try fileManager.unzipItem(at: sourceURL, to: destinationURL)
+        try fileManager.createDirectory(at: content.localURL, withIntermediateDirectories: true, attributes: nil)
+        try fileManager.unzipItem(at: archiveURL, to: content.localURL)
         try "\(Date())".write(to: checkFileURL, atomically: true, encoding: .utf8)
     }
 }
