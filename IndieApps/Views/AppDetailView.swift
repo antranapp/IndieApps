@@ -47,7 +47,7 @@ struct AppDetailView: View {
                     
                     
                     // Previews
-                    app.previews.map {AppPreviewsView(previews: $0)}
+                    app.previews.map { AppPreviewsView(previews: $0) }
                     
                     // Description
                     Group {
@@ -107,15 +107,23 @@ struct AppPreviewsView: View {
     
     var previews: [Preview]
     
+    @State private var isShowingGallery: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Screenshots")
                 .font(.title)
                 .padding(.vertical, 8)
             
-            ForEach(previews) {
-                self.makePreview($0)
+            ForEach(previews) { preview in
+                self.makePreview(preview)
+                    .sheet(isPresented: self.$isShowingGallery) {
+                        AppPreviewGalleryView(preview: preview)
+                    }
             }
+        }
+        .onTapGesture {
+            self.isShowingGallery.toggle()
         }
     }
     

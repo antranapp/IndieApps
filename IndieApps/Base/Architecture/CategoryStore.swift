@@ -62,4 +62,3 @@ let categoryReducer = Reducer<CategoryState, CategoryAction, CategoryEnvironment
             return .none
     }
 }
-.debug()

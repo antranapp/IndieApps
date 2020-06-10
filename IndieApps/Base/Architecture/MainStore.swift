@@ -177,7 +177,6 @@ let mainReducer = categoryReducer
             }
         }
     )
-    .debug()
     
 
 // MARK: Helpers Extensions

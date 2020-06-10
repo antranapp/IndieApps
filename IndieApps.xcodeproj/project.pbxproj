@@ -44,6 +44,8 @@
 		7F650346248ED45E004A1733 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F650345248ED45E004A1733 /* ActivityIndicator.swift */; };
 		7F650348248ED491004A1733 /* UIViewRepresented.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F650347248ED491004A1733 /* UIViewRepresented.swift */; };
 		7F9E1336248EDDD600763282 /* CategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9E1335248EDDD600763282 /* CategoryStore.swift */; };
+		7FBCEF8F249160DE00A13A3D /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBCEF8E249160DE00A13A3D /* PageView.swift */; };
+		7FBCEF912491640A00A13A3D /* AppPreviewGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBCEF902491640A00A13A3D /* AppPreviewGalleryView.swift */; };
 		7FD0935B248E2D32007A2957 /* MockOnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */; };
 		7FD0935D248E2F02007A2957 /* MockContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD0935C248E2F02007A2957 /* MockContentService.swift */; };
 		7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */; };
@@ -107,6 +109,8 @@
 		7F650345248ED45E004A1733 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		7F650347248ED491004A1733 /* UIViewRepresented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRepresented.swift; sourceTree = "<group>"; };
 		7F9E1335248EDDD600763282 /* CategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStore.swift; sourceTree = "<group>"; };
+		7FBCEF8E249160DE00A13A3D /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
+		7FBCEF902491640A00A13A3D /* AppPreviewGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreviewGalleryView.swift; sourceTree = "<group>"; };
 		7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOnboardingService.swift; sourceTree = "<group>"; };
 		7FD0935C248E2F02007A2957 /* MockContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContentService.swift; sourceTree = "<group>"; };
 		7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
@@ -164,6 +168,7 @@
 				7F463AB72488F0C100A52ECA /* AppRootView.swift */,
 				7F463ACF248941B600A52ECA /* OnboardingView.swift */,
 				7FF8F5B6248A25480008FAE6 /* SettingsView.swift */,
+				7FBCEF902491640A00A13A3D /* AppPreviewGalleryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -236,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				7F463ACD24893BBA00A52ECA /* Snackbar.swift */,
+				7FBCEF8E249160DE00A13A3D /* PageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 				7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */,
 				7F5663272487CBE700DBCAC8 /* Category.swift in Sources */,
 				7FD0935D248E2F02007A2957 /* MockContentService.swift in Sources */,
+				7FBCEF912491640A00A13A3D /* AppPreviewGalleryView.swift in Sources */,
 				7F650346248ED45E004A1733 /* ActivityIndicator.swift in Sources */,
 				7F463AD0248941B600A52ECA /* OnboardingView.swift in Sources */,
 				7F5663292487CDDB00DBCAC8 /* AppListView.swift in Sources */,
@@ -508,6 +515,7 @@
 				7F1ACF6924883BA40044E959 /* MainStore.swift in Sources */,
 				7F1ACF5D2487DE230044E959 /* App.swift in Sources */,
 				7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */,
+				7FBCEF8F249160DE00A13A3D /* PageView.swift in Sources */,
 				7F5662F32487C79E00DBCAC8 /* SceneDelegate.swift in Sources */,
 				7F1ACF6C24883CBF0044E959 /* ContentService.swift in Sources */,
 				7FF8F5B7248A25480008FAE6 /* SettingsView.swift in Sources */,
