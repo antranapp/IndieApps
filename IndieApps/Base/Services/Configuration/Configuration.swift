@@ -27,7 +27,7 @@ struct Configuration: ConfigurationProtocol {
     ) {
         self.archiveURL = archiveURL
         contentLocation = ContentLocation(
-            localURL: rootFolderURL.appendingPathComponent(remoteRepositoryURL.asValidPath),
+            localURL: rootFolderURL.appendingPathComponent(remoteRepositoryURL.asValidPath.lowercased()),
             remoteURL: remoteRepositoryURL
         )
     }
