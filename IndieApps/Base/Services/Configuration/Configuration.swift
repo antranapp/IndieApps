@@ -4,7 +4,12 @@
 
 import Foundation
 
-struct Configuration {
+protocol ConfigurationProtocol {
+    var archiveURL: URL? { get }
+    var contentLocation: ContentLocation { get }
+}
+
+struct Configuration: ConfigurationProtocol {
     
     struct Default {
         static let mainContentRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!

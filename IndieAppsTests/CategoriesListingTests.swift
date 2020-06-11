@@ -15,12 +15,8 @@ class CategoriesListingTests: XCTestCase {
         let store = TestStore(
             initialState: MainState(),
             reducer: mainReducer,
-            environment: MainEnvironment(
-                configuration: Configuration(),
+            environment: MockMainEnvironment(
                 mainQueue: self.scheduler.eraseToAnyScheduler()
-//                onboardingService: MockOnboardingService(),
-//                gitService: MockGitService(),
-//                contentService: MockContentSevice()
             )
         )
         
@@ -42,16 +38,13 @@ class CategoriesListingTests: XCTestCase {
         let store = TestStore(
             initialState: MainState(),
             reducer: mainReducer,
-            environment: MainEnvironment(
-                configuration: Configuration(),
-                mainQueue: self.scheduler.eraseToAnyScheduler()
-//                onboardingService: MockOnboardingService(),
-//                gitService: MockGitService(),
-//                contentService: MockContentSevice(
-//                    categoriesResult: {
-//                        Future<[IndieApps.Category], Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
-//                    }
-//                )
+            environment: MockMainEnvironment(
+                mainQueue: self.scheduler.eraseToAnyScheduler(),
+                contentService: MockContentSevice(
+                    categoriesResult: {
+                        Future<[IndieApps.Category], Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
+                    }
+                )
             )
         )
         

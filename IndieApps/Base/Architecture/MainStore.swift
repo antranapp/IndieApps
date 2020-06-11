@@ -18,18 +18,30 @@ var configuration = Configuration()
 
 typealias ConfigurationProvider = (Configuration) -> Void
 
-class MainEnvironment {
+protocol MainEnvironmentProtocol {
+    var mainQueue: AnySchedulerOf<DispatchQueue> { get }
+    var onboardingService: OnboardingServiceProtocol! { get }
+    var gitService: GitServiceProtocol! { get }
+    var contentService: ContentServiceProtocol! { get }
+    
+    func setup(with: ConfigurationProtocol)
+}
+
+class MainEnvironment: MainEnvironmentProtocol {
     var mainQueue: AnySchedulerOf<DispatchQueue>
     var onboardingService: OnboardingServiceProtocol!
     var gitService: GitServiceProtocol!
     var contentService: ContentServiceProtocol!
     
-    init(configuration: Configuration, mainQueue: AnySchedulerOf<DispatchQueue>) {
+    init(
+        configuration: ConfigurationProtocol,
+        mainQueue: AnySchedulerOf<DispatchQueue>
+    ) {
         self.mainQueue = mainQueue
         setup(with: configuration)
     }
     
-    func setup(with configuration: Configuration) {
+    func setup(with configuration: ConfigurationProtocol) {
         contentService = ContentService(
             contentLocation: configuration.contentLocation
         )
@@ -125,7 +137,7 @@ let mainReducer = categoryReducer
         }
     )
     .combined(
-        with: Reducer<MainState, MainAction, MainEnvironment> { state, action, environment in
+        with: Reducer<MainState, MainAction, MainEnvironmentProtocol> { state, action, environment in
             switch action {
                 case .startOnboarding:
                     return Effect(environment.onboardingService.unpackInitialContentIfNeeded())

@@ -15,10 +15,8 @@ class OnboardingTests: XCTestCase {
         let store = TestStore(
             initialState: MainState(),
             reducer: mainReducer,
-            environment: MainEnvironment(
-                configuration: Configuration(),
-                mainQueue: self.scheduler.eraseToAnyScheduler()
-            )
+            environment: MockMainEnvironment(
+                mainQueue: self.scheduler.eraseToAnyScheduler())
         )
         
         store.assert(
@@ -28,7 +26,9 @@ class OnboardingTests: XCTestCase {
             .do {
                 self.scheduler.advance()
             },
-            .receive(.updateContent),
+            .receive(.updateContent) {
+                $0.isDataAvailable = true
+            },
             .do {
                 self.scheduler.advance()
             },
@@ -44,14 +44,11 @@ class OnboardingTests: XCTestCase {
         let store = TestStore(
             initialState: MainState(),
             reducer: mainReducer,
-            environment: MainEnvironment(
-                configuration: Configuration(),
-                mainQueue: self.scheduler.eraseToAnyScheduler()
-//                onboardingService: MockOnboardingService(unpackContentResult: {
-//                    Future<Void, Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
-//                }),
-//                gitService: MockGitService(),
-//                contentService: MockContentSevice()
+            environment: MockMainEnvironment(
+                mainQueue: self.scheduler.eraseToAnyScheduler(),
+                onboardingService: MockOnboardingService(unpackContentResult: {
+                    Future<OnboardingState, Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
+                })
             )
         )
         
