@@ -35,12 +35,12 @@ struct OnboardingView: View {
         direction.toggle()
     }
 }
-
-#if DEBUG
-struct OnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        let store = Store(initialState: .init(), reducer: mainReducer, environment: MainEnvironment(mainQueue: DispatchQueue.main.eraseToAnyScheduler()))
-        return OnboardingContainerView(store: store)
-    }
-}
-#endif
+//
+//#if DEBUG
+//struct OnboardingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let store = Store(initialState: .init(), reducer: mainReducer, environment: MainEnvironment(mainQueue: DispatchQueue.main.eraseToAnyScheduler()))
+//        return OnboardingContainerView(store: store)
+//    }
+//}
+//#endif

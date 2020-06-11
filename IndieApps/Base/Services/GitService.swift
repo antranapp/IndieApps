@@ -23,7 +23,7 @@ public protocol GitServiceProtocol {
     func reset() -> Future<Bool, Error>
 }
 
-class GitService: GitServiceProtocol {
+class GitService: GitServiceProtocol, CheckFileManager {
     
     // MARK: Properties
         
@@ -61,7 +61,8 @@ class GitService: GitServiceProtocol {
                         transferProgressBlock: { progress, isFinished in
                         let progress = Float(progress.pointee.received_objects)/Float(progress.pointee.total_objects)
                         progressHandler(progress, isFinished.pointee.boolValue)
-                    })                    
+                    })
+                    try self.writeCheckFile(at: self.contentLocation.localURL)
                     promise(.success(()))
                 } catch {
                     print(error)

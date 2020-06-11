@@ -7,28 +7,34 @@ import Combine
 import Foundation
 
 protocol OnboardingServiceProtocol {
-    func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error>
+    func unpackInitialContentIfNeeded() -> AnyPublisher<OnboardingState, Error>
 }
 
-class OnboardingService: OnboardingServiceProtocol {
+enum OnboardingState {
+    case unpackSucceed
+    case noUnpackingDone
+    case noUnpackingRequired
+}
+
+class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
     
     private let contentLocation: ContentLocation
-    private let archiveURL: URL
+    private let archiveURL: URL?
     
     // MARK: Initialization
     
-    init(archiveURL: URL, contentLocation: ContentLocation) {
+    init(archiveURL: URL?, contentLocation: ContentLocation) {
         self.archiveURL = archiveURL
         self.contentLocation = contentLocation
     }
 
     // MARK: APIs
     
-    func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error> {
+    func unpackInitialContentIfNeeded() -> AnyPublisher<OnboardingState, Error> {
         DispatchQueue.global().publisher { promise in
             do {
-                try self.unpackContent()
-                promise(.success(()))
+                let state = try self.unpackContent()
+                promise(.success(state))
             } catch {
                 promise(.failure(error))
             }
@@ -37,14 +43,13 @@ class OnboardingService: OnboardingServiceProtocol {
     
     // MARK: Private helpers
     
-    private func unpackContent() throws {
-        let fileManager = FileManager.default
-
-        let checkFileURL = contentLocation.localURL.appendingPathComponent("version").appendingPathExtension("txt")
+    private func unpackContent() throws -> OnboardingState {
         
-        guard !fileManager.fileExists(atPath: checkFileURL.path) else {
-            return
+        guard !isCheckFileAvailable(at: contentLocation.localURL) else {
+            return .noUnpackingRequired
         }
+        
+        let fileManager = FileManager.default
         
         try fileManager.createDirectory(
             at: contentLocation.localURL,
@@ -52,12 +57,18 @@ class OnboardingService: OnboardingServiceProtocol {
             attributes: nil
         )
         
+        guard let archiveURL = archiveURL else {
+            return .noUnpackingDone
+        }
+        
         try fileManager.unzipItem(
             at: archiveURL,
             to: contentLocation.localURL
         )
         
-        try "\(Date())".write(to: checkFileURL, atomically: true, encoding: .utf8)
+        try writeCheckFile(at: contentLocation.localURL)
+        
+        return .unpackSucceed
     }
 }
 

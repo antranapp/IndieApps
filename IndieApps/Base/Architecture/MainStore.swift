@@ -14,28 +14,40 @@ struct ContentLocation {
     let remoteURL: URL
 }
 
-let configuration = AppConfiguration()
+var configuration = Configuration()
 
-struct MainEnvironment {
+typealias ConfigurationProvider = (Configuration) -> Void
+
+class MainEnvironment {
     var mainQueue: AnySchedulerOf<DispatchQueue>
+    var onboardingService: OnboardingServiceProtocol!
+    var gitService: GitServiceProtocol!
+    var contentService: ContentServiceProtocol!
     
-    var onboardingService: OnboardingServiceProtocol = OnboardingService(
-        archiveURL: configuration.archiveURL,
-        contentLocation: configuration.contentLocation
-    )
+    init(configuration: Configuration, mainQueue: AnySchedulerOf<DispatchQueue>) {
+        self.mainQueue = mainQueue
+        setup(with: configuration)
+    }
     
-    var gitService: GitServiceProtocol = GitService(
-        contentLocation: configuration.contentLocation
-    )
-    
-    var contentService: ContentServiceProtocol = ContentService(
-        contentLocation: configuration.contentLocation
-    )
+    func setup(with configuration: Configuration) {
+        contentService = ContentService(
+            contentLocation: configuration.contentLocation
+        )
+        
+        gitService = GitService(
+            contentLocation: configuration.contentLocation
+        )
+        
+        onboardingService = OnboardingService(
+            archiveURL: configuration.archiveURL,
+            contentLocation: configuration.contentLocation
+        )
+    }
 }
 
 // MARK: State
 
-struct MainState: Equatable {    
+struct MainState: Equatable {
     var snackbarData: SnackbarModifier.SnackbarData?
     var isDataAvailable: Bool = false
     var categories: [Category]?
@@ -46,15 +58,17 @@ struct MainState: Equatable {
 
 enum MainAction {
     case startOnboarding
-    case endOnboarding(Error?)
+    case endOnboarding
+    case cloneContent
     case updateContent
     case resetContent
     case fetchCategories
     case setCategories([Category])
     case showError(Error)
-    case showMessage(title: String, message: String, type: SnackbarModifier.SnackbarType)
+    case showMessage(title: String?, message: String, type: SnackbarModifier.SnackbarType)
     case hideSnackbar
     case goToOnboarding
+    case switchContent(Configuration)
 
     // For navigation to Category component
     case category(CategoryAction)
@@ -116,22 +130,35 @@ let mainReducer = categoryReducer
                 case .startOnboarding:
                     return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
                         .receive(on: environment.mainQueue)
-                        .map {
-                            MainAction.updateContent
+                        .map { state -> MainAction in
+                            switch state {
+                                case .noUnpackingDone:
+                                    return .cloneContent
+                                default:
+                                    return .updateContent
+                            }
                         }
                         .catch {
-                            Just(MainAction.showError($0))
+                            Just(.showError($0))
                         }
                         .eraseToEffect()
 
-                case .endOnboarding(let error):
-                    if let error = error {
-                        state.isDataAvailable = false
-                        state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
-                    } else {
-                        state.snackbarData = SnackbarModifier.SnackbarData.makeSuccess(detail: "Content is ready!")
-                    }
+                case .endOnboarding:
+                    state.snackbarData = SnackbarModifier.SnackbarData.makeSuccess(detail: "Content is ready!")
                     return .none
+                
+                case .cloneContent:
+                    return Effect(environment.gitService.clone { progress, isCompleted in
+                            print(progress)
+                        })
+                        .receive(on: environment.mainQueue)
+                        .map {
+                            .updateContent
+                        }
+                        .catch {
+                            Just(.showError($0))
+                        }
+                        .eraseToEffect()
                 
                 case .updateContent:
                     state.isDataAvailable = true
@@ -139,10 +166,10 @@ let mainReducer = categoryReducer
                     return Effect(environment.gitService.update())
                         .receive(on: environment.mainQueue)
                         .map {
-                            MainAction.endOnboarding(nil)
+                            .endOnboarding
                         }
                         .catch {
-                            Just(MainAction.showError($0))
+                            Just(.showError($0))
                         }
                         .eraseToEffect()
                 
@@ -152,10 +179,10 @@ let mainReducer = categoryReducer
                     return Effect(environment.contentService.fetchCategoryList())
                         .receive(on: environment.mainQueue)
                         .map {
-                            MainAction.setCategories($0)
+                            .setCategories($0)
                         }
                         .catch { error -> AnyPublisher<MainAction, Never> in
-                            return Just(MainAction.showError(error)).eraseToAnyPublisher()
+                            return Just(.showError(error)).eraseToAnyPublisher()
                         }
                         .eraseToEffect()
                 
@@ -178,8 +205,13 @@ let mainReducer = categoryReducer
                 case .resetContent:
                     return Effect(environment.gitService.reset())
                         .receive(on: environment.mainQueue)
-                        .map { $0 ? MainAction.goToOnboarding : MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
-                        .replaceError(with: MainAction.showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+                        .map { $0 ? .goToOnboarding : .showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
+                        .replaceError(with: .showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+                        .eraseToEffect()
+                
+                case .switchContent(let configuration):
+                    environment.setup(with: configuration)
+                    return Effect(value: .goToOnboarding)
                         .eraseToEffect()
                 
                 case .goToOnboarding:

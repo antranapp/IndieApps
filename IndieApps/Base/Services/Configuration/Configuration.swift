@@ -4,17 +4,26 @@
 
 import Foundation
 
-struct AppConfiguration {
-    let mainContentRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
-    let rootFolderURL = FileManager.default.rootContentURL!
-    let archiveURL = Bundle.main.url(forResource: "Archive", withExtension: ".zip")!
+struct Configuration {
     
+    struct Default {
+        static let mainContentRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
+        static let rootFolderURL = FileManager.default.rootContentURL!
+        static let archiveURL = Bundle.main.url(forResource: "Archive", withExtension: ".zip")!
+    }
+    
+    let archiveURL: URL?
     let contentLocation: ContentLocation
     
-    init() {
+    init(
+        rootFolderURL: URL = Default.rootFolderURL,
+        archiveURL: URL? = Default.archiveURL,
+        remoteRepositoryURL: URL = Default.mainContentRepositoryURL
+    ) {
+        self.archiveURL = archiveURL
         contentLocation = ContentLocation(
-            localURL: rootFolderURL.appendingPathComponent(mainContentRepositoryURL.asValidPath),
-            remoteURL: mainContentRepositoryURL
+            localURL: rootFolderURL.appendingPathComponent(remoteRepositoryURL.asValidPath),
+            remoteURL: remoteRepositoryURL
         )
     }
 }

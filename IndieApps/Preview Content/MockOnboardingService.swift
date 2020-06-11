@@ -7,13 +7,13 @@ import Combine
 
 struct MockOnboardingService: OnboardingServiceProtocol {
     
-    var unpackContentResult: AnyPublisherResultMaker<Void>
+    var unpackContentResult: AnyPublisherResultMaker<OnboardingState>
     
-    init(unpackContentResult: AnyPublisherResultMaker<Void>? = nil)  {
-        self.unpackContentResult = unpackContentResult ?? { Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
+    init(unpackContentResult: AnyPublisherResultMaker<OnboardingState>? = nil)  {
+        self.unpackContentResult = unpackContentResult ?? { Just(OnboardingState.unpackSucceed).setFailureType(to: Error.self).eraseToAnyPublisher() }
     }
     
-    func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error> {
+    func unpackInitialContentIfNeeded() -> AnyPublisher<OnboardingState, Error> {
         return unpackContentResult()
     }
 }

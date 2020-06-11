@@ -47,17 +47,17 @@ struct CategoryListContainerView: View {
     }
 }
 
-
-#if DEBUG
-struct CategoryListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let world = MainEnvironment(
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            onboardingService: MockOnboardingService(),
-            gitService: MockGitService(),
-            contentService: MockContentSevice())
-        let store = Store(initialState: .init(), reducer: mainReducer, environment: world)
-        return CategoryListContainerView(store: store)
-    }
-}
-#endif
+//
+//#if DEBUG
+//struct CategoryListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let world = MainEnvironment(
+//            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+//            onboardingService: MockOnboardingService(),
+//            gitService: MockGitService(),
+//            contentService: MockContentSevice())
+//        let store = Store(initialState: .init(), reducer: mainReducer, environment: world)
+//        return CategoryListContainerView(store: store)
+//    }
+//}
+//#endif
