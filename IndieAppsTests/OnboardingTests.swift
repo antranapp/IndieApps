@@ -16,10 +16,8 @@ class OnboardingTests: XCTestCase {
             initialState: MainState(),
             reducer: mainReducer,
             environment: MainEnvironment(
-                mainQueue: self.scheduler.eraseToAnyScheduler(),
-                onboardingService: MockOnboardingService(),
-                gitService: MockGitService(),
-                contentService: MockContentSevice()
+                configuration: Configuration(),
+                mainQueue: self.scheduler.eraseToAnyScheduler()
             )
         )
         
@@ -47,12 +45,13 @@ class OnboardingTests: XCTestCase {
             initialState: MainState(),
             reducer: mainReducer,
             environment: MainEnvironment(
-                mainQueue: self.scheduler.eraseToAnyScheduler(),
-                onboardingService: MockOnboardingService(unpackContentResult: {
-                    Future<Void, Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
-                }),
-                gitService: MockGitService(),
-                contentService: MockContentSevice()
+                configuration: Configuration(),
+                mainQueue: self.scheduler.eraseToAnyScheduler()
+//                onboardingService: MockOnboardingService(unpackContentResult: {
+//                    Future<Void, Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
+//                }),
+//                gitService: MockGitService(),
+//                contentService: MockContentSevice()
             )
         )
         

@@ -16,10 +16,11 @@ class CategoriesListingTests: XCTestCase {
             initialState: MainState(),
             reducer: mainReducer,
             environment: MainEnvironment(
-                mainQueue: self.scheduler.eraseToAnyScheduler(),
-                onboardingService: MockOnboardingService(),
-                gitService: MockGitService(),
-                contentService: MockContentSevice()
+                configuration: Configuration(),
+                mainQueue: self.scheduler.eraseToAnyScheduler()
+//                onboardingService: MockOnboardingService(),
+//                gitService: MockGitService(),
+//                contentService: MockContentSevice()
             )
         )
         
@@ -42,14 +43,15 @@ class CategoriesListingTests: XCTestCase {
             initialState: MainState(),
             reducer: mainReducer,
             environment: MainEnvironment(
-                mainQueue: self.scheduler.eraseToAnyScheduler(),
-                onboardingService: MockOnboardingService(),
-                gitService: MockGitService(),
-                contentService: MockContentSevice(
-                    categoriesResult: {
-                        Future<[IndieApps.Category], Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
-                    }
-                )
+                configuration: Configuration(),
+                mainQueue: self.scheduler.eraseToAnyScheduler()
+//                onboardingService: MockOnboardingService(),
+//                gitService: MockGitService(),
+//                contentService: MockContentSevice(
+//                    categoriesResult: {
+//                        Future<[IndieApps.Category], Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
+//                    }
+//                )
             )
         )
         
