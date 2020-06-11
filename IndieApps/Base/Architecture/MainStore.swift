@@ -14,12 +14,12 @@ struct ContentLocation {
     let remoteURL: URL
 }
 
-var configuration = Configuration()
-
 typealias ConfigurationProvider = (Configuration) -> Void
 
 protocol MainEnvironmentProtocol {
     var mainQueue: AnySchedulerOf<DispatchQueue> { get }
+
+    var configuration: ConfigurationProtocol { get }
     var onboardingService: OnboardingServiceProtocol! { get }
     var gitService: GitServiceProtocol! { get }
     var contentService: ContentServiceProtocol! { get }
@@ -27,8 +27,11 @@ protocol MainEnvironmentProtocol {
     func setup(with: ConfigurationProtocol)
 }
 
+var configuration = Configuration()
+
 class MainEnvironment: MainEnvironmentProtocol {
     var mainQueue: AnySchedulerOf<DispatchQueue>
+    var configuration: ConfigurationProtocol
     var onboardingService: OnboardingServiceProtocol!
     var gitService: GitServiceProtocol!
     var contentService: ContentServiceProtocol!
@@ -38,10 +41,12 @@ class MainEnvironment: MainEnvironmentProtocol {
         mainQueue: AnySchedulerOf<DispatchQueue>
     ) {
         self.mainQueue = mainQueue
+        self.configuration = configuration
         setup(with: configuration)
     }
     
     func setup(with configuration: ConfigurationProtocol) {
+        self.configuration = configuration
         contentService = ContentService(
             contentLocation: configuration.contentLocation
         )
@@ -59,9 +64,15 @@ class MainEnvironment: MainEnvironmentProtocol {
 
 // MARK: State
 
+enum ContentState {
+    case unknown
+    case unavailable
+    case available
+}
+
 struct MainState: Equatable {
     var snackbarData: SnackbarModifier.SnackbarData?
-    var isDataAvailable: Bool = false
+    var contentState: ContentState = .unknown
     var categories: [Category]?
     var selection: CategoryState?
 }
@@ -74,6 +85,7 @@ enum MainAction {
     case cloneContent
     case updateContent
     case resetContent
+    case setContentState(ContentState, Error?)
     case fetchCategories
     case setCategories([Category])
     case showError(Error)
@@ -142,16 +154,18 @@ let mainReducer = categoryReducer
                 case .startOnboarding:
                     return Effect(environment.onboardingService.unpackInitialContentIfNeeded())
                         .receive(on: environment.mainQueue)
-                        .map { state -> MainAction in
-                            switch state {
+                        .map { onboardingState -> MainAction in
+                            switch onboardingState {
                                 case .noUnpackingDone:
                                     return .cloneContent
-                                default:
-                                    return .updateContent
+                                case .noUnpackingRequired:
+                                    return .setContentState(.available, nil)
+                                case .unpackSucceed:
+                                    return .setContentState(.available, nil)
                             }
                         }
                         .catch {
-                            Just(.showError($0))
+                            Just(.setContentState(.unavailable, $0))
                         }
                         .eraseToEffect()
 
@@ -165,7 +179,7 @@ let mainReducer = categoryReducer
                         })
                         .receive(on: environment.mainQueue)
                         .map {
-                            .updateContent
+                            .setContentState(.available, nil)
                         }
                         .catch {
                             Just(.showError($0))
@@ -173,8 +187,6 @@ let mainReducer = categoryReducer
                         .eraseToEffect()
                 
                 case .updateContent:
-                    state.isDataAvailable = true
-                    
                     return Effect(environment.gitService.update())
                         .receive(on: environment.mainQueue)
                         .map {
@@ -185,6 +197,18 @@ let mainReducer = categoryReducer
                         }
                         .eraseToEffect()
                 
+                case .setContentState(let contentState, let error):
+                    if let error = error {
+                        state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
+                    }
+                    state.contentState = contentState
+                    switch contentState {
+                        case .available:
+                            return Effect(value: MainAction.updateContent)
+                        default:
+                            return .none
+                    }
+                    
                 case .fetchCategories:
                     state.categories = nil
                     state.snackbarData = nil
@@ -221,13 +245,14 @@ let mainReducer = categoryReducer
                         .replaceError(with: .showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
                         .eraseToEffect()
                 
-                case .switchContent(let configuration):
-                    environment.setup(with: configuration)
+                case .switchContent(let newConfiguration):
+                    configuration = newConfiguration
+                    environment.setup(with: newConfiguration)
                     return Effect(value: .goToOnboarding)
                         .eraseToEffect()
                 
                 case .goToOnboarding:
-                    state.isDataAvailable = false
+                    state.contentState = .unknown
                     return .none
                 
                 case .category:

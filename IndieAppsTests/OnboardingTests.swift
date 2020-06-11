@@ -21,19 +21,21 @@ class OnboardingTests: XCTestCase {
         
         store.assert(
             .send(.startOnboarding) {
-                $0.isDataAvailable = false
+                $0.contentState = .unknown
             },
             .do {
                 self.scheduler.advance()
             },
-            .receive(.updateContent) {
-                $0.isDataAvailable = true
+            .receive(.setContentState(.available, nil)) {
+                $0.contentState = .available
+                $0.snackbarData = nil
             },
+            .receive(.updateContent),
             .do {
                 self.scheduler.advance()
             },
             .receive(.endOnboarding) {
-                $0.isDataAvailable = true
+                $0.contentState = .available
                 $0.snackbarData = SnackbarModifier.SnackbarData.makeSuccess(detail: "Content is ready!")
             }
         )
@@ -47,19 +49,22 @@ class OnboardingTests: XCTestCase {
             environment: MockMainEnvironment(
                 mainQueue: self.scheduler.eraseToAnyScheduler(),
                 onboardingService: MockOnboardingService(unpackContentResult: {
-                    Future<OnboardingState, Error>{ $0(.failure(expectedError))}.eraseToAnyPublisher()
+                    Future<OnboardingState, Error>{
+                        $0(.failure(expectedError))                        
+                    }.eraseToAnyPublisher()
                 })
             )
         )
         
         store.assert(
             .send(.startOnboarding) {
-                $0.isDataAvailable = false
+                $0.contentState = .unknown
             },
             .do {
                 self.scheduler.advance()
             },
-            .receive(.showError(expectedError)) {
+            .receive(.setContentState(.unavailable, expectedError)) {
+                $0.contentState = .unavailable
                 $0.snackbarData = SnackbarModifier.SnackbarData.makeError(error: expectedError)
             }
         )

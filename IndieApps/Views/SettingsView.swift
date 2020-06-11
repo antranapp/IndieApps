@@ -16,18 +16,16 @@ struct SettingsView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             Form {
-                Section(header: Text("Switch content repository: Please only use https and public repository. The Git client is not ready to handle any other configurations (yet) 😊")) {
+                Section(header: Text("Switch content repository: Please only use https and a public repository. The Git client is not ready to handle any other configurations (yet) 😊")) {
                     TextField("URL of the content repository", text: self.$remoteRepository)
                     Button(action: {
-                        print("should checkout \(self.remoteRepository)")
-                                                
                         guard let remoteURL = URL(string: self.remoteRepository) else {
                             viewStore.send(.showMessage(title: "Error!", message: "Invalid URL", type: .error))
                             return
                         }
                         
-                        guard remoteURL != Configuration.Default.mainContentRepositoryURL else {
-                            viewStore.send(.showMessage(title: nil, message: "You should not reclone the default repository! Use your fork or other's forks 😉)", type: .info))
+                        guard remoteURL != configuration.contentLocation.remoteURL else {
+                            viewStore.send(.showMessage(title: nil, message: "You should not reclone the current repository 😉)", type: .info))
                             return
                         }
 
@@ -41,12 +39,12 @@ struct SettingsView: View {
                     }
                 }
 
-                Section {
-                    Text("Update")
+                Section(header: Text("🔥")) {
+                    Text("Update content")
                         .onTapGesture {
                             self.showUpdateConfirmation.toggle()
                     }
-                    Text("Reset")
+                    Text("Reset content")
                         .foregroundColor(Color.red)
                         .onTapGesture {
                             self.showResetConfirmation.toggle()
@@ -58,7 +56,7 @@ struct SettingsView: View {
                     .actionSheet(isPresented: self.$showUpdateConfirmation) {
                         ActionSheet(
                             title: Text("Confirmation"),
-                            message: Text("Update the content?"),
+                            message: Text("Do you want to pull the content from the remote repository?"),
                             buttons: [
                                 .default(Text("Yes"), action: {
                                     viewStore.send(.updateContent)

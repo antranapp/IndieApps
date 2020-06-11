@@ -6,6 +6,6 @@
 import Combine
 
 typealias AnyPublisherResultMaker<T> = () -> AnyPublisher<T, Error>
-typealias FuterResultMaker<T> = () -> Future<T, Error>
+typealias FutureResultMaker<T> = () -> Future<T, Error>
 
 #endif

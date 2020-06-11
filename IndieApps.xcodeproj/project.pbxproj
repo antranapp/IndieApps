@@ -45,6 +45,10 @@
 		7F5C9629249238BE00676262 /* ArchiveTest.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7F5C9628249238BE00676262 /* ArchiveTest.zip */; };
 		7F5C962D2492396E00676262 /* MockConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5C962A2492393500676262 /* MockConfiguration.swift */; };
 		7F5C962F24923C3E00676262 /* MockMainEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5C962E24923C3E00676262 /* MockMainEnvironment.swift */; };
+		7F5C96342492670F00676262 /* TestingAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5C96332492670F00676262 /* TestingAppDelegate.swift */; };
+		7F5C96362492673300676262 /* TestingSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5C96352492673300676262 /* TestingSceneDelegate.swift */; };
+		7F5C96382492674C00676262 /* TestingRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5C96372492674C00676262 /* TestingRootViewController.swift */; };
+		7F5C963A2492677D00676262 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5C96392492677D00676262 /* main.swift */; };
 		7F650346248ED45E004A1733 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F650345248ED45E004A1733 /* ActivityIndicator.swift */; };
 		7F650348248ED491004A1733 /* UIViewRepresented.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F650347248ED491004A1733 /* UIViewRepresented.swift */; };
 		7F9E1336248EDDD600763282 /* CategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9E1335248EDDD600763282 /* CategoryStore.swift */; };
@@ -117,6 +121,10 @@
 		7F5C9628249238BE00676262 /* ArchiveTest.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = ArchiveTest.zip; sourceTree = "<group>"; };
 		7F5C962A2492393500676262 /* MockConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConfiguration.swift; sourceTree = "<group>"; };
 		7F5C962E24923C3E00676262 /* MockMainEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMainEnvironment.swift; sourceTree = "<group>"; };
+		7F5C96332492670F00676262 /* TestingAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingAppDelegate.swift; sourceTree = "<group>"; };
+		7F5C96352492673300676262 /* TestingSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingSceneDelegate.swift; sourceTree = "<group>"; };
+		7F5C96372492674C00676262 /* TestingRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingRootViewController.swift; sourceTree = "<group>"; };
+		7F5C96392492677D00676262 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		7F650345248ED45E004A1733 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		7F650347248ED491004A1733 /* UIViewRepresented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRepresented.swift; sourceTree = "<group>"; };
 		7F9E1335248EDDD600763282 /* CategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStore.swift; sourceTree = "<group>"; };
@@ -190,6 +198,7 @@
 		7F1ACF6524882E260044E959 /* Top */ = {
 			isa = PBXGroup;
 			children = (
+				7F5C96392492677D00676262 /* main.swift */,
 				7F5662F02487C79E00DBCAC8 /* AppDelegate.swift */,
 				7F5662F22487C79E00DBCAC8 /* SceneDelegate.swift */,
 			);
@@ -341,6 +350,7 @@
 		7F5C9626249238A800676262 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				7F5C9632249266FE00676262 /* Setup */,
 				7F5C962C2492396200676262 /* Mock */,
 				7F5C9627249238B200676262 /* Testdata */,
 			);
@@ -362,6 +372,16 @@
 				7F5C962E24923C3E00676262 /* MockMainEnvironment.swift */,
 			);
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		7F5C9632249266FE00676262 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				7F5C96332492670F00676262 /* TestingAppDelegate.swift */,
+				7F5C96352492673300676262 /* TestingSceneDelegate.swift */,
+				7F5C96372492674C00676262 /* TestingRootViewController.swift */,
+			);
+			path = Setup;
 			sourceTree = "<group>";
 		};
 		7FBCEF9B249180AF00A13A3D /* Configuration */ = {
@@ -544,6 +564,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FD0935B248E2D32007A2957 /* MockOnboardingService.swift in Sources */,
+				7F5C963A2492677D00676262 /* main.swift in Sources */,
 				7F9E1336248EDDD600763282 /* CategoryStore.swift in Sources */,
 				7F5662F12487C79E00DBCAC8 /* AppDelegate.swift in Sources */,
 				7F5663272487CBE700DBCAC8 /* Category.swift in Sources */,
@@ -587,8 +608,11 @@
 				7F5C962D2492396E00676262 /* MockConfiguration.swift in Sources */,
 				7F2D29C92490332C00620484 /* CategoriesListingTests.swift in Sources */,
 				7F56630B2487C7A200DBCAC8 /* OnboardingTests.swift in Sources */,
+				7F5C96382492674C00676262 /* TestingRootViewController.swift in Sources */,
+				7F5C96342492670F00676262 /* TestingAppDelegate.swift in Sources */,
 				7F2D29C52490242200620484 /* AppsListingTests.swift in Sources */,
 				7F5C962F24923C3E00676262 /* MockMainEnvironment.swift in Sources */,
+				7F5C96362492673300676262 /* TestingSceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

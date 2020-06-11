@@ -35,13 +35,24 @@ struct CategoryListContainerView: View {
                 .navigationBarTitle("Categories")
                 .navigationViewStyle(StackNavigationViewStyle())
                 .navigationBarItems(leading:
-                    NavigationLink(destination: SettingsView(store: self.store), label: {
-                        Image(systemName: "gear")
-                    })
+                    NavigationLink(
+                        destination: SettingsView(
+                            store: self.store
+                        ),
+                        label: {
+                            Image(systemName: "gear")
+                        }
+                    )
                 )
                 .onAppear {
                     viewStore.send(.fetchCategories)
                 }
+                .snackbar(
+                    data: viewStore.binding(
+                        get: { $0.snackbarData },
+                        send: { _ in MainAction.hideSnackbar }
+                    )
+                )
             }
         }
     }

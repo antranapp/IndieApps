@@ -26,6 +26,8 @@ class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
     init(archiveURL: URL?, contentLocation: ContentLocation) {
         self.archiveURL = archiveURL
         self.contentLocation = contentLocation
+        
+        print(contentLocation.localURL.absoluteString)
     }
 
     // MARK: APIs
