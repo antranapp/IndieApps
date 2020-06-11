@@ -64,7 +64,7 @@ class MainEnvironment: MainEnvironmentProtocol {
 
 // MARK: State
 
-enum ContentState {
+enum ContentState: Equatable {
     case unknown
     case unavailable
     case available
@@ -110,6 +110,9 @@ extension MainAction: Equatable {
                 return true
             case (.resetContent, .resetContent):
                 return true
+            case (.setContentState(let lState, let lError), .setContentState(let rState, let rError)):
+                return lState == rState &&
+                    lError?._code == rError?._code
             case (.fetchCategories, .fetchCategories):
                 return true
             case (.setCategories(let lCategories), .setCategories(let rCategories)):
@@ -158,9 +161,7 @@ let mainReducer = categoryReducer
                             switch onboardingState {
                                 case .noUnpackingDone:
                                     return .cloneContent
-                                case .noUnpackingRequired:
-                                    return .setContentState(.available, nil)
-                                case .unpackSucceed:
+                                default:
                                     return .setContentState(.available, nil)
                             }
                         }

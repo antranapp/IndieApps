@@ -48,11 +48,13 @@ class OnboardingTests: XCTestCase {
             reducer: mainReducer,
             environment: MockMainEnvironment(
                 mainQueue: self.scheduler.eraseToAnyScheduler(),
-                onboardingService: MockOnboardingService(unpackContentResult: {
-                    Future<OnboardingState, Error>{
-                        $0(.failure(expectedError))                        
-                    }.eraseToAnyPublisher()
-                })
+                onboardingService: MockOnboardingService(
+                    unpackContentResult: {
+                        Future<OnboardingState, Error>{
+                            $0(.failure(expectedError))
+                        }.eraseToAnyPublisher()
+                    }
+                )
             )
         )
         
