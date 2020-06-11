@@ -35,13 +35,24 @@ struct CategoryListContainerView: View {
                 .navigationBarTitle("Categories")
                 .navigationViewStyle(StackNavigationViewStyle())
                 .navigationBarItems(leading:
-                    NavigationLink(destination: SettingsView(store: self.store), label: {
-                        Image(systemName: "gear")
-                    })
+                    NavigationLink(
+                        destination: SettingsView(
+                            store: self.store
+                        ),
+                        label: {
+                            Image(systemName: "gear")
+                        }
+                    )
                 )
                 .onAppear {
                     viewStore.send(.fetchCategories)
                 }
+                .snackbar(
+                    data: viewStore.binding(
+                        get: { $0.snackbarData },
+                        send: { _ in MainAction.hideSnackbar }
+                    )
+                )
             }
         }
     }
@@ -52,10 +63,9 @@ struct CategoryListContainerView: View {
 struct CategoryListView_Previews: PreviewProvider {
     static var previews: some View {
         let world = MainEnvironment(
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            onboardingService: MockOnboardingService(),
-            gitService: MockGitService(),
-            contentService: MockContentSevice())
+            configuration: Configuration(),
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+        )
         let store = Store(initialState: .init(), reducer: mainReducer, environment: world)
         return CategoryListContainerView(store: store)
     }

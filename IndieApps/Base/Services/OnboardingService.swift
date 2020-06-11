@@ -7,16 +7,36 @@ import Combine
 import Foundation
 
 protocol OnboardingServiceProtocol {
-    func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error>
+    func unpackInitialContentIfNeeded() -> AnyPublisher<OnboardingState, Error>
 }
 
-class OnboardingService: OnboardingServiceProtocol {
+enum OnboardingState {
+    case unpackSucceed
+    case noUnpackingDone
+    case noUnpackingRequired
+}
+
+class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
     
-    func unpackInitialContentIfNeeded() -> AnyPublisher<Void, Error> {
+    private let contentLocation: ContentLocation
+    private let archiveURL: URL?
+    
+    // MARK: Initialization
+    
+    init(archiveURL: URL?, contentLocation: ContentLocation) {
+        self.archiveURL = archiveURL
+        self.contentLocation = contentLocation
+        
+        print(contentLocation.localURL.absoluteString)
+    }
+
+    // MARK: APIs
+    
+    func unpackInitialContentIfNeeded() -> AnyPublisher<OnboardingState, Error> {
         DispatchQueue.global().publisher { promise in
             do {
-                try self.unpackContent()
-                promise(.success(()))
+                let state = try self.unpackContent()
+                promise(.success(state))
             } catch {
                 promise(.failure(error))
             }
@@ -25,23 +45,32 @@ class OnboardingService: OnboardingServiceProtocol {
     
     // MARK: Private helpers
     
-    private func unpackContent() throws {
+    private func unpackContent() throws -> OnboardingState {
+        
+        guard !isCheckFileAvailable(at: contentLocation.localURL) else {
+            return .noUnpackingRequired
+        }
+        
         let fileManager = FileManager.default
-        guard let sourceURL = Bundle.main.url(forResource: "Archive", withExtension: "zip"),
-              var destinationURL = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            throw OnboardingServiceError.ioException
-        }
-        destinationURL.appendPathComponent("content")
-
-        let checkFileURL = destinationURL.appendingPathComponent("version").appendingPathExtension("txt")
         
-        guard !fileManager.fileExists(atPath: checkFileURL.path) else {
-            return
+        try fileManager.createDirectory(
+            at: contentLocation.localURL,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
+        
+        guard let archiveURL = archiveURL else {
+            return .noUnpackingDone
         }
         
-        try fileManager.createDirectory(at: destinationURL, withIntermediateDirectories: true, attributes: nil)
-        try fileManager.unzipItem(at: sourceURL, to: destinationURL)
-        try "\(Date())".write(to: checkFileURL, atomically: true, encoding: .utf8)
+        try fileManager.unzipItem(
+            at: archiveURL,
+            to: contentLocation.localURL
+        )
+        
+        try writeCheckFile(at: contentLocation.localURL)
+        
+        return .unpackSucceed
     }
 }
 

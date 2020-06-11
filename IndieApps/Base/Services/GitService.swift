@@ -8,7 +8,6 @@ import Combine
 
 public protocol GitServiceProtocol {
     
-    var localRepositoryFolder: Folder { get }
     var localRepository: GTRepository? { get set }
     
     /// Clone the content repository to disk.
@@ -24,29 +23,27 @@ public protocol GitServiceProtocol {
     func reset() -> Future<Bool, Error>
 }
 
-class GitService: GitServiceProtocol {
+class GitService: GitServiceProtocol, CheckFileManager {
     
     // MARK: Properties
         
     // Public
     
     var localRepository: GTRepository?
-    lazy var localRepositoryFolder: Folder = {
-       try! Folder(path: localRepositoryFolderPath)
-    }()
     
     // Private
     
-    private let localRepositoryFolderPath: String
-    private let remoteRepositoryURL: URL
+    private let contentLocation: ContentLocation
     private let fileManager = FileManager.default
     private let queue: DispatchQueue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
+    private lazy var localRepositoryFolder = {
+        try! Folder(path: contentLocation.localURL.path)
+    }()
     
     // MARK: Initialization
     
-    init(localRepositoryFolderPath: String, remoteRepositoryURL: URL) {
-        self.localRepositoryFolderPath = localRepositoryFolderPath
-        self.remoteRepositoryURL = remoteRepositoryURL
+    init(contentLocation: ContentLocation) {
+        self.contentLocation = contentLocation
     }
     
     // MARK: APIs
@@ -57,10 +54,15 @@ class GitService: GitServiceProtocol {
         return Future { promise in
             self.queue.async {
                 do {
-                    self.localRepository = try GTRepository.clone(from: self.remoteRepositoryURL, toWorkingDirectory: self.localRepositoryFolder.url, options: [GTRepositoryCloneOptionsTransportFlags: true], transferProgressBlock: { progress, isFinished in
+                    self.localRepository = try GTRepository.clone(
+                        from: self.contentLocation.remoteURL,
+                        toWorkingDirectory: self.contentLocation.localURL,
+                        options: [GTRepositoryCloneOptionsTransportFlags: true],
+                        transferProgressBlock: { progress, isFinished in
                         let progress = Float(progress.pointee.received_objects)/Float(progress.pointee.total_objects)
                         progressHandler(progress, isFinished.pointee.boolValue)
-                    })                    
+                    })
+                    try self.writeCheckFile(at: self.contentLocation.localURL)
                     promise(.success(()))
                 } catch {
                     print(error)
@@ -108,14 +110,13 @@ class GitService: GitServiceProtocol {
     // MARK: Private helpers
     
     private func openIfNeeded() throws {
-        
         guard localRepository == nil else {
             return
         }
         
         // Check if local repository is available
-        print("GitServie \(localRepositoryFolder.url)")
-        localRepository = try GTRepository(url: localRepositoryFolder.url)
+        print("GitServie \(contentLocation.localURL)")
+        localRepository = try GTRepository(url: contentLocation.localURL)
     }
 }
 
