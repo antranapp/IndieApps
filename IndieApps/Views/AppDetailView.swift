@@ -71,6 +71,7 @@ struct AppDetailView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }, label: { Text("Close") }))
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
@@ -107,7 +108,7 @@ struct AppPreviewsView: View {
     
     var previews: [Preview]
     
-    @State private var isShowingGallery: Bool = false
+    @State private var selection: Preview?
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -116,14 +117,16 @@ struct AppPreviewsView: View {
                 .padding(.vertical, 8)
             
             ForEach(previews) { preview in
-                self.makePreview(preview)
-                    .sheet(isPresented: self.$isShowingGallery) {
-                        AppPreviewGalleryView(preview: preview)
-                    }
+                Group {
+                    self.makePreview(preview)
+                    NavigationLink(destination: AppPreviewGalleryView(preview: preview), tag: preview, selection: self.$selection) {
+                        EmptyView()
+                    }.hidden()
+                }
+                .onTapGesture {
+                    self.selection = preview
+                }
             }
-        }
-        .onTapGesture {
-            self.isShowingGallery.toggle()
         }
     }
     
