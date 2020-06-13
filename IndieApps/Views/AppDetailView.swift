@@ -39,34 +39,35 @@ struct AppDetailView: View {
                         .padding(.leading, 8)
                         Spacer()
                     }
-                    .padding(.bottom, 8)
                     
                     // Links
                     AppLinksView(links: app.links)
-                        .padding(.bottom, 8)
                     
+                    Divider()
                     
                     // Previews
-                    app.previews.map { AppPreviewsView(previews: $0) }
-                    
+                    if app.previews != nil {
+                        AppPreviewsView(previews: app.previews!)
+                        Divider()
+                    }
+                                        
                     // Description
                     Group {
                         Text("Description")
                             .font(.title)
-                            .padding(.vertical, 8)
                         Text(app.description)
                             .font(.body)
                     }
-                    .padding(.bottom, 8)
 
+                    Divider()
+                    
                     // Version history
                     AppVersionHistoryView(releaseNotes: app.releaseNotes)
-                        .padding(.bottom, 8)
 
                 }
                 .padding()
             }
-            .navigationBarTitle("", displayMode: .inline)
+            .navigationBarTitle(Text(app.name), displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
                 self.presentationMode.wrappedValue.dismiss()
             }, label: { Text("Close") }))
@@ -114,14 +115,17 @@ struct AppPreviewsView: View {
         VStack(alignment: .leading) {
             Text("Screenshots")
                 .font(.title)
-                .padding(.vertical, 8)
             
             ForEach(previews) { preview in
-                Group {
+                VStack {
                     self.makePreview(preview)
-                    NavigationLink(destination: AppPreviewGalleryView(preview: preview), tag: preview, selection: self.$selection) {
-                        EmptyView()
-                    }.hidden()
+                    NavigationLink(
+                        destination: AppPreviewGalleryView(preview: preview),
+                        tag: preview,
+                        selection: self.$selection) {
+                            EmptyView()
+                        }
+                        .hidden()
                 }
                 .onTapGesture {
                     self.selection = preview
@@ -133,35 +137,23 @@ struct AppPreviewsView: View {
     // MARK: Private helpers
     
     private func makePreview(_ preview: Preview) -> some View {
-        switch preview {
-            case .web(let links):
-                return makeImagePreview(title: "web", links: links)
-            case .macOS(let links):
-                return makeImagePreview(title: "macOS", links: links)
-            case .iOS(let links):
-                return makeImagePreview(title: "iOS", links: links)
-            case .iPadOS(let links):
-                return makeImagePreview(title: "iPadOS", links: links)
-            case .watchOS(let links):
-                return makeImagePreview(title: "watchOS", links: links)
-            case .tvOS(let links):
-                return makeImagePreview(title: "tvOS", links: links)
-        }
+        return makeImagePreview(
+            title: preview.type.description,
+            links: preview.links
+        )
     }
     
-    private func makeImagePreview(title: String, links: [String]) -> some View {
+    private func makeImagePreview(title: String, links: [URL]) -> some View {
         return VStack(alignment: .leading) {
             Text(title)
                 .font(.headline)
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(links, id: \.self) {
-                        URL(string: $0).map {
-                            KFImage($0)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 220)
-                        }
+                        KFImage($0)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 220)
                     }
                 }
             }
@@ -177,7 +169,6 @@ struct AppVersionHistoryView: View {
         VStack(alignment: .leading) {
             Text("Release Notes")
                 .font(.title)
-                .padding(.vertical, 8)
             
             ForEach(releaseNotes) { releaseNote in
                 Text(releaseNote.version)

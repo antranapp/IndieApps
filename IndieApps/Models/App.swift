@@ -92,52 +92,39 @@ extension Link: Decodable {
     }
 }
 
-enum Preview: Identifiable, Equatable, Hashable {
-    case web([String])
-    case macOS([String])
-    case iOS([String])
-    case iPadOS([String])
-    case watchOS([String])
-    case tvOS([String])
+struct Preview: Identifiable, Equatable, Hashable {
+    
+    enum PreviewType: String {
+        case web
+        case macOS
+        case iOS
+        case iPadOS
+        case watchOS
+        case tvOS
+        
+        var description: String {
+            switch self {
+                case .web:
+                    return "web"
+                case .macOS:
+                    return "macOS"
+                case .iOS:
+                    return "iOS"
+                case .iPadOS:
+                    return "iPadOS"
+                case .watchOS:
+                    return "watchOS"
+                case .tvOS:
+                    return "tvOS"
+            }
+        }
+    }
+    
+    let type: PreviewType
+    let links: [URL]
     
     var id: String {
-        type
-    }
-    
-    var links: [String] {
-        switch self {
-            case .web(let links):
-                return links
-            case .macOS(let links):
-                return links
-            case .iOS(let links):
-                return links
-            case .iPadOS(let links):
-                return links
-            case .watchOS(let links):
-                return links
-            case .tvOS(let links):
-                return links
-        }
-    }
-    
-    
-    
-    var type: String {
-        switch self {
-            case .web:
-                return "web"
-            case .macOS:
-                return "macOS"
-            case .iOS:
-                return "iOS"
-            case .iPadOS:
-                return "iPadOS"
-            case .watchOS:
-                return "watchOS"
-            case .tvOS:
-                return "tvOS"
-        }
+        type.description
     }
 }
 
@@ -152,23 +139,13 @@ extension Preview: Decodable {
         let container = try decoder.container(keyedBy: Key.self)
         let rawType = try container.decode(String.self, forKey: .type)
         let rawValue = try container.decode([String].self, forKey: .value)
-        
-        switch rawType {
-            case "web":
-                self = .web(rawValue)
-            case "macOS":
-                self = .macOS(rawValue)
-            case "iOS":
-                self = .iOS(rawValue)
-            case "iPadOS":
-                self = .iPadOS(rawValue)
-            case "watchOS":
-                self = .watchOS(rawValue)
-            case "tvOS":
-                self = .tvOS(rawValue)
-            default:
-                throw DecodingError.unknownType
+        let urls = rawValue.compactMap { URL(string: $0) }
+
+        guard let type = PreviewType(rawValue: rawType) else {
+            throw DecodingError.unknownType
         }
+        
+        self = Preview(type: type, links: urls)
     }
 }
 

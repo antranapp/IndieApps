@@ -56,6 +56,7 @@
 		7F650346248ED45E004A1733 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F650345248ED45E004A1733 /* ActivityIndicator.swift */; };
 		7F650348248ED491004A1733 /* UIViewRepresented.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F650347248ED491004A1733 /* UIViewRepresented.swift */; };
 		7F9E1336248EDDD600763282 /* CategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9E1335248EDDD600763282 /* CategoryStore.swift */; };
+		7FA3BB0E24948FBA00AEBB51 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA3BB0D24948FBA00AEBB51 /* Dimensions.swift */; };
 		7FBCEF8F249160DE00A13A3D /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBCEF8E249160DE00A13A3D /* PageView.swift */; };
 		7FBCEF912491640A00A13A3D /* AppPreviewGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBCEF902491640A00A13A3D /* AppPreviewGalleryView.swift */; };
 		7FBCEF9624917A7000A13A3D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBCEF9524917A7000A13A3D /* String+Extensions.swift */; };
@@ -136,6 +137,7 @@
 		7F650345248ED45E004A1733 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		7F650347248ED491004A1733 /* UIViewRepresented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRepresented.swift; sourceTree = "<group>"; };
 		7F9E1335248EDDD600763282 /* CategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStore.swift; sourceTree = "<group>"; };
+		7FA3BB0D24948FBA00AEBB51 /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		7FBCEF8E249160DE00A13A3D /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		7FBCEF902491640A00A13A3D /* AppPreviewGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreviewGalleryView.swift; sourceTree = "<group>"; };
 		7FBCEF9524917A7000A13A3D /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -228,7 +230,7 @@
 		7F1ACF6724883ADD0044E959 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				7F463ACC24893BB000A52ECA /* Views */,
+				7FA3BB0C24948FAC00AEBB51 /* Interface */,
 				7F1ACF6A24883CB50044E959 /* Services */,
 				7F1ACF6D24883D470044E959 /* Architecture */,
 				7F463AB92488FBA200A52ECA /* Utils */,
@@ -402,6 +404,15 @@
 				7F5C964024926D3900676262 /* MainEnvironment.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		7FA3BB0C24948FAC00AEBB51 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				7F463ACC24893BB000A52ECA /* Views */,
+				7FA3BB0D24948FBA00AEBB51 /* Dimensions.swift */,
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 		7FBCEF9B249180AF00A13A3D /* Configuration */ = {
@@ -619,6 +630,7 @@
 				7FBCEF8F249160DE00A13A3D /* PageView.swift in Sources */,
 				7F5662F32487C79E00DBCAC8 /* SceneDelegate.swift in Sources */,
 				7FBCEF9624917A7000A13A3D /* String+Extensions.swift in Sources */,
+				7FA3BB0E24948FBA00AEBB51 /* Dimensions.swift in Sources */,
 				7FBCEF9824917ACE00A13A3D /* URL+Extensions.swift in Sources */,
 				7F1ACF6C24883CBF0044E959 /* ContentService.swift in Sources */,
 				7FF8F5B7248A25480008FAE6 /* SettingsView.swift in Sources */,

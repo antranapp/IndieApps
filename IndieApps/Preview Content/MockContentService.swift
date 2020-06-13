@@ -20,8 +20,20 @@ struct MockContentSevice: ContentServiceProtocol {
                 .appstore("https://antran.app")
             ],
             previews: [
-                .web(["https://ph-files.imgix.net/0b48f11b-858b-431e-94c7-5a8dbead8bbe.png", "https://ph-files.imgix.net/0b48f11b-858b-431e-94c7-5a8dbead8bbe.png"]),
-                .iOS(["https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/a4/0d/57/a40d573a-5621-e0e7-c051-34d9487a7e77/pr_source.jpg/460x0w.jpg", "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/a4/0d/57/a40d573a-5621-e0e7-c051-34d9487a7e77/pr_source.jpg/460x0w.jpg"])
+                Preview(
+                    type: .web,
+                    links: [
+                        URL(string: "https://ph-files.imgix.net/0b48f11b-858b-431e-94c7-5a8dbead8bbe.png")!,
+                        URL(string: "https://ph-files.imgix.net/0b48f11b-858b-431e-94c7-5a8dbead8bbe.png")!
+                    ]
+                ),
+                Preview(
+                    type: .iOS,
+                    links: [
+                        URL(string: "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/a4/0d/57/a40d573a-5621-e0e7-c051-34d9487a7e77/pr_source.jpg/460x0w.jpg")!,
+                        URL(string: "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/a4/0d/57/a40d573a-5621-e0e7-c051-34d9487a7e77/pr_source.jpg/460x0w.jpg")!
+                    ]
+                )
             ],
             releaseNotes: [
                 ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),

@@ -16,22 +16,23 @@ struct AppPreviewGalleryView: View {
     var body: some View {
         GeometryReader { geometry in
             PagingView(index: self.$index.animation(), maxIndex: self.preview.links.count - 1) {
-                self.makeImagePreview(links: self.preview.links, geometry: geometry)
+                self.makeImagePreview(
+                    links: self.preview.links,
+                    geometry: geometry
+                )
             }
         }
-        .navigationBarTitle(Text(preview.type), displayMode: .inline)
+        .navigationBarTitle(Text(preview.type.description), displayMode: .inline)
     }
     
     // MARK: Private helpers
     
-    private func makeImagePreview(links: [String], geometry: GeometryProxy) -> some View {
+    private func makeImagePreview(links: [URL], geometry: GeometryProxy) -> some View {
         return ForEach(links, id: \.self) {
-            URL(string: $0).map {
-                KFImage($0)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-            }
+            KFImage($0)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: geometry.size.width, height: geometry.size.height)
         }
     }
 }

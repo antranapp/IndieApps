@@ -11,49 +11,62 @@ struct CategoryListContainerView: View {
     let store: MainStore
         
     var body: some View {
-        NavigationView {
-            WithViewStore(self.store) { viewStore in
-                List {
-                    viewStore.categories.map {
-                        ForEach($0) { category in
-                            NavigationLink(
-                                destination: IfLetStore(
-                                    self.store.scope(state: { $0.selection }, action: MainAction.category),
-                                    then: { AppListContainerView(store: $0, selectedApp: nil) },
-                                    else: ActivityIndicator()),
-                                tag: category,
-                                selection: viewStore.binding(
-                                    get: { $0.selection?.category },
-                                    send: { MainAction.setNavigation(selection: $0) }
-                                )) {
-                                CategoryView(category: category)
-                            }
-                            .buttonStyle(PlainButtonStyle())
+        GeometryReader{ geo in
+            if (UIDevice.current.userInterfaceIdiom == .pad){
+                NavigationView{
+                    self.makeContent()
+                }.navigationViewStyle(DoubleColumnNavigationViewStyle())
+                    .padding(.leading, geo.size.width < geo.size.height ? 0.25 : 0)
+            }else{
+                NavigationView{
+                    self.makeContent()
+                }.navigationViewStyle(StackNavigationViewStyle())
+            }
+        }
+    }
+    
+    private func makeContent() -> some View {
+        WithViewStore(self.store) { viewStore in
+            List {
+                viewStore.categories.map {
+                    ForEach($0) { category in
+                        NavigationLink(
+                            destination: IfLetStore(
+                                self.store.scope(state: { $0.selection }, action: MainAction.category),
+                                then: { AppListContainerView(store: $0, selectedApp: nil) },
+                                else: ActivityIndicator()),
+                            tag: category,
+                            selection: viewStore.binding(
+                                get: { $0.selection?.category },
+                                send: { MainAction.setNavigation(selection: $0) }
+                        )) {
+                            CategoryView(category: category)
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
-                .navigationBarTitle("Categories")
-                .navigationViewStyle(StackNavigationViewStyle())
-                .navigationBarItems(leading:
-                    NavigationLink(
-                        destination: SettingsView(
-                            store: self.store
-                        ),
-                        label: {
-                            Image(systemName: "gear")
-                        }
-                    )
+            }
+            .navigationBarTitle("Categories")
+            .navigationViewStyle(StackNavigationViewStyle())
+            .navigationBarItems(leading:
+                NavigationLink(
+                    destination: SettingsView(
+                        store: self.store
+                    ),
+                    label: {
+                        Image(systemName: "gear")
+                }
                 )
+            )
                 .onAppear {
                     viewStore.send(.fetchCategories)
-                }
-                .snackbar(
-                    data: viewStore.binding(
-                        get: { $0.snackbarData },
-                        send: { _ in MainAction.hideSnackbar }
-                    )
-                )
             }
+            .snackbar(
+                data: viewStore.binding(
+                    get: { $0.snackbarData },
+                    send: { _ in MainAction.hideSnackbar }
+                )
+            )
         }
     }
 }
