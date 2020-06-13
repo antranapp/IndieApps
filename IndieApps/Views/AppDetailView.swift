@@ -48,6 +48,7 @@ struct AppDetailView: View {
                     // Previews
                     if app.previews != nil {
                         AppPreviewsView(previews: app.previews!)
+                            .padding(.bottom, .standardSpacing)
                         Divider()
                     }
                                         
@@ -55,6 +56,8 @@ struct AppDetailView: View {
                     Group {
                         Text("Description")
                             .font(.title)
+                            .padding(.bottom, .standardSpacing)
+                        
                         Text(app.description)
                             .font(.body)
                     }
@@ -115,7 +118,8 @@ struct AppPreviewsView: View {
         VStack(alignment: .leading) {
             Text("Screenshots")
                 .font(.title)
-            
+                .padding(.bottom, .standardSpacing)
+
             ForEach(previews) { preview in
                 VStack {
                     self.makePreview(preview)
@@ -169,10 +173,13 @@ struct AppVersionHistoryView: View {
         VStack(alignment: .leading) {
             Text("Release Notes")
                 .font(.title)
-            
+                .padding(.bottom, .standardSpacing)
+
             ForEach(releaseNotes) { releaseNote in
                 Text(releaseNote.version)
                     .font(.headline)
+                    .padding(.bottom, .standardSpacing)
+
                 Text(releaseNote.note)
                     .font(.subheadline)
                 
