@@ -39,17 +39,21 @@ struct AppDetailView: View {
                         .padding(.leading, 8)
                         Spacer()
                     }
+                    .padding(.bottom, .standardSpacing)
                     
                     // Links
                     AppLinksView(links: app.links)
-                    
+
                     Divider()
+                        .padding(.vertical, .standardSpacing)
                     
                     // Previews
                     if app.previews != nil {
                         AppPreviewsView(previews: app.previews!)
                             .padding(.bottom, .standardSpacing)
                         Divider()
+                            .padding(.vertical, .standardSpacing)
+
                     }
                                         
                     // Description
@@ -63,7 +67,8 @@ struct AppDetailView: View {
                     }
 
                     Divider()
-                    
+                        .padding(.vertical, .standardSpacing)
+
                     // Version history
                     AppVersionHistoryView(releaseNotes: app.releaseNotes)
 
