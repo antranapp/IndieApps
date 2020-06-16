@@ -9,7 +9,7 @@ class TestCase: XCTestCase {
     
     struct TimeOut {
         static let long: TimeInterval = 10
-        static let short: TimeInterval = 0.5
+        static let short: TimeInterval = 2
     }
     
     override func setUp() {
