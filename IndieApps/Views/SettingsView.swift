@@ -12,12 +12,14 @@ struct SettingsView: View {
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false
     @State private var remoteRepository: String = configuration.contentLocation.remoteURL.absoluteString
-    
+    @State private var branch: String = configuration.contentLocation.branch
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
             Form {
                 Section(header: Text("Switch content repository: Please only use https and a public repository. The Git client is not ready to handle any other configurations (yet) 😊")) {
                     TextField("URL of the content repository", text: self.$remoteRepository)
+                    TextField("Branch", text: self.$branch)
                     Button(action: {
                         guard let remoteURL = URL(string: self.remoteRepository) else {
                             viewStore.send(.showMessage(title: "Error!", message: "Invalid URL", type: .error))
@@ -25,7 +27,7 @@ struct SettingsView: View {
                         }
                         
                         guard remoteURL != configuration.contentLocation.remoteURL else {
-                            viewStore.send(.showMessage(title: nil, message: "You should not reclone the current repository 😉)", type: .info))
+                            viewStore.send(.showMessage(title: nil, message: "You should not reclone the current repository 😉", type: .info))
                             return
                         }
 
@@ -39,7 +41,7 @@ struct SettingsView: View {
                     }
                 }
 
-                Section(header: Text("🔥")) {
+                Section(header: Text("Content")) {
                     Text("Update content")
                         .onTapGesture {
                             self.showUpdateConfirmation.toggle()

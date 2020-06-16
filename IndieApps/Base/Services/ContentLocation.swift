@@ -7,4 +7,5 @@ import Foundation
 struct ContentLocation {
     let localURL: URL
     let remoteURL: URL
+    let branch: String
 }

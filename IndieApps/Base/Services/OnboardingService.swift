@@ -74,7 +74,6 @@ class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
     }
 }
 
-
 enum OnboardingServiceError: Error {
     case ioException
     case failedToUnpackInitialContent

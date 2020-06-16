@@ -12,9 +12,10 @@ protocol ConfigurationProtocol {
 struct Configuration: ConfigurationProtocol {
     
     struct Default {
-        static let mainContentRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
+        static let remoteRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
         static let rootFolderURL = FileManager.default.rootContentURL!
         static let archiveURL = Bundle.main.url(forResource: "Archive", withExtension: ".zip")!
+        static let branch = "master"
     }
     
     let archiveURL: URL?
@@ -23,20 +24,27 @@ struct Configuration: ConfigurationProtocol {
     init(
         rootFolderURL: URL = Default.rootFolderURL,
         archiveURL: URL? = Default.archiveURL,
-        remoteRepositoryURL: URL = Default.mainContentRepositoryURL
+        remoteRepositoryURL: URL = Default.remoteRepositoryURL,
+        branch: String = Default.branch
     ) {
         self.archiveURL = archiveURL
         contentLocation = ContentLocation(
-            localURL: rootFolderURL.appendingPathComponent(remoteRepositoryURL.asValidPath.lowercased()),
-            remoteURL: remoteRepositoryURL
+            localURL: rootFolderURL
+                        .appendingPathComponent(remoteRepositoryURL.asValidPath.lowercased())
+                        .appendingPathComponent(branch),
+            remoteURL: remoteRepositoryURL,
+            branch: "master"
         )
     }
+    
 }
 
 // MARK: Helpers Extensions
 
 extension FileManager {
+    
     var rootContentURL: URL? {
         return self.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("content")
     }
+    
 }
