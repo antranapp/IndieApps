@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F00A26E24995887003D44F0 /* OnboardingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F00A26D24995887003D44F0 /* OnboardingServiceTests.swift */; };
+		7F00A2702499598B003D44F0 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F00A26F2499598B003D44F0 /* TestCase.swift */; };
 		7F1ACF5D2487DE230044E959 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF5C2487DE230044E959 /* App.swift */; };
 		7F1ACF602487DE560044E959 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF5F2487DE560044E959 /* AppView.swift */; };
 		7F1ACF622487DE700044E959 /* AppDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1ACF612487DE700044E959 /* AppDetailView.swift */; };
@@ -92,6 +94,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7F00A26D24995887003D44F0 /* OnboardingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingServiceTests.swift; sourceTree = "<group>"; };
+		7F00A26F2499598B003D44F0 /* TestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		7F1ACF5C2487DE230044E959 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		7F1ACF5F2487DE560044E959 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		7F1ACF612487DE700044E959 /* AppDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailView.swift; sourceTree = "<group>"; };
@@ -192,6 +196,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F00A26B2499586B003D44F0 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				7F00A26C24995872003D44F0 /* Services */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		7F00A26C24995872003D44F0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7F00A26D24995887003D44F0 /* OnboardingServiceTests.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		7F1ACF5B2487DE190044E959 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,8 +331,8 @@
 			isa = PBXGroup;
 			children = (
 				7F5662EF2487C79E00DBCAC8 /* IndieApps */,
-				7F5663092487C7A200DBCAC8 /* IndieAppsTests */,
-				7F5663142487C7A200DBCAC8 /* IndieAppsUITests */,
+				7F5663092487C7A200DBCAC8 /* Tests */,
+				7F5663142487C7A200DBCAC8 /* UITests */,
 				7F5662EE2487C79E00DBCAC8 /* Products */,
 				7F463AD424896C5100A52ECA /* Frameworks */,
 			);
@@ -353,24 +373,25 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		7F5663092487C7A200DBCAC8 /* IndieAppsTests */ = {
+		7F5663092487C7A200DBCAC8 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				7F00A26B2499586B003D44F0 /* Base */,
 				7F2D29C42490242200620484 /* AppsListingTests.swift */,
 				7F2D29C82490332C00620484 /* CategoriesListingTests.swift */,
 				7F56630A2487C7A200DBCAC8 /* OnboardingTests.swift */,
 				7F56630C2487C7A200DBCAC8 /* Info.plist */,
 				7F5C9626249238A800676262 /* SupportingFiles */,
 			);
-			path = IndieAppsTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		7F5663142487C7A200DBCAC8 /* IndieAppsUITests */ = {
+		7F5663142487C7A200DBCAC8 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
 				7F5663172487C7A200DBCAC8 /* Info.plist */,
 			);
-			path = IndieAppsUITests;
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		7F5C9626249238A800676262 /* SupportingFiles */ = {
@@ -406,6 +427,7 @@
 				7F5C96332492670F00676262 /* TestingAppDelegate.swift */,
 				7F5C96352492673300676262 /* TestingSceneDelegate.swift */,
 				7F5C96372492674C00676262 /* TestingRootViewController.swift */,
+				7F00A26F2499598B003D44F0 /* TestCase.swift */,
 			);
 			path = Setup;
 			sourceTree = "<group>";
@@ -682,11 +704,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F5C962D2492396E00676262 /* MockConfiguration.swift in Sources */,
+				7F00A2702499598B003D44F0 /* TestCase.swift in Sources */,
 				7F2D29C92490332C00620484 /* CategoriesListingTests.swift in Sources */,
 				7F56630B2487C7A200DBCAC8 /* OnboardingTests.swift in Sources */,
 				7F5C96382492674C00676262 /* TestingRootViewController.swift in Sources */,
 				7F5C96342492670F00676262 /* TestingAppDelegate.swift in Sources */,
 				7F2D29C52490242200620484 /* AppsListingTests.swift in Sources */,
+				7F00A26E24995887003D44F0 /* OnboardingServiceTests.swift in Sources */,
 				7F5C962F24923C3E00676262 /* MockMainEnvironment.swift in Sources */,
 				7F5C96362492673300676262 /* TestingSceneDelegate.swift in Sources */,
 			);
@@ -903,7 +927,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36ML5F3NSU;
-				INFOPLIST_FILE = IndieAppsTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -925,7 +949,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36ML5F3NSU;
-				INFOPLIST_FILE = IndieAppsTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -946,7 +970,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36ML5F3NSU;
-				INFOPLIST_FILE = IndieAppsUITests/Info.plist;
+				INFOPLIST_FILE = UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -966,7 +990,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36ML5F3NSU;
-				INFOPLIST_FILE = IndieAppsUITests/Info.plist;
+				INFOPLIST_FILE = UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
