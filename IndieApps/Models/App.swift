@@ -2,27 +2,75 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
-import CasePaths
 import UIKit
 import Foundation
 
 struct App: Identifiable, Decodable, Equatable, Hashable {
-    var version: Int
-    var id: String
+    let version: Int
+    let id: String
     var icon: UIImage?
-    var name: String
-    var shortDescription: String
-    var description: String
-    var links: [Link]
-    var previews: [Preview]?
-    var releaseNotes: [ReleaseNote]
+    let name: String
+    let shortDescription: String
+    let description: String
+    let links: [Link]
+    let previews: [Preview]?
+    let releaseNotes: [ReleaseNote]
+    let createdAt: Date
+    let updatedAt: Date
 
     private enum CodingKeys: String, CodingKey {
-        case version, id, name, shortDescription, description, links, previews, releaseNotes
+        case version, id, name, shortDescription, description, links, previews, releaseNotes, createdAt, updatedAt
     }
     
     var iconOrDefaultImage: UIImage {
         icon ?? UIImage(named: "icon")!
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        version = try container.decode(Int.self, forKey: .version)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        shortDescription = try container.decode(String.self, forKey: .shortDescription)
+        description = try container.decode(String.self, forKey: .description)
+        links = try container.decode([Link].self, forKey: .links)
+        previews = try container.decodeIfPresent([Preview].self, forKey: .previews)
+        releaseNotes = try container.decode([ReleaseNote].self, forKey: .releaseNotes)
+        
+        let dateTransformer = DateDecodableTransformer()
+        if version >= 2 {
+            createdAt = try container.decode(.createdAt, transformer: dateTransformer)
+            updatedAt = try container.decode(.updatedAt, transformer: dateTransformer)
+        } else {
+            createdAt = Date.from(yyyyMMdd: "2020-06-06") ?? Date()
+            updatedAt = Date.from(yyyyMMdd: "2020-06-06") ?? Date()
+        }
+    }
+    
+    init(
+        version: Int,
+        id: String,
+        icon: UIImage? = nil,
+        name: String,
+        shortDescription: String,
+        description: String,
+        links: [Link],
+        previews: [Preview]? = nil,
+        releaseNotes: [ReleaseNote],
+        createdAt: Date = Date(),
+        updatedAt: Date = Date()
+    ) {
+        self.version = version
+        self.id = id
+        self.icon = icon
+        self.name = name
+        self.shortDescription = shortDescription
+        self.description = description
+        self.links = links
+        self.previews = previews
+        self.releaseNotes = releaseNotes
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
     }
 }
 
@@ -151,4 +199,5 @@ extension Preview: Decodable {
 
 enum DecodingError: Error {
     case unknownType
+    case invalidDate
 }

@@ -27,7 +27,7 @@ struct AppView: View {
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         let app = App(
-            version: 1,
+            version: 2,
             id: UUID().uuidString,
             name: "Twitter",
             shortDescription: "Twitter is cool",
@@ -38,7 +38,9 @@ struct AppView_Previews: PreviewProvider {
             releaseNotes: [
                 ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),
                 ReleaseNote(version: "1.0.0 (2)", note: "Fix a lot of bugs"),
-            ]
+            ],
+            createdAt: Date(),
+            updatedAt: Date()
         )
         return AppView(app: app)
     }

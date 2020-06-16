@@ -22,7 +22,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - name: Testing....display available Xcodes on the Server
+      - name: Available Xcodes on the Server
         run: ls /Applications | grep Xcode
 
       - name: Force xcode 11 
