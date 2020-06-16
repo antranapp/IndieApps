@@ -96,7 +96,7 @@ struct AppLinksView: View {
                         guard let url = URL(string: link.value) else { return }
                         UIApplication.shared.open(url)
                     }) {
-                        Text(link.type.uppercased())
+                        Text(link.type.rawValue.uppercased())
                             .lineLimit(1)
                             .font(.caption)
                             .foregroundColor(.white)

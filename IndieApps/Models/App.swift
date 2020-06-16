@@ -83,35 +83,20 @@ struct ReleaseNote: Identifiable, Decodable, Equatable, Hashable {
     }
 }
 
-enum Link: Identifiable, Equatable, Hashable {
-    case homepage(String)
-    case testflight(String)
-    case appstore(String)
-
-    var type: String {
-        switch self {
-            case .homepage:
-                return "homepage"
-            case .testflight:
-                return "testflight"
-            case .appstore:
-                return "appstore"
-        }
+struct Link: Identifiable, Equatable, Hashable {
+    
+    enum LinkType: String {
+        case homepage
+        case testflight
+        case appstore
+        case sourcecode
     }
     
-    var value: String {
-        switch self {
-            case .homepage(let value):
-                return value
-            case .testflight(let value):
-                return value
-            case .appstore(let value):
-                return value
-        }
-    }
+    var value: String
+    var type: LinkType
     
     var id: String {
-        type
+        type.rawValue
     }
 }
 
@@ -125,15 +110,17 @@ extension Link: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let rawType = try container.decode(String.self, forKey: .type)
-        let rawValue = try container.decode(String.self, forKey: .value)
+        let value = try container.decode(String.self, forKey: .value)
         
         switch rawType {
             case "homepage":
-                self = .homepage(rawValue)
+                self = Link(value: value, type: .homepage)
             case "testflight":
-                self = .testflight(rawValue)
+                self = Link(value: value, type: .testflight)
             case "appstore":
-                self = .appstore(rawValue)
+                self = Link(value: value, type: .appstore)
+            case "sourcecode":
+                self = Link(value: value, type: .sourcecode)
             default:
                 throw DecodingError.unknownType
         }

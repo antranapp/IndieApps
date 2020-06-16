@@ -33,7 +33,10 @@ struct AppView_Previews: PreviewProvider {
             shortDescription: "Twitter is cool",
             description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
             links: [
-                .homepage("https://antran.app")
+                Link(value: "https://antran.app", type: .homepage),
+                Link(value: "https://antran.app", type: .testflight),
+                Link(value: "https://antran.app", type: .appstore),
+                Link(value: "https://antran.app", type: .sourcecode)
             ],
             releaseNotes: [
                 ReleaseNote(version: "1.0.0 (1)", note: "Fix a lot of bugs"),
