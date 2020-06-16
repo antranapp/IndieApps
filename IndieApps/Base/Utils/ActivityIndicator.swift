@@ -6,11 +6,13 @@ import SwiftUI
 import UIKit
 
 struct ActivityIndicator: View {
+    
     var body: some View {
-        UIViewRepresented(makeUIView: { _ in
+        UIViewRepresented { _ in
             let view = UIActivityIndicatorView()
             view.startAnimating()
             return view
-        })
+        }
     }
+    
 }
