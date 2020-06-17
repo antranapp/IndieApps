@@ -33,7 +33,7 @@ struct Configuration: ConfigurationProtocol {
                         .appendingPathComponent(remoteRepositoryURL.asValidPath.lowercased())
                         .appendingPathComponent(branch),
             remoteURL: remoteRepositoryURL,
-            branch: "master"
+            branch: branch
         )
     }
     
