@@ -59,9 +59,6 @@
 		7F9E1336248EDDD600763282 /* CategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9E1335248EDDD600763282 /* CategoryStore.swift */; };
 		7FA3BB0E24948FBA00AEBB51 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA3BB0D24948FBA00AEBB51 /* Dimensions.swift */; };
 		7FB4E84B2498923B002848B0 /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4E84A2498923B002848B0 /* DateFormatter+Extensions.swift */; };
-		7FB4E850249899AB002848B0 /* RegexCodeableTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4E84D249899AB002848B0 /* RegexCodeableTransformer.swift */; };
-		7FB4E851249899AB002848B0 /* DecodingContainerTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4E84E249899AB002848B0 /* DecodingContainerTransformer.swift */; };
-		7FB4E852249899AB002848B0 /* CodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4E84F249899AB002848B0 /* CodableExtensions.swift */; };
 		7FB4E85524989A6C002848B0 /* DateTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4E85424989A6C002848B0 /* DateTransformer.swift */; };
 		7FB4E8572498A72C002848B0 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4E8562498A72C002848B0 /* Date+Extensions.swift */; };
 		7FB4E8592498AFE6002848B0 /* Archive.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7FB4E8582498AFE5002848B0 /* Archive.zip */; };
@@ -72,6 +69,7 @@
 		7FBCEF9D249180BB00A13A3D /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBCEF9C249180BB00A13A3D /* Configuration.swift */; };
 		7FD0935B248E2D32007A2957 /* MockOnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD0935A248E2D32007A2957 /* MockOnboardingService.swift */; };
 		7FD0935D248E2F02007A2957 /* MockContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD0935C248E2F02007A2957 /* MockContentService.swift */; };
+		7FD9E448249ADAAC00007BD3 /* CodableExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 7FD9E447249ADAAC00007BD3 /* CodableExtensions */; };
 		7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */; };
 		7FF8F5B7248A25480008FAE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B6248A25480008FAE6 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
@@ -148,9 +146,6 @@
 		7F9E1335248EDDD600763282 /* CategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStore.swift; sourceTree = "<group>"; };
 		7FA3BB0D24948FBA00AEBB51 /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		7FB4E84A2498923B002848B0 /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
-		7FB4E84D249899AB002848B0 /* RegexCodeableTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexCodeableTransformer.swift; sourceTree = "<group>"; };
-		7FB4E84E249899AB002848B0 /* DecodingContainerTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodingContainerTransformer.swift; sourceTree = "<group>"; };
-		7FB4E84F249899AB002848B0 /* CodableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableExtensions.swift; sourceTree = "<group>"; };
 		7FB4E85424989A6C002848B0 /* DateTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTransformer.swift; sourceTree = "<group>"; };
 		7FB4E8562498A72C002848B0 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		7FB4E8582498AFE5002848B0 /* Archive.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Archive.zip; sourceTree = "<group>"; };
@@ -173,6 +168,7 @@
 				7F58C71F248D6E2D001781BB /* KingfisherSwiftUI in Frameworks */,
 				7F463ADF24898B5400A52ECA /* ObjectiveGit.framework in Frameworks */,
 				7F463AC82489273400A52ECA /* Files in Frameworks */,
+				7FD9E448249ADAAC00007BD3 /* CodableExtensions in Frameworks */,
 				7F5663252487C87A00DBCAC8 /* ComposableArchitecture in Frameworks */,
 				7F463ACB248932BC00A52ECA /* Yams in Frameworks */,
 				7F463ABE2488FDF700A52ECA /* ZIPFoundation in Frameworks */,
@@ -456,9 +452,6 @@
 			isa = PBXGroup;
 			children = (
 				7FB4E85324989A60002848B0 /* Transformer */,
-				7FB4E84F249899AB002848B0 /* CodableExtensions.swift */,
-				7FB4E84E249899AB002848B0 /* DecodingContainerTransformer.swift */,
-				7FB4E84D249899AB002848B0 /* RegexCodeableTransformer.swift */,
 			);
 			path = CodableExtensions;
 			sourceTree = "<group>";
@@ -502,6 +495,7 @@
 				7F463AC72489273400A52ECA /* Files */,
 				7F463ACA248932BC00A52ECA /* Yams */,
 				7F58C71E248D6E2D001781BB /* KingfisherSwiftUI */,
+				7FD9E447249ADAAC00007BD3 /* CodableExtensions */,
 			);
 			productName = IndieApps;
 			productReference = 7F5662ED2487C79E00DBCAC8 /* IndieApps.app */;
@@ -581,6 +575,7 @@
 				7F463AC62489273400A52ECA /* XCRemoteSwiftPackageReference "Files" */,
 				7F463AC9248932BC00A52ECA /* XCRemoteSwiftPackageReference "Yams" */,
 				7F58C71D248D6E2D001781BB /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				7FD9E446249ADAAC00007BD3 /* XCRemoteSwiftPackageReference "CodableExtensions" */,
 			);
 			productRefGroup = 7F5662EE2487C79E00DBCAC8 /* Products */;
 			projectDirPath = "";
@@ -659,7 +654,6 @@
 				7FD0935D248E2F02007A2957 /* MockContentService.swift in Sources */,
 				7FB4E85524989A6C002848B0 /* DateTransformer.swift in Sources */,
 				7FBCEF912491640A00A13A3D /* AppPreviewGalleryView.swift in Sources */,
-				7FB4E850249899AB002848B0 /* RegexCodeableTransformer.swift in Sources */,
 				7F650346248ED45E004A1733 /* ActivityIndicator.swift in Sources */,
 				7F463AD0248941B600A52ECA /* OnboardingView.swift in Sources */,
 				7F5C964324926D9200676262 /* ContentLocation.swift in Sources */,
@@ -679,7 +673,6 @@
 				7F463ACE24893BBA00A52ECA /* Snackbar.swift in Sources */,
 				7F463AB62488EC6E00A52ECA /* OnboardingService.swift in Sources */,
 				7FBCEF9D249180BB00A13A3D /* Configuration.swift in Sources */,
-				7FB4E851249899AB002848B0 /* DecodingContainerTransformer.swift in Sources */,
 				7FB4E84B2498923B002848B0 /* DateFormatter+Extensions.swift in Sources */,
 				7F2D29BF248F759D00620484 /* MockGitService.swift in Sources */,
 				7F5662F82487C79E00DBCAC8 /* CategoryListView.swift in Sources */,
@@ -692,7 +685,6 @@
 				7F5662F32487C79E00DBCAC8 /* SceneDelegate.swift in Sources */,
 				7FBCEF9624917A7000A13A3D /* String+Extensions.swift in Sources */,
 				7FA3BB0E24948FBA00AEBB51 /* Dimensions.swift in Sources */,
-				7FB4E852249899AB002848B0 /* CodableExtensions.swift in Sources */,
 				7FBCEF9824917ACE00A13A3D /* URL+Extensions.swift in Sources */,
 				7F1ACF6C24883CBF0044E959 /* ContentService.swift in Sources */,
 				7FF8F5B7248A25480008FAE6 /* SettingsView.swift in Sources */,
@@ -1086,6 +1078,14 @@
 				minimumVersion = 5.14.0;
 			};
 		};
+		7FD9E446249ADAAC00007BD3 /* XCRemoteSwiftPackageReference "CodableExtensions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/antranapp/CodableExtensions";
+			requirement = {
+				branch = spm;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1113,6 +1113,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7F58C71D248D6E2D001781BB /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = KingfisherSwiftUI;
+		};
+		7FD9E447249ADAAC00007BD3 /* CodableExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7FD9E446249ADAAC00007BD3 /* XCRemoteSwiftPackageReference "CodableExtensions" */;
+			productName = CodableExtensions;
 		};
 /* End XCSwiftPackageProductDependency section */
 
