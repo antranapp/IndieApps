@@ -52,7 +52,7 @@ class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
         }
         
         // Only unpack content for default repository & master branch
-        guard contentLocation.localURL == Configuration.Default.remoteRepositoryURL &&
+        guard contentLocation.remoteURL == Configuration.Default.remoteRepositoryURL &&
             contentLocation.branch == Configuration.Default.branch else {
                 return .noUnpackingDone
         }

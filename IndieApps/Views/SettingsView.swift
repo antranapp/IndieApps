@@ -12,7 +12,7 @@ struct SettingsView: View {
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false
     @State private var remoteRepository: String = configuration.contentLocation.remoteURL.absoluteString
-    @State private var branch: String = "add_evolution" //configuration.contentLocation.branch
+    @State private var branch: String = configuration.contentLocation.branch
 
     var body: some View {
         WithViewStore(self.store) { viewStore in

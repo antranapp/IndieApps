@@ -8,7 +8,8 @@ import Foundation
 class MockConfiguration: ConfigurationProtocol {
     var archiveURL: URL? = Bundle(for: MockConfiguration.self).url(forResource: "ArchiveTest", withExtension: ".zip")!
     var contentLocation = ContentLocation(
-        localURL: Configuration.Default.rootFolderURL.appendingPathComponent("test"),
+        localURL: Configuration.Default.rootFolderURL
+                    .appendingPathComponent("test"),
         remoteURL:  Configuration.Default.remoteRepositoryURL,
         branch: Configuration.Default.branch
     )
