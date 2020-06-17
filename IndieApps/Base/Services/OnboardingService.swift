@@ -51,6 +51,12 @@ class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
             return .noUnpackingRequired
         }
         
+        // Only unpack content for default repository & master branch
+        guard contentLocation.localURL == Configuration.Default.remoteRepositoryURL &&
+            contentLocation.branch == Configuration.Default.branch else {
+                return .noUnpackingDone
+        }
+        
         let fileManager = FileManager.default
         
         try fileManager.createDirectory(

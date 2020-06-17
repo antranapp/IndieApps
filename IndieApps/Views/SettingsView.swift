@@ -12,40 +12,53 @@ struct SettingsView: View {
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false
     @State private var remoteRepository: String = configuration.contentLocation.remoteURL.absoluteString
-    @State private var branch: String = configuration.contentLocation.branch
+    @State private var branch: String = "add_evolution" //configuration.contentLocation.branch
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
             Form {
                 Section(header: Text("Switch content repository: Please only use https and a public repository. The Git client is not ready to handle any other configurations (yet) 😊")) {
+                    
                     TextField("URL of the content repository", text: self.$remoteRepository)
+                    
                     TextField("Branch", text: self.$branch)
+                        .autocapitalization(.none)
+                    
                     Button(action: {
                         guard let remoteURL = URL(string: self.remoteRepository) else {
                             viewStore.send(.showMessage(title: "Error!", message: "Invalid URL", type: .error))
                             return
                         }
                         
-                        guard remoteURL != configuration.contentLocation.remoteURL else {
-                            viewStore.send(.showMessage(title: nil, message: "You should not reclone the current repository 😉", type: .info))
+                        guard remoteURL != configuration.contentLocation.remoteURL ||
+                              self.branch != configuration.contentLocation.branch else {
+                            viewStore.send(.showMessage(
+                                title: nil,
+                                message: "You should not reclone the current repository 😉",
+                                type: .info)
+                            )
                             return
                         }
 
-                        let configuration = Configuration(
+                        let newConfiguration = Configuration(
                             rootFolderURL: Configuration.Default.rootFolderURL,
                             archiveURL: nil,
-                            remoteRepositoryURL: remoteURL)
-                        viewStore.send(.switchContent(configuration))
+                            remoteRepositoryURL: remoteURL,
+                            branch: self.branch)
+                        print("switch to \(self.branch)")
+                        viewStore.send(.switchContent(newConfiguration))
                     }) {
                         Text("Checkout")
                     }
                 }
 
                 Section(header: Text("Content")) {
+                    
                     Text("Update content")
                         .onTapGesture {
                             self.showUpdateConfirmation.toggle()
                     }
+                    
                     Text("Reset content")
                         .foregroundColor(Color.red)
                         .onTapGesture {

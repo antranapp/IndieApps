@@ -47,8 +47,9 @@ let mainReducer = categoryReducer
                     return .none
                 
                 case .cloneContent:
-                    return Effect(environment.gitService.clone { progress, isCompleted in
-                            print(progress)
+                    return Effect(environment.gitService.clone(branchName: nil) { progress, isCompleted in
+                            //print(progress)
+                            //print(isCompleted)
                         })
                         .receive(on: environment.mainQueue)
                         .map {
@@ -60,7 +61,13 @@ let mainReducer = categoryReducer
                         .eraseToEffect()
                 
                 case .updateContent:
-                    return Effect(environment.gitService.update())
+                    print(environment.configuration.contentLocation.branch)
+                    return
+                        Effect(
+                            environment.gitService.checkoutAndUpdate(
+                                branchName: configuration.contentLocation.branch
+                            )
+                        )
                         .receive(on: environment.mainQueue)
                         .map {
                             .endOnboarding
@@ -121,10 +128,12 @@ let mainReducer = categoryReducer
                 case .switchContent(let newConfiguration):
                     configuration = newConfiguration
                     environment.setup(with: newConfiguration)
-                    return Effect(value: .goToOnboarding)
-                        .eraseToEffect()
+                    state.contentState = .unknown
+                    return .none
                 
                 case .goToOnboarding:
+                    configuration = Configuration()
+                    environment.setup(with: configuration)
                     state.contentState = .unknown
                     return .none
                 

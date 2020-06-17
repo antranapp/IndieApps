@@ -12,11 +12,11 @@ public protocol GitServiceProtocol {
     
     /// Clone the content repository to disk.
     /// - Returns: Promise<Void>
-    func clone(progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error>
+    func clone(branchName: String?, progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error>
     
     /// Update the content of a local repository from the remote.
     /// - Returns: Promise<Void>
-    func update() -> Future<Void, Error>
+    func checkoutAndUpdate(branchName: String) -> AnyPublisher<Void, Error>
     
     /// Delete the local repository.
     /// - Returns: Promise<Bool>
@@ -50,19 +50,81 @@ class GitService: GitServiceProtocol, CheckFileManager {
     
     /// Clone the content repository to disk.
     /// - Returns: Future<Void, Error>
-    func clone(progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error> {
+    func clone(branchName: String?, progressHandler: @escaping (Float, Bool) -> Void) -> Future<Void, Error> {
         return Future { promise in
             self.queue.async {
                 do {
                     self.localRepository = try GTRepository.clone(
                         from: self.contentLocation.remoteURL,
                         toWorkingDirectory: self.contentLocation.localURL,
-                        options: [GTRepositoryCloneOptionsTransportFlags: true],
+                        options: [
+                            GTRepositoryCloneOptionsTransportFlags: true,
+                            GTRepositoryCloneOptionsPerformCheckout: false
+                        ],
                         transferProgressBlock: { progress, isFinished in
-                        let progress = Float(progress.pointee.received_objects)/Float(progress.pointee.total_objects)
-                        progressHandler(progress, isFinished.pointee.boolValue)
-                    })
-                    try self.writeCheckFile(at: self.contentLocation.localURL)
+                            let received = Float(progress.pointee.received_objects)
+                            let total = Float(progress.pointee.total_objects)
+                            let progress = received/total
+                            let boolValue = isFinished.pointee.boolValue
+                            progressHandler(progress, boolValue)
+                        }
+                    )
+                    
+                    try? self.writeCheckFile(at: self.contentLocation.localURL)
+                    promise(.success(()))
+
+                } catch {
+                    print(error)
+                    promise(.failure(error))
+                }
+            }
+        }
+    }
+    
+    private func checkoutBranch(branchName: String) -> Future<Void, Error> {
+        return Future { promise in
+            self.queue.async {
+                do {
+                    try self.openIfNeeded()
+                    guard let localRepository = self.localRepository else {
+                        throw GitServiceError.noLocalRepository
+                    }
+                    
+                    print("try to checkout \(branchName)")
+                    let head = try localRepository.headReference()
+                    
+                    if branchName == "master" {
+                        try localRepository.checkoutReference(head, options: nil)
+                    } else {
+                        let remoteRepository = try GTRemote(name: "origin", in: localRepository)
+                        try localRepository.fetch(remoteRepository, withOptions: nil, progress: nil)
+                        
+                        let branches = try localRepository.branches()
+                        let localBranchOrNil = branches.first { $0.name == branchName }
+                        let remoteBranchOrNil = branches.first { $0.name == "origin/\(branchName)" }
+
+                        var localBranch: GTBranch!
+                        if localBranchOrNil == nil { // no local branch found
+                            guard let remoteBranch = remoteBranchOrNil else {
+                                throw GitServiceError.remoteBranchNotFound
+                            }
+                            print(remoteBranch)
+                            localBranch = try localRepository.createBranchNamed(
+                                branchName,
+                                from: remoteBranch.reference.oid!,
+                                message: nil
+                            )
+                            try localBranch.updateTrackingBranch(remoteBranch)
+                        } else {
+                            localBranch = localBranchOrNil!
+                        }
+                        
+                        let options = GTCheckoutOptions(strategy: GTCheckoutStrategyType.force)
+                        try localRepository.checkoutReference(localBranch.reference, options: options)
+                        try localRepository.moveHEAD(to: localBranch.reference)
+                        _ = try? localRepository.stashChanges(withMessage: nil, flags: GTRepositoryStashFlag(rawValue: 0))
+                    }
+
                     promise(.success(()))
                 } catch {
                     print(error)
@@ -72,16 +134,21 @@ class GitService: GitServiceProtocol, CheckFileManager {
         }
     }
     
+    
     /// Pull update of the remote repository to disk.
     /// - Returns: Future<Void, Error>
-    func update() -> Future<Void, Error> {
+    private func update() -> Future<Void, Error> {
         return Future { promise in
             self.queue.async {
                 do {
                     try self.openIfNeeded()
-                    let branch = try self.localRepository!.currentBranch()
-                    let remoteRepository = try GTRemote(name: "origin", in: self.localRepository!)
-                    try self.localRepository!.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)
+                    guard let localRepository = self.localRepository else {
+                        throw GitServiceError.noLocalRepository
+                    }
+
+                    let branch = try localRepository.currentBranch()
+                    let remoteRepository = try GTRemote(name: "origin", in: localRepository)
+                    try localRepository.pull(branch, from: remoteRepository, withOptions: nil, progress: nil)
                     promise(.success(()))
                 } catch {
                     print(error)
@@ -89,6 +156,12 @@ class GitService: GitServiceProtocol, CheckFileManager {
                 }
             }
         }
+    }
+    
+    func checkoutAndUpdate(branchName: String) -> AnyPublisher<Void, Error> {
+        return checkoutBranch(branchName: branchName)
+            .flatMap { self.update() }
+            .eraseToAnyPublisher()
     }
     
     /// Remove the local repository folder and clone the data again.
@@ -115,7 +188,6 @@ class GitService: GitServiceProtocol, CheckFileManager {
         }
         
         // Check if local repository is available
-        print("GitServie \(contentLocation.localURL)")
         localRepository = try GTRepository(url: contentLocation.localURL)
     }
 }
@@ -124,4 +196,5 @@ public enum GitServiceError: Error {
     case invalidURL
     case noLocalRepository
     case fileNotFound
+    case remoteBranchNotFound
 }

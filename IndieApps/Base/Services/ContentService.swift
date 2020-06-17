@@ -50,6 +50,7 @@ class ContentService: ContentServiceProtocol {
                 }
                 promise(.success(apps))
             } catch {
+                print(error)
                 promise(.failure(error))
             }
         }
