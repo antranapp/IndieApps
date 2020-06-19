@@ -16,11 +16,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+        let mainState = MainState()
         let contentView = AppRootView(store: MainStore(
-            initialState: .init(),
+            initialState: mainState,
             reducer: mainReducer,
             environment: MainEnvironment(
-                configuration: configuration,
+                configurationProvider: { configuration },
                 mainQueue: DispatchQueue.main.eraseToAnyScheduler()
             )
         ))

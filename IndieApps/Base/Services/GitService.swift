@@ -33,17 +33,25 @@ class GitService: GitServiceProtocol, CheckFileManager {
     
     // Private
     
-    private let contentLocation: ContentLocation
+    private let contentLocationProvider: ContentLocationProvider
     private let fileManager = FileManager.default
     private let queue: DispatchQueue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
-    private lazy var localRepositoryFolder = {
-        try! Folder(path: contentLocation.localURL.path)
-    }()
+    private var localRepositoryFolder: Folder {
+        try! Folder(path: localURL.path)
+    }
+    
+    private var remoteURL: URL {
+        contentLocationProvider().remoteURL
+    }
+    
+    private var localURL: URL {
+        contentLocationProvider().localURL
+    }
     
     // MARK: Initialization
     
-    init(contentLocation: ContentLocation) {
-        self.contentLocation = contentLocation
+    init(contentLocationProvider: @escaping ContentLocationProvider) {
+        self.contentLocationProvider = contentLocationProvider
     }
     
     // MARK: APIs
@@ -54,9 +62,10 @@ class GitService: GitServiceProtocol, CheckFileManager {
         return Future { promise in
             self.queue.async {
                 do {
+                    let contentLocation = self.contentLocationProvider()
                     self.localRepository = try GTRepository.clone(
-                        from: self.contentLocation.remoteURL,
-                        toWorkingDirectory: self.contentLocation.localURL,
+                        from: contentLocation.remoteURL,
+                        toWorkingDirectory: contentLocation.localURL,
                         options: [
                             GTRepositoryCloneOptionsTransportFlags: true,
                             GTRepositoryCloneOptionsPerformCheckout: false
@@ -70,7 +79,7 @@ class GitService: GitServiceProtocol, CheckFileManager {
                         }
                     )
                     
-                    try? self.writeCheckFile(at: self.contentLocation.localURL)
+                    try? self.writeCheckFile(at: contentLocation.localURL)
                     promise(.success(()))
 
                 } catch {
@@ -90,8 +99,11 @@ class GitService: GitServiceProtocol, CheckFileManager {
                         throw GitServiceError.noLocalRepository
                     }
                     
-                    print("try to checkout \(branchName)")
+                    print("try to checkout \(self.remoteURL.absoluteURL)/\(branchName) to \(self.localURL.absoluteString)")
                     let head = try localRepository.headReference()
+                    guard head.targetOID != nil else {
+                        throw GitServiceError.brokenRepository
+                    }
                     
                     if branchName == "master" {
                         try localRepository.checkoutReference(head, options: nil)
@@ -108,7 +120,6 @@ class GitService: GitServiceProtocol, CheckFileManager {
                             guard let remoteBranch = remoteBranchOrNil else {
                                 throw GitServiceError.remoteBranchNotFound
                             }
-                            print(remoteBranch)
                             localBranch = try localRepository.createBranchNamed(
                                 branchName,
                                 from: remoteBranch.reference.oid!,
@@ -188,7 +199,7 @@ class GitService: GitServiceProtocol, CheckFileManager {
         }
         
         // Check if local repository is available
-        localRepository = try GTRepository(url: contentLocation.localURL)
+        localRepository = try GTRepository(url: localURL)
     }
 }
 
@@ -197,4 +208,5 @@ public enum GitServiceError: Error {
     case noLocalRepository
     case fileNotFound
     case remoteBranchNotFound
+    case brokenRepository
 }

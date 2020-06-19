@@ -18,16 +18,28 @@ enum OnboardingState {
 
 class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
     
-    private let contentLocation: ContentLocation
+    private let contentLocationProvider: ContentLocationProvider
     private let archiveURL: URL?
+    
+    private var localURL: URL {
+        contentLocationProvider().localURL
+    }
+    
+    private var remoteURL: URL {
+        contentLocationProvider().remoteURL
+    }
+    
+    private var branch: String {
+        contentLocationProvider().branch
+    }
     
     // MARK: Initialization
     
-    init(archiveURL: URL?, contentLocation: ContentLocation) {
+    init(archiveURL: URL?, contentLocationProvider: @escaping ContentLocationProvider) {
         self.archiveURL = archiveURL
-        self.contentLocation = contentLocation
+        self.contentLocationProvider = contentLocationProvider
         
-        print(contentLocation.localURL.absoluteString)
+        print(localURL.absoluteString)
     }
 
     // MARK: APIs
@@ -47,20 +59,20 @@ class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
     
     private func unpackContent() throws -> OnboardingState {
         
-        guard !isCheckFileAvailable(at: contentLocation.localURL) else {
+        guard !isCheckFileAvailable(at: localURL) else {
             return .noUnpackingRequired
         }
         
         // Only unpack content for default repository & master branch
-        guard contentLocation.remoteURL == Configuration.Default.remoteRepositoryURL &&
-            contentLocation.branch == Configuration.Default.branch else {
+        guard remoteURL == Configuration.Default.remoteRepositoryURL &&
+            branch == Configuration.Default.branch else {
                 return .noUnpackingDone
         }
         
         let fileManager = FileManager.default
         
         try fileManager.createDirectory(
-            at: contentLocation.localURL,
+            at: localURL,
             withIntermediateDirectories: true,
             attributes: nil
         )
@@ -71,10 +83,10 @@ class OnboardingService: OnboardingServiceProtocol, CheckFileManager {
         
         try fileManager.unzipItem(
             at: archiveURL,
-            to: contentLocation.localURL
+            to: localURL
         )
         
-        try writeCheckFile(at: contentLocation.localURL)
+        try writeCheckFile(at: localURL)
         
         return .unpackSucceed
     }

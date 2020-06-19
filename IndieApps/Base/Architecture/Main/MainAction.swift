@@ -10,7 +10,7 @@ enum MainAction {
     case cloneContent
     case updateContent
     case resetContent
-    case setContentState(ContentState, Error?)
+    case setContentState(ContentState)
     case fetchCategories
     case setCategories([Category])
     case showError(Error)
@@ -35,9 +35,8 @@ extension MainAction: Equatable {
                 return true
             case (.resetContent, .resetContent):
                 return true
-            case (.setContentState(let lState, let lError), .setContentState(let rState, let rError)):
-                return lState == rState &&
-                    lError?._code == rError?._code
+            case (.setContentState(let lState), .setContentState(let rState)):
+                return lState == rState
             case (.fetchCategories, .fetchCategories):
                 return true
             case (.setCategories(let lCategories), .setCategories(let rCategories)):

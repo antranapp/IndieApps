@@ -76,7 +76,7 @@ struct CategoryListContainerView: View {
 struct CategoryListView_Previews: PreviewProvider {
     static var previews: some View {
         let world = MainEnvironment(
-            configuration: Configuration(),
+            configurationProvider: { Configuration() },
             mainQueue: DispatchQueue.main.eraseToAnyScheduler()
         )
         let store = Store(initialState: .init(), reducer: mainReducer, environment: world)

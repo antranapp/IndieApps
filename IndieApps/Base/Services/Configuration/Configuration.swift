@@ -4,12 +4,14 @@
 
 import Foundation
 
+typealias ConfigurationProvider = () -> ConfigurationProtocol
+
 protocol ConfigurationProtocol {
     var archiveURL: URL? { get }
     var contentLocation: ContentLocation { get }
 }
 
-struct Configuration: ConfigurationProtocol {
+struct Configuration: ConfigurationProtocol, Equatable {
     
     struct Default {
         static let remoteRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!

@@ -16,18 +16,28 @@ class ContentService: ContentServiceProtocol {
     
     // MARK: - Properties
     
-    lazy private var appFolder: Folder = try! rootFolder.subfolder(named: "apps")
-    lazy private var dataFolder: Folder? = try? rootFolder.subfolder(named: "data")
-    lazy private var rootFolder = {
-        try! Folder(path: contentLocation.localURL.path)
-    }()
-    private var contentLocation: ContentLocation
+    private var appFolder: Folder {
+        // TODO: dont force unwrap here
+        try! rootFolder.subfolder(named: "apps")
+    }
+    private var dataFolder: Folder? {
+        try? rootFolder.subfolder(named: "data")
+    }
+    private var rootFolder: Folder {
+        // TODO: dont force unwrap here
+        try! Folder(path: localURL.path)
+    }
     
+    private var contentLocationProvider: ContentLocationProvider
+    
+    private var localURL: URL {
+        contentLocationProvider().localURL
+    }
     
     // MARK: - Constructor
     
-    init(contentLocation: ContentLocation) {
-        self.contentLocation = contentLocation
+    init(contentLocationProvider: @escaping ContentLocationProvider) {
+        self.contentLocationProvider = contentLocationProvider
     }
         
     // MARK: - APIs
