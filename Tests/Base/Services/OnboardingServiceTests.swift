@@ -14,7 +14,7 @@ class OnboardingServiceTests: TestCase {
         let configuration = MockConfiguration()
         let onboardingService = OnboardingService(
             archiveURL: configuration.archiveURL,
-            contentLocation: configuration.contentLocation
+            contentLocationProvider: { configuration.contentLocation }
         )
         
         XCTAssertFalse(onboardingService.isCheckFileAvailable(at: configuration.contentLocation.localURL))

@@ -8,45 +8,36 @@ import Foundation
 protocol MainEnvironmentProtocol {
     var mainQueue: AnySchedulerOf<DispatchQueue> { get }
     
-    var configuration: ConfigurationProtocol { get }
     var onboardingService: OnboardingServiceProtocol! { get }
     var gitService: GitServiceProtocol! { get }
     var contentService: ContentServiceProtocol! { get }
-    
-    func setup(with: ConfigurationProtocol)
 }
 
-var configuration = Configuration()
-
-class MainEnvironment: MainEnvironmentProtocol {
+struct MainEnvironment: MainEnvironmentProtocol {
     var mainQueue: AnySchedulerOf<DispatchQueue>
-    var configuration: ConfigurationProtocol
+    var configurationProvider: ConfigurationProvider
     var onboardingService: OnboardingServiceProtocol!
     var gitService: GitServiceProtocol!
     var contentService: ContentServiceProtocol!
     
     init(
-        configuration: ConfigurationProtocol,
+        configurationProvider: @escaping ConfigurationProvider,
         mainQueue: AnySchedulerOf<DispatchQueue>
     ) {
         self.mainQueue = mainQueue
-        self.configuration = configuration
-        setup(with: configuration)
-    }
-    
-    func setup(with configuration: ConfigurationProtocol) {
-        self.configuration = configuration
+        self.configurationProvider = configurationProvider
+        
         contentService = ContentService(
-            contentLocation: configuration.contentLocation
+            contentLocationProvider: { configurationProvider().contentLocation }
         )
         
         gitService = GitService(
-            contentLocation: configuration.contentLocation
+            contentLocationProvider: { configurationProvider().contentLocation }
         )
         
         onboardingService = OnboardingService(
-            archiveURL: configuration.archiveURL,
-            contentLocation: configuration.contentLocation
+            archiveURL: configurationProvider().archiveURL,
+            contentLocationProvider: { configurationProvider().contentLocation }
         )
     }
 }

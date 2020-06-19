@@ -13,7 +13,7 @@ struct SettingsView: View {
     @State private var showResetConfirmation: Bool = false
     @State private var remoteRepository: String = configuration.contentLocation.remoteURL.absoluteString
     @State private var branch: String = configuration.contentLocation.branch
-
+    
     var body: some View {
         WithViewStore(self.store) { viewStore in
             Form {
@@ -31,7 +31,7 @@ struct SettingsView: View {
                         }
                         
                         guard remoteURL != configuration.contentLocation.remoteURL ||
-                              self.branch != configuration.contentLocation.branch else {
+                            self.branch != configuration.contentLocation.branch else {
                             viewStore.send(.showMessage(
                                 title: nil,
                                 message: "You should not reclone the current repository 😉",

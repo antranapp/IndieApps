@@ -30,6 +30,7 @@ struct AppRootView: View {
 }
 
 struct ContentUnavailableView: View {
+    
     var store: MainStore
     
     var body: some View {
@@ -37,17 +38,25 @@ struct ContentUnavailableView: View {
             VStack {
                 Text("There is a problem fetching the content!. Do you want to try again?")
                     .font(.headline)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 30)
                 
                 Button(action: {
                     viewStore.send(.goToOnboarding)
                 }) {
                     Text("Retry")
                 }
-                
+                .padding()
+
+                Button(action: {
+                    viewStore.send(.resetContent)
+                }) {
+                    Text("Reset to default content")
+                }
+                .padding()
+
                 Text("If the problem persists, please consider to reinstall the app.")
                     .font(.body)
-                    .padding(.top, 20)
+                    .padding(.top, 30)
             }
             .padding()
         }

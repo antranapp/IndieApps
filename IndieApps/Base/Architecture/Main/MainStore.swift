@@ -11,6 +11,8 @@ typealias MainStore = Store<MainState, MainAction>
 
 // MARK: Reducer
 
+var configuration = Configuration()
+
 let mainReducer = categoryReducer
     .optional
     .pullback(
@@ -34,11 +36,11 @@ let mainReducer = categoryReducer
                                 case .noUnpackingDone:
                                     return .cloneContent
                                 default:
-                                    return .setContentState(.available, nil)
+                                    return .setContentState(.available)
                             }
                         }
                         .catch {
-                            Just(.setContentState(.unavailable, $0))
+                            Just(.setContentState(.unavailable($0)))
                         }
                         .eraseToEffect()
 
@@ -53,15 +55,14 @@ let mainReducer = categoryReducer
                         })
                         .receive(on: environment.mainQueue)
                         .map {
-                            .setContentState(.available, nil)
+                            .setContentState(.available)
                         }
                         .catch {
-                            Just(.showError($0))
+                            Just(.setContentState(.unavailable($0)))
                         }
                         .eraseToEffect()
                 
                 case .updateContent:
-                    print(environment.configuration.contentLocation.branch)
                     return
                         Effect(
                             environment.gitService.checkoutAndUpdate(
@@ -72,15 +73,16 @@ let mainReducer = categoryReducer
                         .map {
                             .endOnboarding
                         }
-                        .catch {
-                            Just(.showError($0))
+                        .catch { error -> AnyPublisher<MainAction, Never> in
+                            if case GitServiceError.remoteBranchNotFound = error {
+                                return Just(.setContentState(.unavailable(error))).eraseToAnyPublisher()
+                            }
+                            
+                            return Just(.showError(error)).eraseToAnyPublisher()
                         }
                         .eraseToEffect()
                 
-                case .setContentState(let contentState, let error):
-                    if let error = error {
-                        state.snackbarData = SnackbarModifier.SnackbarData.makeError(error: error)
-                    }
+                case .setContentState(let contentState):
                     state.contentState = contentState
                     switch contentState {
                         case .available:
@@ -119,21 +121,23 @@ let mainReducer = categoryReducer
                     return .none
                 
                 case .resetContent:
+                    configuration = Configuration()
                     return Effect(environment.gitService.reset())
                         .receive(on: environment.mainQueue)
-                        .map { $0 ? .goToOnboarding : .showMessage(title: "Error", message: "Failed to reset content.", type: .error) }
-                        .replaceError(with: .showMessage(title: "Error", message: "Failed to reset content.", type: .error) )
+                        .map {
+                            $0 ? .goToOnboarding : .showMessage(title: "Error", message: "Failed to reset content.", type: .error)
+                        }
+                        .replaceError(
+                            with: .showMessage(title: "Error", message: "Failed to reset content.", type: .error)
+                        )
                         .eraseToEffect()
                 
                 case .switchContent(let newConfiguration):
                     configuration = newConfiguration
-                    environment.setup(with: newConfiguration)
                     state.contentState = .unknown
                     return .none
                 
                 case .goToOnboarding:
-                    configuration = Configuration()
-                    environment.setup(with: configuration)
                     state.contentState = .unknown
                     return .none
                 

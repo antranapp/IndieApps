@@ -4,7 +4,9 @@
 
 import Foundation
 
-struct ContentLocation {
+typealias ContentLocationProvider = () -> ContentLocation
+
+struct ContentLocation: Equatable {
     let localURL: URL
     let remoteURL: URL
     let branch: String

@@ -2,10 +2,26 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
-enum ContentState: Equatable {
+enum ContentState {
     case unknown
-    case unavailable
+    case unavailable(Error?)
     case available
+}
+
+extension ContentState: Equatable {
+    static func == (lhs: ContentState, rhs: ContentState) -> Bool {
+        switch (lhs, rhs) {
+            case (.unknown, .unknown):
+                return true
+            case (.unavailable(let lError), .unavailable(let rError)):
+                return lError?._code == rError?._code &&
+                       lError?._domain == rError?._domain
+            case (.available, .available):
+                return true
+            default:
+                return false
+        }
+    }
 }
 
 struct MainState: Equatable {

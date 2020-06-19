@@ -43,7 +43,7 @@ struct OnboardingView_Previews: PreviewProvider {
             initialState: .init(),
             reducer: mainReducer,
             environment: MainEnvironment(
-                configuration: Configuration(),
+                configurationProvider: { Configuration() },
                 mainQueue: DispatchQueue.main.eraseToAnyScheduler()
             )
         )
