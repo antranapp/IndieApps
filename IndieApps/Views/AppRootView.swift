@@ -21,8 +21,8 @@ struct AppRootView: View {
         switch contentState {
             case .available:
                 return CategoryListContainerView(store: store).eraseToAnyView()
-            case .unavailable:
-                return ContentUnavailableView(store: store).eraseToAnyView()
+            case .unavailable(let error):
+                return ContentUnavailableView(store: store, error: error).eraseToAnyView()
             case .unknown:
                 return OnboardingContainerView(store: store).eraseToAnyView()
         }
@@ -32,11 +32,12 @@ struct AppRootView: View {
 struct ContentUnavailableView: View {
     
     var store: MainStore
+    var error: Error?
     
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
-                Text("There is a problem fetching the content!. Do you want to try again?")
+                Text(self.error?.localizedDescription ?? "There is a problem fetching the content!. Do you want to try again?")
                     .font(.headline)
                     .padding(.bottom, 30)
                 

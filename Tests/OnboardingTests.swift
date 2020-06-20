@@ -26,7 +26,7 @@ class OnboardingTests: XCTestCase {
             .do {
                 self.scheduler.advance()
             },
-            .receive(.setContentState(.available, nil)) {
+            .receive(.setContentState(.available)) {
                 $0.contentState = .available
                 $0.snackbarData = nil
             },
@@ -65,9 +65,8 @@ class OnboardingTests: XCTestCase {
             .do {
                 self.scheduler.advance()
             },
-            .receive(.setContentState(.unavailable, expectedError)) {
-                $0.contentState = .unavailable
-                $0.snackbarData = SnackbarModifier.SnackbarData.makeError(error: expectedError)
+            .receive(.setContentState(.unavailable(expectedError))) {
+                $0.contentState = .unavailable(expectedError)
             }
         )
     }
