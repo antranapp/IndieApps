@@ -6,18 +6,16 @@ import ComposableArchitecture
 import SwiftUI
 
 struct OnboardingContainerView: View {
-    
     let store: MainStore
-    
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            return OnboardingView(viewStore: viewStore)
+            OnboardingView(viewStore: viewStore)
         }
     }
 }
 
 struct OnboardingView: View {
-
     let viewStore: ViewStore<MainState, MainAction>
 
     @State private var direction: Bool = true
@@ -29,7 +27,7 @@ struct OnboardingView: View {
             .animation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true))
             .onAppear(perform: startOnboarding)
     }
-    
+
     private func startOnboarding() {
         viewStore.send(.startOnboarding)
         direction.toggle()
@@ -37,17 +35,17 @@ struct OnboardingView: View {
 }
 
 #if DEBUG
-struct OnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        let store = Store(
-            initialState: .init(),
-            reducer: mainReducer,
-            environment: MainEnvironment(
-                configurationProvider: { Configuration() },
-                mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+    struct OnboardingView_Previews: PreviewProvider {
+        static var previews: some View {
+            let store = Store(
+                initialState: .init(),
+                reducer: mainReducer,
+                environment: MainEnvironment(
+                    configurationProvider: { Configuration() },
+                    mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+                )
             )
-        )
-        return OnboardingContainerView(store: store)
+            return OnboardingContainerView(store: store)
+        }
     }
-}
 #endif

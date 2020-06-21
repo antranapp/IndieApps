@@ -6,21 +6,19 @@
 import XCTest
 
 class TestCase: XCTestCase {
-    
     struct TimeOut {
         static let long: TimeInterval = 10
         static let short: TimeInterval = 2
     }
-    
+
     override func setUp() {
         super.setUp()
-        
+
         resetContent()
     }
-    
+
     func resetContent() {
         let fileManager = FileManager.default
         try? fileManager.removeItem(at: Configuration.Default.rootFolderURL)
     }
-    
 }

@@ -6,7 +6,6 @@ import Combine
 import Foundation
 
 extension DispatchQueue {
-    
     /// Dispatch block asynchronously
     /// - Parameter block: Block
     func publisher<Output, Failure: Error>(_ block: @escaping (Future<Output, Failure>.Promise) -> Void) -> AnyPublisher<Output, Failure> {

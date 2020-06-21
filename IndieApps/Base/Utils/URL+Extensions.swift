@@ -5,7 +5,6 @@
 import Foundation
 
 extension URL {
-    
     var asValidPath: String {
         return absoluteString.asValidPath
     }

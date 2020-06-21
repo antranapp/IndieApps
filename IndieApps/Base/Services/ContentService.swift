@@ -2,10 +2,10 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
-import Yams
-import Files
 import Combine
+import Files
 import UIKit
+import Yams
 
 protocol ContentServiceProtocol {
     func fetchCategoryList() -> AnyPublisher<[Category], Error>
@@ -13,35 +13,36 @@ protocol ContentServiceProtocol {
 }
 
 class ContentService: ContentServiceProtocol {
-    
     // MARK: - Properties
-    
+
     private var appFolder: Folder {
         // TODO: dont force unwrap here
         try! rootFolder.subfolder(named: "apps")
     }
+
     private var dataFolder: Folder? {
         try? rootFolder.subfolder(named: "data")
     }
+
     private var rootFolder: Folder {
         // TODO: dont force unwrap here
         try! Folder(path: localURL.path)
     }
-    
+
     private var contentLocationProvider: ContentLocationProvider
-    
+
     private var localURL: URL {
         contentLocationProvider().localURL
     }
-    
+
     // MARK: - Constructor
-    
+
     init(contentLocationProvider: @escaping ContentLocationProvider) {
         self.contentLocationProvider = contentLocationProvider
     }
-        
+
     // MARK: - APIs
-    
+
     func fetchCategoryList() -> AnyPublisher<[Category], Error> {
         Future { promise in
             let categories = self.appFolder.subfolders.compactMap {
@@ -50,7 +51,7 @@ class ContentService: ContentServiceProtocol {
             promise(.success(categories))
         }.eraseToAnyPublisher()
     }
-    
+
     func fetchAppList(in category: Category) -> AnyPublisher<[App], Error> {
         Future { promise in
             do {
@@ -66,17 +67,17 @@ class ContentService: ContentServiceProtocol {
         }
         .eraseToAnyPublisher()
     }
-    
+
     // MARK: - Private helpers
-    
+
     private func mapCategoryToFolder(_ category: Category) throws -> Folder {
         return try appFolder.subfolder(named: category.name)
     }
-    
+
     private func mapFolderToCategory(_ folder: Folder) -> Category {
         return Category(name: folder.name, numberOfApps: folder.subfolders.count())
     }
-    
+
     private func mapFolderToApp(_ folder: Folder) throws -> App {
         let appFile = try folder.file(named: "app.yml")
         let content = try appFile.readAsString()

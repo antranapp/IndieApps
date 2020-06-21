@@ -5,12 +5,11 @@
 import SwiftUI
 
 struct SnackbarModifier: ViewModifier {
-    
     struct SnackbarData: Equatable {
         var title: String?
         var detail: String
         var type: SnackbarType
-        
+
         static func makeInfo(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
@@ -18,7 +17,7 @@ struct SnackbarModifier: ViewModifier {
                 type: .info
             )
         }
-        
+
         static func makeWarning(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
@@ -26,7 +25,7 @@ struct SnackbarModifier: ViewModifier {
                 type: .warning
             )
         }
-        
+
         static func makeSuccess(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
@@ -34,7 +33,7 @@ struct SnackbarModifier: ViewModifier {
                 type: .success
             )
         }
-        
+
         static func makeError(title: String? = nil, detail: String) -> Self {
             return SnackbarData(
                 title: title,
@@ -47,29 +46,29 @@ struct SnackbarModifier: ViewModifier {
             return makeError(title: "Error!", detail: error.localizedDescription)
         }
     }
-    
+
     enum SnackbarType: Equatable {
         case info
         case warning
         case success
         case error
-        
+
         var tintColor: Color {
             switch self {
-                case .info:
-                    return Color(red: 67/255, green: 154/255, blue: 215/255)
-                case .success:
-                    return Color.green
-                case .warning:
-                    return Color.yellow
-                case .error:
-                    return Color.red
+            case .info:
+                return Color(red: 67 / 255, green: 154 / 255, blue: 215 / 255)
+            case .success:
+                return Color.green
+            case .warning:
+                return Color.yellow
+            case .error:
+                return Color.red
             }
         }
     }
-    
+
     @Binding var data: SnackbarData?
-    
+
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             ZStack {
@@ -119,16 +118,16 @@ struct SnackbarModifier: ViewModifier {
 
 extension View {
     func snackbar(data: Binding<SnackbarModifier.SnackbarData?>) -> some View {
-        self.modifier(SnackbarModifier(data: data))
+        modifier(SnackbarModifier(data: data))
     }
 }
 
 #if DEBUG
-struct Banner_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            Text("Hello")
+    struct Banner_Previews: PreviewProvider {
+        static var previews: some View {
+            VStack {
+                Text("Hello")
+            }
         }
     }
-}
 #endif

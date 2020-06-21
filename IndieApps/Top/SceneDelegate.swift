@@ -3,17 +3,15 @@
 //
 
 import ComposableArchitecture
-import UIKit
 import SwiftUI
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
+    func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         UITableView.appearance().tableFooterView = UIView()
-        
+
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         let mainState = MainState()
@@ -25,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 mainQueue: DispatchQueue.main.eraseToAnyScheduler()
             )
         ))
-        .environment(\.managedObjectContext, context)
+            .environment(\.managedObjectContext, context)
 
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
@@ -34,8 +32,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
     }
-    func sceneDidEnterBackground(_ scene: UIScene) {
+
+    func sceneDidEnterBackground(_: UIScene) {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 }
-

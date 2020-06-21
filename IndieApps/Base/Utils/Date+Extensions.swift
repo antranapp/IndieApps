@@ -5,10 +5,8 @@
 import Foundation
 
 extension Date {
-    
     static func from(yyyyMMdd dateString: String) -> Date? {
         let formatter = DateFormatter.yyyyMMdd
         return formatter.date(from: dateString)
     }
-    
 }

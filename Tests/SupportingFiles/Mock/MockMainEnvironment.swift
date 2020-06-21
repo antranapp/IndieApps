@@ -2,21 +2,21 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
-@testable import IndieApps
 import ComposableArchitecture
 import Foundation
+@testable import IndieApps
 
 class MockMainEnvironment: MainEnvironmentProtocol {
     var configuration: ConfigurationProtocol
-    
+
     var mainQueue: AnySchedulerOf<DispatchQueue>
-    
+
     var onboardingService: OnboardingServiceProtocol!
-    
+
     var gitService: GitServiceProtocol!
-    
+
     var contentService: ContentServiceProtocol!
-    
+
     init(
         mainQueue: AnySchedulerOf<DispatchQueue>,
         configuration: ConfigurationProtocol = MockConfiguration(),
@@ -30,6 +30,6 @@ class MockMainEnvironment: MainEnvironmentProtocol {
         self.gitService = gitService
         self.contentService = contentService
     }
-    
-    func setup(with: ConfigurationProtocol) {}
+
+    func setup(with _: ConfigurationProtocol) {}
 }

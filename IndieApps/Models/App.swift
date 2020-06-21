@@ -2,8 +2,8 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
-import UIKit
 import Foundation
+import UIKit
 
 struct App: Identifiable, Decodable, Equatable, Hashable {
     let version: Int
@@ -21,11 +21,11 @@ struct App: Identifiable, Decodable, Equatable, Hashable {
     private enum CodingKeys: String, CodingKey {
         case version, id, name, shortDescription, description, links, previews, releaseNotes, createdAt, updatedAt
     }
-    
+
     var iconOrDefaultImage: UIImage {
         icon ?? UIImage(named: "icon")!
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         version = try container.decode(Int.self, forKey: .version)
@@ -36,7 +36,7 @@ struct App: Identifiable, Decodable, Equatable, Hashable {
         links = try container.decode([Link].self, forKey: .links)
         previews = try container.decodeIfPresent([Preview].self, forKey: .previews)
         releaseNotes = try container.decode([ReleaseNote].self, forKey: .releaseNotes)
-        
+
         let dateTransformer = DateDecodableTransformer()
         if version >= 2 {
             createdAt = try container.decode(.createdAt, transformer: dateTransformer)
@@ -46,7 +46,7 @@ struct App: Identifiable, Decodable, Equatable, Hashable {
             updatedAt = Date.from(yyyyMMdd: "2020-06-06") ?? Date()
         }
     }
-    
+
     init(
         version: Int,
         id: String,
@@ -77,58 +77,55 @@ struct App: Identifiable, Decodable, Equatable, Hashable {
 struct ReleaseNote: Identifiable, Decodable, Equatable, Hashable {
     var version: String
     var note: String
-    
+
     var id: String {
         version
     }
 }
 
 struct Link: Identifiable, Equatable, Hashable {
-    
     enum LinkType: String {
         case homepage
         case testflight
         case appstore
         case sourcecode
     }
-    
+
     var value: String
     var type: LinkType
-    
+
     var id: String {
         type.rawValue
     }
 }
 
 extension Link: Decodable {
-    
     enum Key: String, CodingKey {
         case type
         case value
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let rawType = try container.decode(String.self, forKey: .type)
         let value = try container.decode(String.self, forKey: .value)
-        
+
         switch rawType {
-            case "homepage":
-                self = Link(value: value, type: .homepage)
-            case "testflight":
-                self = Link(value: value, type: .testflight)
-            case "appstore":
-                self = Link(value: value, type: .appstore)
-            case "sourcecode":
-                self = Link(value: value, type: .sourcecode)
-            default:
-                throw DecodingError.unknownType
+        case "homepage":
+            self = Link(value: value, type: .homepage)
+        case "testflight":
+            self = Link(value: value, type: .testflight)
+        case "appstore":
+            self = Link(value: value, type: .appstore)
+        case "sourcecode":
+            self = Link(value: value, type: .sourcecode)
+        default:
+            throw DecodingError.unknownType
         }
     }
 }
 
 struct Preview: Identifiable, Equatable, Hashable {
-    
     enum PreviewType: String {
         case web
         case macOS
@@ -136,40 +133,39 @@ struct Preview: Identifiable, Equatable, Hashable {
         case iPadOS
         case watchOS
         case tvOS
-        
+
         var description: String {
             switch self {
-                case .web:
-                    return "web"
-                case .macOS:
-                    return "macOS"
-                case .iOS:
-                    return "iOS"
-                case .iPadOS:
-                    return "iPadOS"
-                case .watchOS:
-                    return "watchOS"
-                case .tvOS:
-                    return "tvOS"
+            case .web:
+                return "web"
+            case .macOS:
+                return "macOS"
+            case .iOS:
+                return "iOS"
+            case .iPadOS:
+                return "iPadOS"
+            case .watchOS:
+                return "watchOS"
+            case .tvOS:
+                return "tvOS"
             }
         }
     }
-    
+
     let type: PreviewType
     let links: [URL]
-    
+
     var id: String {
         type.description
     }
 }
 
 extension Preview: Decodable {
-    
     enum Key: String, CodingKey {
         case type
         case value
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let rawType = try container.decode(String.self, forKey: .type)
@@ -179,7 +175,7 @@ extension Preview: Decodable {
         guard let type = PreviewType(rawValue: rawType) else {
             throw DecodingError.unknownType
         }
-        
+
         self = Preview(type: type, links: urls)
     }
 }
