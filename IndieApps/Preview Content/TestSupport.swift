@@ -3,9 +3,9 @@
 //
 
 #if DEBUG
-import Combine
+    import Combine
 
-typealias AnyPublisherResultMaker<T> = () -> AnyPublisher<T, Error>
-typealias FutureResultMaker<T> = () -> Future<T, Error>
+    typealias AnyPublisherResultMaker<T> = () -> AnyPublisher<T, Error>
+    typealias FutureResultMaker<T> = () -> Future<T, Error>
 
 #endif

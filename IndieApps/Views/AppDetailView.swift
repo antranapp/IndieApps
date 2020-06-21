@@ -6,11 +6,10 @@ import KingfisherSwiftUI
 import SwiftUI
 
 struct AppDetailView: View {
-    
     @Environment(\.presentationMode) var presentationMode
-    
+
     var app: App
-    
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -34,34 +33,32 @@ struct AppDetailView: View {
                             Text(app.shortDescription)
                                 .font(.body)
                                 .foregroundColor(Color.black.opacity(0.2))
-
                         }
                         .padding(.leading, 8)
                         Spacer()
                     }
                     .padding(.bottom, .standardSpacing)
-                    
+
                     // Links
                     AppLinksView(links: app.links)
 
                     Divider()
                         .padding(.vertical, .standardSpacing)
-                    
+
                     // Previews
                     if app.previews != nil {
                         AppPreviewsView(previews: app.previews!)
                             .padding(.bottom, .standardSpacing)
                         Divider()
                             .padding(.vertical, .standardSpacing)
-
                     }
-                                        
+
                     // Description
                     Group {
                         Text("Description")
                             .font(.title)
                             .padding(.bottom, .standardSpacing)
-                        
+
                         Text(app.description)
                             .font(.body)
                     }
@@ -71,7 +68,6 @@ struct AppDetailView: View {
 
                     // Version history
                     AppVersionHistoryView(releaseNotes: app.releaseNotes)
-
                 }
                 .padding()
             }
@@ -85,9 +81,8 @@ struct AppDetailView: View {
 }
 
 struct AppLinksView: View {
-    
     var links: [Link]
-    
+
     var body: some View {
         VStack(alignment: .center) {
             HStack {
@@ -102,7 +97,6 @@ struct AppLinksView: View {
                             .foregroundColor(.white)
                             .padding(.vertical, 10)
                             .padding(.horizontal, 14)
-                        
                     }
                     .background(Color.blue)
                     .cornerRadius(30)
@@ -114,11 +108,10 @@ struct AppLinksView: View {
 }
 
 struct AppPreviewsView: View {
-    
     var previews: [Preview]
-    
+
     @State private var selection: Preview?
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("Screenshots")
@@ -131,10 +124,11 @@ struct AppPreviewsView: View {
                     NavigationLink(
                         destination: AppPreviewGalleryView(preview: preview),
                         tag: preview,
-                        selection: self.$selection) {
-                            EmptyView()
-                        }
-                        .hidden()
+                        selection: self.$selection
+                    ) {
+                        EmptyView()
+                    }
+                    .hidden()
                 }
                 .onTapGesture {
                     self.selection = preview
@@ -142,16 +136,16 @@ struct AppPreviewsView: View {
             }
         }
     }
-    
+
     // MARK: Private helpers
-    
+
     private func makePreview(_ preview: Preview) -> some View {
         return makeImagePreview(
             title: preview.type.description,
             links: preview.links
         )
     }
-    
+
     private func makeImagePreview(title: String, links: [URL]) -> some View {
         return VStack(alignment: .leading) {
             Text(title)
@@ -171,9 +165,8 @@ struct AppPreviewsView: View {
 }
 
 struct AppVersionHistoryView: View {
-    
     var releaseNotes: [ReleaseNote]
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("Release Notes")
@@ -187,7 +180,7 @@ struct AppVersionHistoryView: View {
 
                 Text(releaseNote.note)
                     .font(.subheadline)
-                
+
                 Divider()
             }
         }
@@ -195,10 +188,10 @@ struct AppVersionHistoryView: View {
 }
 
 #if DEBUG
-struct AppDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let app = MockContentSevice.appList[0]
-        return AppDetailView(app: app)
+    struct AppDetailView_Previews: PreviewProvider {
+        static var previews: some View {
+            let app = MockContentSevice.appList[0]
+            return AppDetailView(app: app)
+        }
     }
-}
 #endif

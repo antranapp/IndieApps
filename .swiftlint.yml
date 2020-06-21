@@ -1,0 +1,16 @@
+excluded:
+  - .build
+  - Carthage
+  - Pods
+
+disabled_rules:
+  - identifier_name
+  - force_cast
+  - line_length
+  - force_try
+  - trailing_comma
+  - multiple_closures_with_trailing_closure
+  - todo
+
+cyclomatic_complexity:
+  ignores_case_statements: true

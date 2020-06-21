@@ -2,23 +2,22 @@
 //  Copyright © 2020 An Tran. All rights reserved.
 //
 
-@testable import IndieApps
-import ComposableArchitecture
 import Combine
+import ComposableArchitecture
+@testable import IndieApps
 import XCTest
 
 class OnboardingTests: XCTestCase {
-    
     let scheduler = DispatchQueue.testScheduler
-    
+
     func testOnboardingSucceed() {
         let store = TestStore(
             initialState: MainState(),
             reducer: mainReducer,
             environment: MockMainEnvironment(
-                mainQueue: self.scheduler.eraseToAnyScheduler())
+                mainQueue: scheduler.eraseToAnyScheduler())
         )
-        
+
         store.assert(
             .send(.startOnboarding) {
                 $0.contentState = .unknown
@@ -40,24 +39,24 @@ class OnboardingTests: XCTestCase {
             }
         )
     }
-    
+
     func testOnboardingFailed() {
         let expectedError = NSError(domain: "SomeError", code: -1, userInfo: nil)
         let store = TestStore(
             initialState: MainState(),
             reducer: mainReducer,
             environment: MockMainEnvironment(
-                mainQueue: self.scheduler.eraseToAnyScheduler(),
+                mainQueue: scheduler.eraseToAnyScheduler(),
                 onboardingService: MockOnboardingService(
                     unpackContentResult: {
-                        Future<OnboardingState, Error>{
+                        Future<OnboardingState, Error> {
                             $0(.failure(expectedError))
                         }.eraseToAnyPublisher()
                     }
                 )
             )
         )
-        
+
         store.assert(
             .send(.startOnboarding) {
                 $0.contentState = .unknown

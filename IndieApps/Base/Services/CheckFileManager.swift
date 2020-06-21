@@ -16,10 +16,10 @@ extension CheckFileManager {
         if fileManager.fileExists(atPath: checkFileURL.path) {
             return true
         }
-        
+
         return false
     }
-    
+
     func writeCheckFile(at url: URL) throws {
         let checkFileURL = url.appendingPathComponent("version").appendingPathExtension("txt")
         try "\(Date())".write(to: checkFileURL, atomically: true, encoding: .utf8)

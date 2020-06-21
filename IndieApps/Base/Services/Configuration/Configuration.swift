@@ -12,17 +12,16 @@ protocol ConfigurationProtocol {
 }
 
 struct Configuration: ConfigurationProtocol, Equatable {
-    
     struct Default {
         static let remoteRepositoryURL = URL(string: "https://github.com/antranapp/IndieAppsContent.git")!
         static let rootFolderURL = FileManager.default.rootContentURL!
         static let archiveURL = Bundle.main.url(forResource: "Archive", withExtension: ".zip")!
         static let branch = "master"
     }
-    
+
     let archiveURL: URL?
     let contentLocation: ContentLocation
-    
+
     init(
         rootFolderURL: URL = Default.rootFolderURL,
         archiveURL: URL? = Default.archiveURL,
@@ -32,21 +31,18 @@ struct Configuration: ConfigurationProtocol, Equatable {
         self.archiveURL = archiveURL
         contentLocation = ContentLocation(
             localURL: rootFolderURL
-                        .appendingPathComponent(remoteRepositoryURL.asValidPath.lowercased())
-                        .appendingPathComponent(branch),
+                .appendingPathComponent(remoteRepositoryURL.asValidPath.lowercased())
+                .appendingPathComponent(branch),
             remoteURL: remoteRepositoryURL,
             branch: branch
         )
     }
-    
 }
 
 // MARK: Helpers Extensions
 
 extension FileManager {
-    
     var rootContentURL: URL? {
-        return self.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("content")
+        return urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("content")
     }
-    
 }

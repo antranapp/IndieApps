@@ -6,11 +6,10 @@ import ComposableArchitecture
 import SwiftUI
 
 struct AppListContainerView: View {
-    
     let store: CategoryStore
 
     @State var selectedApp: App?
-    
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
             List {
@@ -20,10 +19,10 @@ struct AppListContainerView: View {
                             .padding(.vertical, 8)
                             .sheet(item: self.$selectedApp) { app in
                                 AppDetailView(app: app)
-                        }
-                        .onTapGesture {
-                            self.selectedApp = app
-                        }
+                            }
+                            .onTapGesture {
+                                self.selectedApp = app
+                            }
                     }
                 }
             }
@@ -36,17 +35,17 @@ struct AppListContainerView: View {
 }
 
 #if DEBUG
-struct AppListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let categoryEnvironment = CategoryEnvironment(
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            contentService: MockContentSevice()
-        )
-        let category = MockContentSevice.categoryList[0]
+    struct AppListView_Previews: PreviewProvider {
+        static var previews: some View {
+            let categoryEnvironment = CategoryEnvironment(
+                mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+                contentService: MockContentSevice()
+            )
+            let category = MockContentSevice.categoryList[0]
 
-        let store = Store(initialState: CategoryState(category: category), reducer: categoryReducer, environment: categoryEnvironment)
-        
-        return AppListContainerView(store: store)
+            let store = Store(initialState: CategoryState(category: category), reducer: categoryReducer, environment: categoryEnvironment)
+
+            return AppListContainerView(store: store)
+        }
     }
-}
 #endif

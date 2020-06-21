@@ -6,7 +6,6 @@ import SwiftUI
 import UIKit
 
 struct ActivityIndicator: View {
-    
     var body: some View {
         UIViewRepresented { _ in
             let view = UIActivityIndicatorView()
@@ -14,5 +13,4 @@ struct ActivityIndicator: View {
             return view
         }
     }
-    
 }

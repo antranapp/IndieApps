@@ -6,36 +6,35 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SettingsView: View {
-    
     let store: MainStore
-    
+
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false
     @State private var remoteRepository: String = configuration.contentLocation.remoteURL.absoluteString
     @State private var branch: String = configuration.contentLocation.branch
-    
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
             Form {
                 Section(header: Text("Switch content repository: Please only use https and a public repository. The Git client is not ready to handle any other configurations (yet) 😊")) {
-                    
                     TextField("URL of the content repository", text: self.$remoteRepository)
-                    
+
                     TextField("Branch", text: self.$branch)
                         .autocapitalization(.none)
-                    
+
                     Button(action: {
                         guard let remoteURL = URL(string: self.remoteRepository) else {
                             viewStore.send(.showMessage(title: "Error!", message: "Invalid URL", type: .error))
                             return
                         }
-                        
+
                         guard remoteURL != configuration.contentLocation.remoteURL ||
                             self.branch != configuration.contentLocation.branch else {
                             viewStore.send(.showMessage(
                                 title: nil,
                                 message: "You should not reclone the current repository 😉",
-                                type: .info)
+                                type: .info
+                            )
                             )
                             return
                         }
@@ -44,7 +43,8 @@ struct SettingsView: View {
                             rootFolderURL: Configuration.Default.rootFolderURL,
                             archiveURL: nil,
                             remoteRepositoryURL: remoteURL,
-                            branch: self.branch)
+                            branch: self.branch
+                        )
                         print("switch to \(self.branch)")
                         viewStore.send(.switchContent(newConfiguration))
                     }) {
@@ -53,17 +53,16 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("Content")) {
-                    
                     Text("Update content")
                         .onTapGesture {
                             self.showUpdateConfirmation.toggle()
-                    }
-                    
+                        }
+
                     Text("Reset content")
                         .foregroundColor(Color.red)
                         .onTapGesture {
                             self.showResetConfirmation.toggle()
-                    }
+                        }
                 }
             }
             .background(
@@ -76,10 +75,10 @@ struct SettingsView: View {
                                 .default(Text("Yes"), action: {
                                     viewStore.send(.updateContent)
                                 }),
-                                .cancel()
+                                .cancel(),
                             ]
                         )
-                }
+                    }
             )
             .background(
                 EmptyView()
@@ -91,10 +90,10 @@ struct SettingsView: View {
                                 .destructive(Text("Yes"), action: {
                                     viewStore.send(.resetContent)
                                 }),
-                                .cancel()
+                                .cancel(),
                             ]
                         )
-                }
+                    }
             )
             .navigationBarTitle("Settings")
             .snackbar(

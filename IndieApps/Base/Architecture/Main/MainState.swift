@@ -11,15 +11,15 @@ enum ContentState {
 extension ContentState: Equatable {
     static func == (lhs: ContentState, rhs: ContentState) -> Bool {
         switch (lhs, rhs) {
-            case (.unknown, .unknown):
-                return true
-            case (.unavailable(let lError), .unavailable(let rError)):
-                return lError?._code == rError?._code &&
-                       lError?._domain == rError?._domain
-            case (.available, .available):
-                return true
-            default:
-                return false
+        case (.unknown, .unknown):
+            return true
+        case let (.unavailable(lError), .unavailable(rError)):
+            return lError?._code == rError?._code &&
+                lError?._domain == rError?._domain
+        case (.available, .available):
+            return true
+        default:
+            return false
         }
     }
 }
