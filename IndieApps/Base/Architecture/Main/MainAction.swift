@@ -3,6 +3,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 
 enum MainAction {
     case startOnboarding
@@ -17,7 +18,7 @@ enum MainAction {
     case showMessage(title: String?, message: String, type: SnackbarModifier.SnackbarType)
     case hideSnackbar
     case goToOnboarding
-    case switchContent(Configuration)
+    case switchContent(URL, String)
 
     // For navigation to Category component
     case category(CategoryAction)
