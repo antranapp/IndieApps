@@ -10,8 +10,8 @@ struct SettingsView: View {
 
     @State private var showUpdateConfirmation: Bool = false
     @State private var showResetConfirmation: Bool = false
-    @State private var remoteRepository: String = configuration.contentLocation.remoteURL.absoluteString
-    @State private var branch: String = configuration.contentLocation.branch
+    @State private var remoteRepository: String = settingsManager.configuration.contentLocation.remoteURL.absoluteString
+    @State private var branch: String = settingsManager.configuration.contentLocation.branch
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -28,25 +28,18 @@ struct SettingsView: View {
                             return
                         }
 
-                        guard remoteURL != configuration.contentLocation.remoteURL ||
-                            self.branch != configuration.contentLocation.branch else {
+                        guard remoteURL != settingsManager.configuration.contentLocation.remoteURL ||
+                            self.branch != settingsManager.configuration.contentLocation.branch else {
                             viewStore.send(.showMessage(
                                 title: nil,
                                 message: "You should not reclone the current repository 😉",
                                 type: .info
-                            )
+                                )
                             )
                             return
                         }
 
-                        let newConfiguration = Configuration(
-                            rootFolderURL: Configuration.Default.rootFolderURL,
-                            archiveURL: nil,
-                            remoteRepositoryURL: remoteURL,
-                            branch: self.branch
-                        )
-                        print("switch to \(self.branch)")
-                        viewStore.send(.switchContent(newConfiguration))
+                        viewStore.send(.switchContent(remoteURL, self.branch))
                     }) {
                         Text("Checkout")
                     }

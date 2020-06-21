@@ -11,7 +11,7 @@ typealias MainStore = Store<MainState, MainAction>
 
 // MARK: Reducer
 
-var configuration = Configuration()
+let settingsManager = SettingsManager()
 
 let mainReducer = categoryReducer
     .optional
@@ -66,7 +66,7 @@ let mainReducer = categoryReducer
                 return
                     Effect(
                         environment.gitService.checkoutAndUpdate(
-                            branchName: configuration.contentLocation.branch
+                            branchName: settingsManager.configuration.contentLocation.branch
                         )
                     )
                     .receive(on: environment.mainQueue)
@@ -121,7 +121,7 @@ let mainReducer = categoryReducer
                 return .none
 
             case .resetContent:
-                configuration = Configuration()
+                settingsManager.configuration = Configuration()
                 return Effect(environment.gitService.reset())
                     .receive(on: environment.mainQueue)
                     .map {
@@ -132,8 +132,9 @@ let mainReducer = categoryReducer
                     )
                     .eraseToEffect()
 
-            case let .switchContent(newConfiguration):
-                configuration = newConfiguration
+            case let .switchContent(remoteRepositoryURL, branch):
+                settingsManager.update(remoteRepositoryURLString: remoteRepositoryURL.absoluteString)
+                settingsManager.update(branch: branch)
                 state.contentState = .unknown
                 return .none
 

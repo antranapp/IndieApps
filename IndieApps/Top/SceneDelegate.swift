@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             initialState: mainState,
             reducer: mainReducer,
             environment: MainEnvironment(
-                configurationProvider: { configuration },
+                configurationProvider: { settingsManager.configuration },
                 mainQueue: DispatchQueue.main.eraseToAnyScheduler()
             )
         ))
