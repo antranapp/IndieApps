@@ -38,16 +38,6 @@
                ReferencedContainer = "container:IndieApps.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7F5663102487C7A200DBCAC8"
-               BuildableName = "IndieAppsUITests.xctest"
-               BlueprintName = "IndieAppsUITests"
-               ReferencedContainer = "container:IndieApps.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
