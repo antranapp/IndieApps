@@ -34,8 +34,8 @@ class GitService: GitServiceProtocol, CheckFileManager {
     private let contentLocationProvider: ContentLocationProvider
     private let fileManager = FileManager.default
     private let queue: DispatchQueue = DispatchQueue(label: "app.antran.indieapps.gitservice", qos: .userInitiated)
-    private var localRepositoryFolder: Folder {
-        try! Folder(path: localURL.path)
+    private var localRepositoryFolder: Folder? {
+        try? Folder(path: localURL.path)
     }
 
     private var remoteURL: URL {
@@ -178,7 +178,7 @@ class GitService: GitServiceProtocol, CheckFileManager {
         return Future { promise in
             self.queue.async {
                 do {
-                    try self.localRepositoryFolder.delete()
+                    try self.localRepositoryFolder?.delete()
                     promise(.success(true))
                 } catch {
                     print(error)

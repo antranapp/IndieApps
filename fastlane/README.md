@@ -41,6 +41,16 @@ Register new device
 fastlane ios refresh_profiles
 ```
 
+### ios screenshot
+```
+fastlane ios screenshot
+```
+Take screenshots
+### ios upload
+```
+fastlane ios upload
+```
+Upload to App Store
 
 ----
 

@@ -73,6 +73,9 @@
 		7FEA61CA249F158F0049116C /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEA61C9249F158F0049116C /* SettingsManager.swift */; };
 		7FEA61CD249F4F430049116C /* SettingsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEA61CB249F4F3C0049116C /* SettingsManagerTests.swift */; };
 		7FEA61CF249F57A90049116C /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEA61CE249F57A90049116C /* UserDefaults.swift */; };
+		7FEA61D424A0706D0049116C /* AppStoreScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEA61D324A0706D0049116C /* AppStoreScreenshotTests.swift */; };
+		7FEA61D824A070B50049116C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEA61D724A070B40049116C /* SnapshotHelper.swift */; };
+		7FEA61DB24A09AA90049116C /* XCUIElement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEA61DA24A09AA90049116C /* XCUIElement+Extensions.swift */; };
 		7FF8F5B5248A245A0008FAE6 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */; };
 		7FF8F5B7248A25480008FAE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F5B6248A25480008FAE6 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
@@ -162,6 +165,9 @@
 		7FEA61C9249F158F0049116C /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		7FEA61CB249F4F3C0049116C /* SettingsManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManagerTests.swift; sourceTree = "<group>"; };
 		7FEA61CE249F57A90049116C /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		7FEA61D324A0706D0049116C /* AppStoreScreenshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStoreScreenshotTests.swift; sourceTree = "<group>"; };
+		7FEA61D724A070B40049116C /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
+		7FEA61DA24A09AA90049116C /* XCUIElement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extensions.swift"; sourceTree = "<group>"; };
 		7FF8F5B4248A245A0008FAE6 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		7FF8F5B6248A25480008FAE6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -394,6 +400,9 @@
 		7F5663142487C7A200DBCAC8 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				7FEA61D324A0706D0049116C /* AppStoreScreenshotTests.swift */,
+				7FEA61D924A09A960049116C /* Utils */,
+				7FEA61D524A0709B0049116C /* SupportingFiles */,
 				7F5663172487C7A200DBCAC8 /* Info.plist */,
 			);
 			path = UITests;
@@ -489,6 +498,30 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		7FEA61D524A0709B0049116C /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				7FEA61D624A070A60049116C /* fastlane */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		7FEA61D624A070A60049116C /* fastlane */ = {
+			isa = PBXGroup;
+			children = (
+				7FEA61D724A070B40049116C /* SnapshotHelper.swift */,
+			);
+			path = fastlane;
+			sourceTree = "<group>";
+		};
+		7FEA61D924A09A960049116C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7FEA61DA24A09AA90049116C /* XCUIElement+Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -574,6 +607,7 @@
 					};
 					7F5663102487C7A200DBCAC8 = {
 						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
 						TestTargetID = 7F5662EC2487C79E00DBCAC8;
 					};
 				};
@@ -751,6 +785,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FEA61DB24A09AA90049116C /* XCUIElement+Extensions.swift in Sources */,
+				7FEA61D424A0706D0049116C /* AppStoreScreenshotTests.swift in Sources */,
+				7FEA61D824A070B50049116C /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -921,7 +958,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development app.antran.IndieApps";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -947,7 +984,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.antran.IndieApps";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -999,6 +1036,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36ML5F3NSU;
 				INFOPLIST_FILE = UITests/Info.plist;
@@ -1009,6 +1047,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.antran.IndieAppsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = IndieApps;
@@ -1019,6 +1058,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36ML5F3NSU;
 				INFOPLIST_FILE = UITests/Info.plist;
