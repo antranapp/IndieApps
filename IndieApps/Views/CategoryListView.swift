@@ -27,8 +27,8 @@ struct CategoryListContainerView: View {
     private func makeContent() -> some View {
         WithViewStore(store) { viewStore in
             List {
-                viewStore.categories.map {
-                    ForEach($0) { category in
+                viewStore.categories.map { (categories: [Category]) in
+                    ForEach(categories) { category in
                         NavigationLink(
                             destination: IfLetStore(
                                 self.store.scope(state: { $0.selection }, action: MainAction.category),

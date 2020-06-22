@@ -45,4 +45,16 @@ platform :ios do
             type: "adhoc",
             force: true)
     end
+
+    # Generating screenshots for the App Store.
+    desc "Take screenshots"
+    lane :screenshot do
+        snapshot
+    end
+
+    # Uploading the generated snapshots to the App Store
+    desc "Upload to App Store"
+    lane :upload do
+        deliver
+    end
 end

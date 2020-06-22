@@ -1,0 +1,26 @@
+devices([
+  "iPhone 8",
+  "iPhone 8 Plus",
+#  "iPhone SE (2nd generation)",
+  "iPhone 11 Pro",
+#  "iPad Pro (12.9-inch)",
+#  "iPad Pro (9.7-inch)",
+])
+
+languages([
+  "en-US",
+])
+
+# scheme("IndieAppsUITests")
+
+output_directory("./fastlane/screenshots")
+
+# clear_previous_screenshots(true)
+
+override_status_bar(true)
+
+# Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
+# launch_arguments(["-favColor red"])
+
+# For more information about all available options run
+# fastlane action snapshot
