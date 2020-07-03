@@ -22,7 +22,15 @@ class AppStoreScreenshotTests: XCTestCase {
         snapshot("01Categories")
     }
 
-    func test02AppDetail() {
+    func test02Apps() {
+        let tablesQuery = app.tables
+        app.swipeUp()
+        app.swipeUp()
+        tablesQuery.buttons["Reference\n2"].tap()
+        snapshot("02Apps")
+    }
+
+    func test03AppDetail() {
         let tablesQuery = app.tables
         app.swipeUp()
         app.swipeUp()
@@ -30,6 +38,7 @@ class AppStoreScreenshotTests: XCTestCase {
         tablesQuery.buttons["Reference\n2"].tap()
         tablesQuery.cells.otherElements.containing(.staticText, identifier: "Indie Apps Showcases").children(matching: .image).element.tap()
 
-        snapshot("02AppDetail")
+        snapshot("03AppDetail")
+
     }
 }
