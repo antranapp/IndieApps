@@ -3,3 +3,4 @@
 # https://docs.fastlane.tools/actions/deliver/
 
 force(true)
+skip_binary_upload(true) # This will be done by fastlane beta
